@@ -6,18 +6,18 @@
 //
 
 #import "ViewController.h"
+#import "Validator.h"
+#import "UITextView+Ext.h"
+#import "VideoStreamController.h"
 
-@interface ViewController ()
-
-@end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.view.backgroundColor = [UIColor blackColor];
-    [self.navigationController setTitle:@"RTSP Streams"];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self setTitle:@"RTSP Streams"];
 }
 
 - (void)dealloc {
@@ -27,11 +27,15 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [self setupUIView];
+    type = kVLCMedia;
 }
+
+#pragma mark - Setup Controller Views
 
 - (void)setupUIView {
     [self setupButtonView];
     [self setupURLField];
+    [self createAlertWarning];
 }
 
 - (void)setupButtonView {
@@ -47,7 +51,7 @@
 }
 
 - (void)setupURLField {
-    self.url = [[UITextField alloc]init];
+    self.url = [[UITextField alloc] init];
     [self.url setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.url];
     
@@ -55,6 +59,8 @@
     [self.url setTextColor:[UIColor systemGrayColor]];
     [self.url.layer setBorderWidth:1.0];
     [self.url.layer setBorderColor: [UIColor blackColor].CGColor];
+    [self.url setLeftPadding:10.0];
+    [self.url setRightPadding:10.0];
     
     NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.url attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:50];
     NSLayoutConstraint *tralling = [NSLayoutConstraint constraintWithItem:self.url attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:-50];
@@ -66,9 +72,44 @@
     [self.url addConstraint:height];
 }
 
-- (void) onClickAddStreams:(UIButton*) button {
-    NSLog(@"That's user");
+- (void) createAlertWarning {
+    self.alert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"The URL Streaming was incorrected" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self dismissViewControllerAnimated:self.alert completion:nil];
+        });
+        
+    }];
+    
+    [self.alert addAction:ok];
 }
 
+#pragma mark - Handle Event Selector
+
+- (void) onClickAddStreams:(UIButton*) button {
+    NSString *url = self.url.text;
+    BOOL isValided = [Validator isValidURL:url];
+    if (isValided) {
+        NSLog(@"That's was VLCMedia");
+        [self pushVideoVideoWithURL:url];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:self.alert animated:true completion:nil];
+        });
+    }
+}
+
+#pragma mark - Switch View Controller
+
+- (void) pushVideoVideoWithURL:(NSString *)url {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"VideoView" bundle:nil];
+    VideoViewController* controller = (VideoViewController*)[storyboard instantiateViewControllerWithIdentifier:@"VideoViewVC"];
+    [controller setURL:url];
+    [controller setSourceUsing:type];
+    UINavigationController * navigator = [[UINavigationController alloc] initWithRootViewController:controller];
+//        [self.navigationController pushViewController:navigator animated:false];
+    [self presentViewController:navigator animated:true completion:nil];
+}
 
 @end
