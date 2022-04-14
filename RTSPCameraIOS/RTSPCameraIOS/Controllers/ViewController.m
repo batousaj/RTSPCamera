@@ -26,8 +26,8 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self setupUIView];
     type = kVLCMedia;
+    [self setupUIView];
 }
 
 #pragma mark - Setup Controller Views
@@ -36,6 +36,7 @@
     [self setupButtonView];
     [self setupURLField];
     [self createAlertWarning];
+    [self setupCheckView];
 }
 
 - (void)setupButtonView {
@@ -48,6 +49,44 @@
     self.addStreamBut.titleLabel.font = [UIFont systemFontOfSize:20.0];
     [self.addStreamBut setBackgroundColor:[UIColor systemGrayColor]];
     [self.addStreamBut addTarget:self action:@selector(onClickAddStreams:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setupCheckView {
+    self.checkView = [[UIView alloc] init];
+    [self.checkView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.checkView];
+    
+    NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:50];
+    NSLayoutConstraint *tralling = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:-50];
+
+    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:500];
+    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
+    
+    [self.view addConstraints:@[leading,tralling,top]];
+    [self.checkView addConstraint:height];
+    
+    [self setupButtonSource];
+}
+
+- (void)setupButtonSource {
+    self.checkLive = [[UICheckButton alloc] initButtonCheckBox];
+    [self.checkLive setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.checkView addSubview:self.checkLive];
+    self.checkLive.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.checkLive setTitle:@"Live555" forState:UIControlStateNormal];
+    [self.checkLive setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.checkLive setCheck:NO];
+    [self.checkLive addTarget:self action:@selector(onClickCheckLive:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    self.checkVLC = [[UICheckButton alloc] initButtonWithFrame:CGRectMake(200, 10, 100, self.checkLive.frame.size.height)];
+//    [self.checkVLC setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.checkView addSubview:self.checkVLC];
+    self.checkVLC.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.checkVLC setTitle:@"VLCMedia" forState:UIControlStateNormal];
+    [self.checkVLC setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.checkVLC setCheck:YES];
+    [self.checkVLC addTarget:self action:@selector(onClickCheckVLC:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setupURLField {
@@ -97,6 +136,18 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self presentViewController:self.alert animated:true completion:nil];
         });
+    }
+}
+
+- (void) onClickCheckLive:(UIButton*) button {
+    if ([self.checkLive isChecking]) {
+        type = kLive555;
+    }
+}
+
+- (void) onClickCheckVLC:(UIButton*) button  {
+    if ([self.checkVLC isChecking]) {
+        type = kVLCMedia;
     }
 }
 

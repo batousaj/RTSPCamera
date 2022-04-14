@@ -25,6 +25,7 @@
 		B16E743A28070E9500C20410 /* VideoView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B16E743928070E9500C20410 /* VideoView.storyboard */; };
 		B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.m */; };
 		B16E75132807330E00C20410 /* Debug-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16E75122807330E00C20410 /* Debug-liblive555helper.a */; };
+		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		B16E743E280726EC00C20410 /* RTSPCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturer.h; sourceTree = "<group>"; };
 		B16E743F2807295000C20410 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		B16E75122807330E00C20410 /* Debug-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-liblive555helper.a"; path = "live555helper/output/Debug-liblive555helper.a"; sourceTree = "<group>"; };
+		B1B8A6F0280802FA008BE93F /* UIButtonView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButtonView+Ext.h"; sourceTree = "<group>"; };
+		B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButtonView+Ext.m"; sourceTree = "<group>"; };
 		F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCameraIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -203,6 +206,8 @@
 				B16E7434280702DE00C20410 /* UINavigationController+Config.m */,
 				B16E74362807047E00C20410 /* UITextView+Ext.m */,
 				B16E74382807048900C20410 /* UITextView+Ext.h */,
+				B1B8A6F0280802FA008BE93F /* UIButtonView+Ext.h */,
+				B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -424,6 +429,7 @@
 				B166B2992806F2F400F1060E /* VideoView.m in Sources */,
 				B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
+				B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */,
 				2E560EA22805AE7A00FB7523 /* main.m in Sources */,
 				B166B2A22806F5F400F1060E /* VideoStreamController.m in Sources */,
 				2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */,
