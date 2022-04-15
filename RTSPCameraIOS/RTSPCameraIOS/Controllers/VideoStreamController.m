@@ -19,7 +19,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    isToggle = false;
+    isToggle = NO;
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     [self setupVideoView];
@@ -41,14 +41,10 @@
 }
 
 - (void) setupVideoView {
-    if (islive555) {
-//        videoCapturer
-    } else {
-        self.video = [[VideoView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
-        [self.view addSubview:self.video];
-        [self.video loadVideo:url];
-        [self.video addGestureRecognizer:self.tapped];
-    }
+    self.video = [[VideoView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
+    [self.view addSubview:self.video];
+    [self loadVideo];
+    [self.video addGestureRecognizer:self.tapped];
 }
 
 - (void) setURL:(NSString *)url {
@@ -79,15 +75,32 @@
 
 #pragma mark - Private function
 
-- (void) playVideo {
-    if (![self.video isPlayingVideo]) {
-        [self.video playVideo];
+- (void) loadVideo {
+    if (islive555) {
+        //
+    } else {
+        [self.video loadVideo:url];
     }
 }
 
+- (void) playVideo {
+    if (islive555) {
+        //
+    } else {
+        if (![self.video isPlayingVideo]) {
+            [self.video playVideo];
+        }
+    }
+
+}
+
 - (void) stopVideo {
-    if ([self.video isPlayingVideo]) {
-        [self.video stopVideo];
+    if (islive555) {
+        //
+    } else {
+        if ([self.video isPlayingVideo]) {
+            [self.video stopVideo];
+        }
     }
 }
 
