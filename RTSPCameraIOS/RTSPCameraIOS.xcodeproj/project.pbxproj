@@ -16,6 +16,8 @@
 		2E560EAC2805AE7A00FB7523 /* RTSPCameraIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EAB2805AE7A00FB7523 /* RTSPCameraIOSTests.m */; };
 		2E560EB62805AE7A00FB7523 /* RTSPCameraIOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */; };
 		2E560EB82805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */; };
+		2E755DD028094E2400997DC7 /* Debug-iphonesimulator-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */; };
+		2E755DD42809574A00997DC7 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E755DD32809574A00997DC7 /* Model.m */; };
 		80D677392D4BD7D7A54BB165 /* Pods_RTSPCameraIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */; };
 		B166B2992806F2F400F1060E /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B2982806F2F400F1060E /* VideoView.m */; };
 		B166B29E2806F36E00F1060E /* Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B29D2806F36E00F1060E /* Validator.m */; };
@@ -24,7 +26,6 @@
 		B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E74362807047E00C20410 /* UITextView+Ext.m */; };
 		B16E743A28070E9500C20410 /* VideoView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B16E743928070E9500C20410 /* VideoView.storyboard */; };
 		B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.m */; };
-		B16E75132807330E00C20410 /* Debug-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16E75122807330E00C20410 /* Debug-liblive555helper.a */; };
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,8 @@
 		2E560EB12805AE7A00FB7523 /* RTSPCameraIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSPCameraIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCameraIOSUITests.m; sourceTree = "<group>"; };
 		2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCameraIOSUITestsLaunchTests.m; sourceTree = "<group>"; };
+		2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-iphonesimulator-liblive555helper.a"; path = "live555helper/output/Debug-iphonesimulator-liblive555helper.a"; sourceTree = "<group>"; };
+		2E755DD32809574A00997DC7 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		4793CA2C25258AB58E023F2C /* Pods-RTSPCameraIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraIOS.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B166B2982806F2F400F1060E /* VideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
 		B166B29A2806F30300F1060E /* VideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
@@ -89,8 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B16E75132807330E00C20410 /* Debug-liblive555helper.a in Frameworks */,
 				80D677392D4BD7D7A54BB165 /* Pods_RTSPCameraIOS.framework in Frameworks */,
+				2E755DD028094E2400997DC7 /* Debug-iphonesimulator-liblive555helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +221,7 @@
 				B166B29C2806F35F00F1060E /* Validator.h */,
 				B166B29D2806F36E00F1060E /* Validator.m */,
 				B16E743F2807295000C20410 /* Model.h */,
+				2E755DD32809574A00997DC7 /* Model.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -234,6 +238,7 @@
 		B463EB1B338D968D5D68A1FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */,
 				B16E75122807330E00C20410 /* Debug-liblive555helper.a */,
 				F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */,
 			);
@@ -426,6 +431,7 @@
 				B166B29E2806F36E00F1060E /* Validator.m in Sources */,
 				B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */,
 				2E560E972805AE7900FB7523 /* ViewController.m in Sources */,
+				2E755DD42809574A00997DC7 /* Model.m in Sources */,
 				B166B2992806F2F400F1060E /* VideoView.m in Sources */,
 				B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,

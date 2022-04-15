@@ -48,7 +48,9 @@
     [self.addStreamBut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.addStreamBut.titleLabel.font = [UIFont systemFontOfSize:20.0];
     [self.addStreamBut setBackgroundColor:[UIColor systemGrayColor]];
-    [self.addStreamBut addTarget:self action:@selector(onClickAddStreams:) forControlEvents:UIControlEventTouchUpInside];
+    [self.addStreamBut addTarget:self
+                          action:@selector(onClickAddStreams:)
+                forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setupCheckView {
@@ -60,7 +62,7 @@
     NSLayoutConstraint *tralling = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:-50];
 
     NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:500];
-    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];
+    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.checkView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:50];
     
     [self.view addConstraints:@[leading,tralling,top]];
     [self.checkView addConstraint:height];
@@ -69,24 +71,31 @@
 }
 
 - (void)setupButtonSource {
-    self.checkLive = [[UICheckButton alloc] initButtonCheckBox];
-    [self.checkLive setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.checkLive = [[UICheckButton alloc] initWithFrame:CGRectMake(0, 25, 100, self.checkView.frame.size.height)];
+//    [self.checkLive setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.checkView addSubview:self.checkLive];
     self.checkLive.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.checkLive setTitle:@"Live555" forState:UIControlStateNormal];
+    [self.checkLive setupButtonWithTitle:@"Live555"
+                            andDictImage:[[Model shareInstance] getImageCheckBox]
+                                andCheck:NO];
     [self.checkLive setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.checkLive setCheck:NO];
-    [self.checkLive addTarget:self action:@selector(onClickCheckLive:) forControlEvents:UIControlEventTouchUpInside];
+    [self.checkLive addTarget:self
+                       action:@selector(onClickCheckLive:)
+             forControlEvents:UIControlEventTouchUpInside];
     
-    
-    self.checkVLC = [[UICheckButton alloc] initButtonWithFrame:CGRectMake(200, 10, 100, self.checkLive.frame.size.height)];
+    self.checkVLC = [[UICheckButton alloc] initButtonWithFrame:CGRectMake(200, 25, 100, self.checkLive.frame.size.height)];
 //    [self.checkVLC setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.checkView addSubview:self.checkVLC];
     self.checkVLC.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.checkVLC setTitle:@"VLCMedia" forState:UIControlStateNormal];
+    [self.checkLive setupButtonWithTitle:@"VLCMedia"
+                            andDictImage:[[Model shareInstance] getImageCheckBox]
+                                andCheck:YES];
     [self.checkVLC setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.checkVLC setCheck:YES];
-    [self.checkVLC addTarget:self action:@selector(onClickCheckVLC:) forControlEvents:UIControlEventTouchUpInside];
+    [self.checkVLC addTarget:self
+                      action:@selector(onClickCheckVLC:)
+            forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setupURLField {
@@ -112,7 +121,9 @@
 }
 
 - (void) createAlertWarning {
-    self.alert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"The URL Streaming was incorrected" preferredStyle:UIAlertControllerStyleAlert];
+    self.alert = [UIAlertController alertControllerWithTitle:@"Warning"
+                                                     message:@"The URL Streaming was incorrected"
+                                              preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -140,15 +151,32 @@
 }
 
 - (void) onClickCheckLive:(UIButton*) button {
-    if ([self.checkLive isChecking]) {
-        type = kLive555;
+    if (![self.checkLive isChecking]) {
+        [self willCheckLive];
     }
 }
 
 - (void) onClickCheckVLC:(UIButton*) button  {
-    if ([self.checkVLC isChecking]) {
-        type = kVLCMedia;
+    if (![self.checkVLC isChecking]) {
+        
+        [self willCheckVLC];
     }
+}
+
+#pragma mark - Private function to check source
+
+- (void) willCheckVLC {
+    NSLog(@"That's was VLCMedia");
+    type = kVLCMedia;
+    [self.checkVLC setCheck:YES];
+    [self.checkLive setCheck:NO];
+}
+
+- (void) willCheckLive {
+    NSLog(@"That's was Live555");
+    type = kLive555;
+    [self.checkVLC setCheck:NO];
+    [self.checkLive setCheck:YES];
 }
 
 #pragma mark - Switch View Controller
