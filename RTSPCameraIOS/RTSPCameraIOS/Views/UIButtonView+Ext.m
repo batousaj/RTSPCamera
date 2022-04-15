@@ -24,40 +24,54 @@
     return self;
 }
 
-- (void) setImageCheckBox:(NSDictionary*) dict {
+- (void) setImageCheckBox:(NSMutableDictionary*) dict {
     self.checked = (UIImage*)[dict objectForKey:@"checked"];
     self.unchecked = (UIImage*)[dict objectForKey:@"unchecked"];
 }
 
-- (void) setupButtonWithTitle:(NSString*) title andDictImage:(NSDictionary*)dict andCheck:(BOOL)isChecked {
+- (void) setupButtonWithTitle:(NSString*) title andDictImage:(NSMutableDictionary*)dict andCheck:(BOOL)isChecked {
     [self setImageCheckBox:dict];
     
     if ( @available(iOS 15.0,*) ) {
-        UIButtonConfiguration* configuration = [UIButtonConfiguration filledButtonConfiguration];
-        [configuration setTitle:title];
-        [configuration setImagePlacement:NSDirectionalRectEdgeLeading];
-        [configuration setTitlePadding:5.0];
-        [configuration setImagePadding:5.0];
-        [configuration setContentInsets:NSDirectionalEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
-        [self setConfiguration:configuration];
-        
+        self.config = [UIButtonConfiguration plainButtonConfiguration];
+        [self.config setTitle:title];
+        [self.config setBaseForegroundColor:[UIColor blackColor]];
+        [self.config setImagePlacement:NSDirectionalRectEdgeLeading];
+        [self.config setTitlePadding:5.0];
+        [self.config setImagePadding:5.0];
+        [self.config setContentInsets:NSDirectionalEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        [self setCheck:isChecked];
     } else {
-        //
+        [self setTitle:title forState:UIControlStateNormal];
+        [self setCheck:isChecked];
     }
-    [self setCheck:isChecked];
+    
 }
 
-- (void) setCheck:(BOOL)checked; {
-    isCheck = checked;
-    if (@available(iOS 15.0, *)) {
+- (void) setImageCheck {
+    if ( @available(iOS 15.0,*) ) {
         if (isCheck) {
-            [self.configuration setImage:self.checked];
+            [self.config setImage:self.checked];
         } else {
-            [self.configuration setImage:self.unchecked];
+            [self.config setImage:self.unchecked];
         }
+        [self setConfiguration:self.config];
     } else {
-        // Fallback on earlier versions
+        if (isCheck) {
+            [self setImage:self.checked forState:UIControlStateNormal];
+            [self setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5.0)];
+            
+        } else {
+            [self setImage:self.unchecked forState:UIControlStateNormal];
+            [self setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5.0)];
+           
+        }
     }
+}
+
+- (void) setCheck:(BOOL)checked {
+    isCheck = checked;
+    [self setImageCheck];
 }
 
 - (BOOL) isChecking {

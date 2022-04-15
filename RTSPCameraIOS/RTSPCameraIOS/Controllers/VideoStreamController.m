@@ -12,12 +12,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor blackColor]];
     [self setupNavigatorBar];
     [self setupTapView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    isToggle = false;
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     [self setupVideoView];
@@ -26,8 +28,11 @@
 #pragma mark - Setup Controller Views
 
 - (void) setupNavigatorBar {
+    self.title = url.host;
     UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack)];
-    self.navigationItem.backBarButtonItem = back;
+    [back setTintColor:[UIColor whiteColor]];
+    [self.navigationItem setHidesBackButton:YES];
+    [self.navigationItem setLeftBarButtonItem:back];
 }
 
 - (void) setupTapView {
@@ -41,7 +46,6 @@
     } else {
         self.video = [[VideoView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
         [self.view addSubview:self.video];
-        self.title = url.host;
         [self.video loadVideo:url];
         [self.video addGestureRecognizer:self.tapped];
     }
@@ -62,35 +66,33 @@
 #pragma mark - Handle Event on Selector
 
 - (void) onTapped {
-    if ([self.video isPlayingVideo]) {
-        [self stopVideo];
-    } else {
-        [self playVideo];
-    }
+    isToggle = !isToggle;
+    [self playVideo];
+    [self setNavigatorHiddenOrUnHidden:isToggle];
 }
 
 - (void) onClickBack {
-    [self dismissViewControllerAnimated:self completion:nil];
+    [self stopVideo];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self dismissViewControllerAnimated:self completion:nil];
 }
 
 #pragma mark - Private function
 
 - (void) playVideo {
-    [self.video playVideo];
-    [self setNavigatorHidden];
+    if (![self.video isPlayingVideo]) {
+        [self.video playVideo];
+    }
 }
 
 - (void) stopVideo {
-    [self.video stopVideo];
-    [self setNavigatorUnHidden];
+    if ([self.video isPlayingVideo]) {
+        [self.video stopVideo];
+    }
 }
 
-- (void) setNavigatorHidden {
-    [self.navigationController setNavigationBarHidden:YES];
-}
-
-- (void) setNavigatorUnHidden {
-    [self.navigationController setNavigationBarHidden:NO];
+- (void) setNavigatorHiddenOrUnHidden:(BOOL)toggle {
+    [self.navigationController setNavigationBarHidden:toggle animated:YES];
 }
 
 @end

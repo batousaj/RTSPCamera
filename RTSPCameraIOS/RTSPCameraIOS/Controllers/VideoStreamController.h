@@ -15,6 +15,7 @@
 @interface VideoViewController : UIViewController {
     NSURL* url;
     BOOL islive555;
+    BOOL isToggle;
 }
 
 @property(nonatomic,strong) VideoView* video;

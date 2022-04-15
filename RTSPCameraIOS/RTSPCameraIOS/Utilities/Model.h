@@ -17,6 +17,6 @@ typedef NS_ENUM(NSInteger, SourceType) {
 
 + (Model*) shareInstance;
 
-- (NSDictionary*) getImageCheckBox;
+- (NSMutableDictionary*) getImageCheckBox;
 
 @end
