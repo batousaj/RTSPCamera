@@ -38,6 +38,13 @@ void SessionSink::allocate(ssize_t bufferSize)
 
 void SessionSink::afterGettingFrame(unsigned frameSize, unsigned numTruncatedBytes, struct timeval presentationTime, unsigned durationInMicroseconds)
 {
+    envir() << "Stream \"" << "\"; ";
+    envir() << ":\tReceived " << frameSize << " bytes";
+    if (numTruncatedBytes > 0) envir() << " (with " << numTruncatedBytes << " bytes truncated)";
+    char uSecsStr[6+1]; // used to output the 'microseconds' part of the presentation time
+    sprintf(uSecsStr, "%06u", (unsigned)presentationTime.tv_usec);
+    envir() << ".\tPresentation time: " << (int)presentationTime.tv_sec << "." << uSecsStr;
+        
 	if (numTruncatedBytes != 0)
 	{
 		delete [] m_buffer;

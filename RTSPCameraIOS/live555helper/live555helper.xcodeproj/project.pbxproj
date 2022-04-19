@@ -12,7 +12,6 @@
 		2E560EFC2805B53500FB7523 /* SessionSink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EF72805B53500FB7523 /* SessionSink.cpp */; };
 		2E560EFD2805B53500FB7523 /* rtspconnectionclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EF82805B53500FB7523 /* rtspconnectionclient.cpp */; };
 		2E560EFE2805B53500FB7523 /* sdpclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EF92805B53500FB7523 /* sdpclient.cpp */; };
-		2E5611842805B55C00FB7523 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EFF2805B55B00FB7523 /* main.cpp */; };
 		2E5611852805B55C00FB7523 /* T140TextRTPSink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560F062805B55B00FB7523 /* T140TextRTPSink.cpp */; };
 		2E5611862805B55C00FB7523 /* AMRAudioRTPSink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560F072805B55B00FB7523 /* AMRAudioRTPSink.cpp */; };
 		2E5611872805B55C00FB7523 /* QuickTimeGenericRTPSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E560F082805B55B00FB7523 /* QuickTimeGenericRTPSource.cpp */; };
@@ -215,6 +214,8 @@
 		2E5613132805B55C00FB7523 /* inet.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E56117D2805B55C00FB7523 /* inet.c */; };
 		2E5613142805B55C00FB7523 /* IOHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E56117E2805B55C00FB7523 /* IOHandlers.cpp */; };
 		2E5613172805B55C00FB7523 /* Groupsock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E5611812805B55C00FB7523 /* Groupsock.cpp */; };
+		B1539FE2280D533C00C65AB7 /* RTSPManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */; };
+		B1539FE3280D533C00C65AB7 /* RTSPManagement.h in Headers */ = {isa = PBXBuildFile; fileRef = B1539FE1280D533C00C65AB7 /* RTSPManagement.h */; };
 		B16E744328072E9400C20410 /* ADTSAudioFileSource.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E560F8B2805B55B00FB7523 /* ADTSAudioFileSource.hh */; };
 		B16E744428072E9400C20410 /* RTSPCommon.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E560F8C2805B55B00FB7523 /* RTSPCommon.hh */; };
 		B16E744528072E9400C20410 /* JPEG2000VideoRTPSink.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E560F8D2805B55B00FB7523 /* JPEG2000VideoRTPSink.hh */; };
@@ -447,7 +448,6 @@
 		2E560EF72805B53500FB7523 /* SessionSink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionSink.cpp; sourceTree = "<group>"; };
 		2E560EF82805B53500FB7523 /* rtspconnectionclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspconnectionclient.cpp; sourceTree = "<group>"; };
 		2E560EF92805B53500FB7523 /* sdpclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdpclient.cpp; sourceTree = "<group>"; };
-		2E560EFF2805B55B00FB7523 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2E560F002805B55B00FB7523 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2E560F032805B55B00FB7523 /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = configure; sourceTree = "<group>"; };
 		2E560F042805B55B00FB7523 /* config.iphone-simulator */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "config.iphone-simulator"; sourceTree = "<group>"; };
@@ -1078,6 +1078,8 @@
 		2E5611802805B55C00FB7523 /* GroupEId.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = GroupEId.o; sourceTree = "<group>"; };
 		2E5611812805B55C00FB7523 /* Groupsock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Groupsock.cpp; sourceTree = "<group>"; };
 		2E5611822805B55C00FB7523 /* config.iphoneos */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.iphoneos; sourceTree = "<group>"; };
+		B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTSPManagement.cpp; sourceTree = "<group>"; };
+		B1539FE1280D533C00C65AB7 /* RTSPManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPManagement.h; sourceTree = "<group>"; };
 		B16E75102807306E00C20410 /* Live555-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Live555-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1112,11 +1114,11 @@
 		2E560EE42805B4E500FB7523 /* live555helper */ = {
 			isa = PBXGroup;
 			children = (
-				2E560F002805B55B00FB7523 /* LICENSE */,
+				B1539FD5280D430900C65AB7 /* liveWrapper */,
 				2E560F012805B55B00FB7523 /* live */,
-				2E560EFF2805B55B00FB7523 /* main.cpp */,
 				2E560EF42805B53500FB7523 /* src */,
 				2E560EEE2805B52B00FB7523 /* inc */,
+				2E560F002805B55B00FB7523 /* LICENSE */,
 			);
 			path = live555helper;
 			sourceTree = "<group>";
@@ -1845,6 +1847,15 @@
 			path = include;
 			sourceTree = "<group>";
 		};
+		B1539FD5280D430900C65AB7 /* liveWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */,
+				B1539FE1280D533C00C65AB7 /* RTSPManagement.h */,
+			);
+			path = liveWrapper;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2025,6 +2036,7 @@
 				B16E74CC28072E9400C20410 /* OnDemandServerMediaSubsession.hh in Headers */,
 				B16E74CD28072E9400C20410 /* VP9VideoRTPSource.hh in Headers */,
 				B16E74CE28072E9400C20410 /* MPEG4ESVideoRTPSink.hh in Headers */,
+				B1539FE3280D533C00C65AB7 /* RTSPManagement.h in Headers */,
 				B16E74CF28072E9400C20410 /* MP3ADUTranscoder.hh in Headers */,
 				B16E74D028072E9400C20410 /* VP9VideoRTPSink.hh in Headers */,
 				B16E74D128072E9400C20410 /* DVVideoRTPSink.hh in Headers */,
@@ -2160,6 +2172,7 @@
 				2E56122A2805B55C00FB7523 /* MediaSink.cpp in Sources */,
 				2E5612732805B55C00FB7523 /* AMRAudioFileSource.cpp in Sources */,
 				2E56128D2805B55C00FB7523 /* ByteStreamMultiFileSource.cpp in Sources */,
+				B1539FE2280D533C00C65AB7 /* RTSPManagement.cpp in Sources */,
 				2E5612132805B55C00FB7523 /* FramedFileSource.cpp in Sources */,
 				2E5611CB2805B55C00FB7523 /* MatroskaFileServerDemux.cpp in Sources */,
 				2E5612EB2805B55C00FB7523 /* MP3ADU.cpp in Sources */,
@@ -2244,7 +2257,6 @@
 				2E5613122805B55C00FB7523 /* GroupsockHelper.cpp in Sources */,
 				2E5612FF2805B55C00FB7523 /* BasicTaskScheduler.cpp in Sources */,
 				2E5612772805B55C00FB7523 /* MP3ADUinterleaving.cpp in Sources */,
-				2E5611842805B55C00FB7523 /* main.cpp in Sources */,
 				2E5612E32805B55C00FB7523 /* MPEG4GenericRTPSink.cpp in Sources */,
 				2E5611C22805B55C00FB7523 /* H264VideoFileSink.cpp in Sources */,
 				2E5612CF2805B55C00FB7523 /* SIPClient.cpp in Sources */,

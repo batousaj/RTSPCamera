@@ -10,7 +10,7 @@
 typedef NS_ENUM(NSInteger, SourceType) {
     kLive555        = 0,
     kVLCMedia       = 1,
-    kNone           = 2,
+    kNoneSrc           = 2,
 };
 
 @interface Model : NSObject

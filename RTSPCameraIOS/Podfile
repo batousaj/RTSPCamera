@@ -6,7 +6,7 @@ target 'RTSPCameraIOS' do
   use_frameworks!
 
   # Pods for RTSPCameraIOS
-  pod 'MobileVLCKit'
+  #pod 'MobileVLCKit'
 
   #target 'RTSPCameraIOSTests' do
   #  inherit! :search_paths

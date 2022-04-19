@@ -9,16 +9,20 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import <MobileVLCKit/MobileVLCKit.h>
+//#import <MobileVLCKit/MobileVLCKit.h>
+#import "RTSPCapturer.h"
+#import "Model.h"
 
 @interface VideoView : UIView {
     BOOL isMuted;
 }
 
 @property(nonatomic) UILabel *playingLabel;
-@property(nonatomic,strong) VLCMediaPlayer *player;
+//@property(nonatomic,strong) VLCMediaPlayer *player;
+@property(nonatomic,strong) RTSPCapturer* videoCapturer;
+@property(nonatomic,assign) SourceType type;
 
-- (instancetype) initWithFrame:(CGRect)frame;
+- (instancetype) initWithFrame:(CGRect)frame andSource:(SourceType)src;
 
 - (void) loadVideo:(NSURL*)url;
 - (void) playVideo;

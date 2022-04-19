@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E902805AE7900FB7523 /* AppDelegate.m */; };
 		2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E932805AE7900FB7523 /* SceneDelegate.m */; };
-		2E560E972805AE7900FB7523 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E962805AE7900FB7523 /* ViewController.m */; };
+		2E560E972805AE7900FB7523 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E962805AE7900FB7523 /* ViewController.mm */; };
 		2E560E9A2805AE7900FB7523 /* MainView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E560E982805AE7900FB7523 /* MainView.storyboard */; };
 		2E560E9C2805AE7A00FB7523 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E560E9B2805AE7A00FB7523 /* Assets.xcassets */; };
 		2E560EA22805AE7A00FB7523 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EA12805AE7A00FB7523 /* main.m */; };
@@ -17,14 +17,14 @@
 		2E560EB62805AE7A00FB7523 /* RTSPCameraIOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */; };
 		2E560EB82805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */; };
 		2E755DD42809574A00997DC7 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E755DD32809574A00997DC7 /* Model.m */; };
-		80D677392D4BD7D7A54BB165 /* Pods_RTSPCameraIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */; };
-		B166B2992806F2F400F1060E /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B2982806F2F400F1060E /* VideoView.m */; };
+		B1539FDF280D511D00C65AB7 /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
+		B166B2992806F2F400F1060E /* VideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2982806F2F400F1060E /* VideoView.mm */; };
 		B166B29E2806F36E00F1060E /* Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B29D2806F36E00F1060E /* Validator.m */; };
-		B166B2A22806F5F400F1060E /* VideoStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B2A12806F5F400F1060E /* VideoStreamController.m */; };
+		B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2A12806F5F400F1060E /* VideoStreamController.mm */; };
 		B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E7434280702DE00C20410 /* UINavigationController+Config.m */; };
 		B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E74362807047E00C20410 /* UITextView+Ext.m */; };
 		B16E743A28070E9500C20410 /* VideoView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B16E743928070E9500C20410 /* VideoView.storyboard */; };
-		B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.m */; };
+		B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.mm */; };
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +53,7 @@
 		2E560E922805AE7900FB7523 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		2E560E932805AE7900FB7523 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		2E560E952805AE7900FB7523 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2E560E962805AE7900FB7523 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2E560E962805AE7900FB7523 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		2E560E992805AE7900FB7523 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainView.storyboard; sourceTree = "<group>"; };
 		2E560E9B2805AE7A00FB7523 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E560EA02805AE7A00FB7523 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -66,18 +66,18 @@
 		2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-iphonesimulator-liblive555helper.a"; path = "live555helper/output/Debug-iphonesimulator-liblive555helper.a"; sourceTree = "<group>"; };
 		2E755DD32809574A00997DC7 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		4793CA2C25258AB58E023F2C /* Pods-RTSPCameraIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraIOS.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS.debug.xcconfig"; sourceTree = "<group>"; };
-		B166B2982806F2F400F1060E /* VideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
+		B166B2982806F2F400F1060E /* VideoView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoView.mm; sourceTree = "<group>"; };
 		B166B29A2806F30300F1060E /* VideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
 		B166B29C2806F35F00F1060E /* Validator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Validator.h; sourceTree = "<group>"; };
 		B166B29D2806F36E00F1060E /* Validator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Validator.m; sourceTree = "<group>"; };
-		B166B2A12806F5F400F1060E /* VideoStreamController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoStreamController.m; sourceTree = "<group>"; };
+		B166B2A12806F5F400F1060E /* VideoStreamController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoStreamController.mm; sourceTree = "<group>"; };
 		B166B2A32806F5FF00F1060E /* VideoStreamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoStreamController.h; sourceTree = "<group>"; };
 		B16E7433280702D100C20410 /* UINavigationController+Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Config.h"; sourceTree = "<group>"; };
 		B16E7434280702DE00C20410 /* UINavigationController+Config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Config.m"; sourceTree = "<group>"; };
 		B16E74362807047E00C20410 /* UITextView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Ext.m"; sourceTree = "<group>"; };
 		B16E74382807048900C20410 /* UITextView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+Ext.h"; sourceTree = "<group>"; };
 		B16E743928070E9500C20410 /* VideoView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VideoView.storyboard; sourceTree = "<group>"; };
-		B16E743C280726E200C20410 /* RTSPCapturer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCapturer.m; sourceTree = "<group>"; };
+		B16E743C280726E200C20410 /* RTSPCapturer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPCapturer.mm; sourceTree = "<group>"; };
 		B16E743E280726EC00C20410 /* RTSPCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturer.h; sourceTree = "<group>"; };
 		B16E743F2807295000C20410 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		B16E75122807330E00C20410 /* Debug-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-liblive555helper.a"; path = "live555helper/output/Debug-liblive555helper.a"; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80D677392D4BD7D7A54BB165 /* Pods_RTSPCameraIOS.framework in Frameworks */,
+				B1539FDF280D511D00C65AB7 /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,8 +183,8 @@
 			isa = PBXGroup;
 			children = (
 				2E560E952805AE7900FB7523 /* ViewController.h */,
-				2E560E962805AE7900FB7523 /* ViewController.m */,
-				B166B2A12806F5F400F1060E /* VideoStreamController.m */,
+				2E560E962805AE7900FB7523 /* ViewController.mm */,
+				B166B2A12806F5F400F1060E /* VideoStreamController.mm */,
 				B166B2A32806F5FF00F1060E /* VideoStreamController.h */,
 			);
 			path = Controllers;
@@ -202,7 +202,7 @@
 		B166B2972806F2E100F1060E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B166B2982806F2F400F1060E /* VideoView.m */,
+				B166B2982806F2F400F1060E /* VideoView.mm */,
 				B166B29A2806F30300F1060E /* VideoView.h */,
 				B16E7433280702D100C20410 /* UINavigationController+Config.h */,
 				B16E7434280702DE00C20410 /* UINavigationController+Config.m */,
@@ -228,7 +228,7 @@
 		B16E743B2807269600C20410 /* live555 */ = {
 			isa = PBXGroup;
 			children = (
-				B16E743C280726E200C20410 /* RTSPCapturer.m */,
+				B16E743C280726E200C20410 /* RTSPCapturer.mm */,
 				B16E743E280726EC00C20410 /* RTSPCapturer.h */,
 			);
 			path = live555;
@@ -265,7 +265,6 @@
 				2E560E882805AE7900FB7523 /* Sources */,
 				2E560E892805AE7900FB7523 /* Frameworks */,
 				2E560E8A2805AE7900FB7523 /* Resources */,
-				E1237689DBB35EE39FCC8E30 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -404,23 +403,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E1237689DBB35EE39FCC8E30 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -430,14 +412,14 @@
 			files = (
 				B166B29E2806F36E00F1060E /* Validator.m in Sources */,
 				B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */,
-				2E560E972805AE7900FB7523 /* ViewController.m in Sources */,
+				2E560E972805AE7900FB7523 /* ViewController.mm in Sources */,
 				2E755DD42809574A00997DC7 /* Model.m in Sources */,
-				B166B2992806F2F400F1060E /* VideoView.m in Sources */,
-				B16E743D280726E200C20410 /* RTSPCapturer.m in Sources */,
+				B166B2992806F2F400F1060E /* VideoView.mm in Sources */,
+				B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
 				B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */,
 				2E560EA22805AE7A00FB7523 /* main.m in Sources */,
-				B166B2A22806F5F400F1060E /* VideoStreamController.m in Sources */,
+				B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */,
 				2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */,
 				B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */,
 			);
@@ -583,6 +565,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -603,12 +586,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MHCM5E2KX5;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/MobileVLCKit\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/MobileVLCKit\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/live555helper/live555helper/liveWrapper",
+					"$(PROJECT_DIR)/live555helper/live555helper/inc",
+					$LIB_LIVE555,
+				);
 				INFOPLIST_FILE = RTSPCameraIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -624,8 +624,13 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/live555helper/output",
 				);
+				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ";
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DNO_OPENSSL=1",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.softfoundry.RTSPCameraIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -639,11 +644,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MHCM5E2KX5;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/MobileVLCKit\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/MobileVLCKit\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/live555helper/live555helper/liveWrapper",
+					"$(PROJECT_DIR)/live555helper/live555helper/inc",
+					$LIB_LIVE555,
+				);
 				INFOPLIST_FILE = RTSPCameraIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -659,8 +677,13 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/live555helper/output",
 				);
+				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ";
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DNO_OPENSSL=1",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.softfoundry.RTSPCameraIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -10,16 +10,15 @@
 #import <AVFoundation/AVFoundation.h>
 #import "VideoView.h"
 #import "Model.h"
-#import "RTSPCapturer.h"
 
 @interface VideoViewController : UIViewController {
     NSURL* url;
     BOOL islive555;
     BOOL isToggle;
+    SourceType type;
 }
 
 @property(nonatomic,strong) VideoView* video;
-@property(nonatomic,strong) RTSPCapturer* videoCapturer;
 @property(nonatomic,strong) UITapGestureRecognizer *tapped;
 
 - (void) setURL:(NSString*)url;
