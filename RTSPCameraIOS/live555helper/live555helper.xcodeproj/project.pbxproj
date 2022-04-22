@@ -422,6 +422,12 @@
 		B16E750E28072EC800C20410 /* NetAddress.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E5611712805B55C00FB7523 /* NetAddress.hh */; };
 		B16E750F28072EC800C20410 /* Groupsock.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E5611722805B55C00FB7523 /* Groupsock.hh */; };
 		B16E75112807306E00C20410 /* Live555-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B16E75102807306E00C20410 /* Live555-Prefix.pch */; };
+		B1CB5F3C281117AE006D8633 /* FrameEncoded.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F3A281117AE006D8633 /* FrameEncoded.cc */; };
+		B1CB5F3D281117AE006D8633 /* FrameEncoded.h in Headers */ = {isa = PBXBuildFile; fileRef = B1CB5F3B281117AE006D8633 /* FrameEncoded.h */; };
+		B1CB5F4428114A05006D8633 /* base64.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F4228114A04006D8633 /* base64.cc */; };
+		B1CB5F4528114A05006D8633 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = B1CB5F4328114A04006D8633 /* base64.h */; };
+		B1CB5F482812A7FC006D8633 /* decoded.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F462812A7FB006D8633 /* decoded.cpp */; };
+		B1CB5F492812A7FC006D8633 /* decoded.h in Headers */ = {isa = PBXBuildFile; fileRef = B1CB5F472812A7FB006D8633 /* decoded.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1081,6 +1087,13 @@
 		B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTSPManagement.cpp; sourceTree = "<group>"; };
 		B1539FE1280D533C00C65AB7 /* RTSPManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPManagement.h; sourceTree = "<group>"; };
 		B16E75102807306E00C20410 /* Live555-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Live555-Prefix.pch"; sourceTree = "<group>"; };
+		B1CB5F3A281117AE006D8633 /* FrameEncoded.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FrameEncoded.cc; sourceTree = "<group>"; };
+		B1CB5F3B281117AE006D8633 /* FrameEncoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameEncoded.h; sourceTree = "<group>"; };
+		B1CB5F3F28111A41006D8633 /* CommonTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTypes.h; sourceTree = "<group>"; };
+		B1CB5F4228114A04006D8633 /* base64.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cc; sourceTree = "<group>"; };
+		B1CB5F4328114A04006D8633 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		B1CB5F462812A7FB006D8633 /* decoded.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = decoded.cpp; sourceTree = "<group>"; };
+		B1CB5F472812A7FB006D8633 /* decoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = decoded.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1114,6 +1127,7 @@
 		2E560EE42805B4E500FB7523 /* live555helper */ = {
 			isa = PBXGroup;
 			children = (
+				B1CB5F3E28111A2B006D8633 /* Common */,
 				B1539FD5280D430900C65AB7 /* liveWrapper */,
 				2E560F012805B55B00FB7523 /* live */,
 				2E560EF42805B53500FB7523 /* src */,
@@ -1852,8 +1866,22 @@
 			children = (
 				B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */,
 				B1539FE1280D533C00C65AB7 /* RTSPManagement.h */,
+				B1CB5F3A281117AE006D8633 /* FrameEncoded.cc */,
+				B1CB5F3B281117AE006D8633 /* FrameEncoded.h */,
+				B1CB5F462812A7FB006D8633 /* decoded.cpp */,
+				B1CB5F472812A7FB006D8633 /* decoded.h */,
 			);
 			path = liveWrapper;
+			sourceTree = "<group>";
+		};
+		B1CB5F3E28111A2B006D8633 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B1CB5F4228114A04006D8633 /* base64.cc */,
+				B1CB5F4328114A04006D8633 /* base64.h */,
+				B1CB5F3F28111A41006D8633 /* CommonTypes.h */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1940,6 +1968,7 @@
 				B16E746D28072E9400C20410 /* HMAC_SHA1.hh in Headers */,
 				B16E746E28072E9400C20410 /* DVVideoFileServerMediaSubsession.hh in Headers */,
 				B16E746F28072E9400C20410 /* SIPClient.hh in Headers */,
+				B1CB5F492812A7FC006D8633 /* decoded.h in Headers */,
 				B16E747028072E9400C20410 /* RTCP.hh in Headers */,
 				B16E747128072E9400C20410 /* H265VideoStreamDiscreteFramer.hh in Headers */,
 				B16E747228072E9400C20410 /* MIKEY.hh in Headers */,
@@ -2058,6 +2087,7 @@
 				B16E74E128072E9400C20410 /* MPEG1or2FileServerDemux.hh in Headers */,
 				B16E74E228072E9400C20410 /* MP3ADUinterleaving.hh in Headers */,
 				B16E74E328072E9400C20410 /* H263plusVideoRTPSink.hh in Headers */,
+				B1CB5F3D281117AE006D8633 /* FrameEncoded.h in Headers */,
 				B16E74E428072E9400C20410 /* liveMedia_version.hh in Headers */,
 				B16E74E528072E9400C20410 /* QuickTimeGenericRTPSource.hh in Headers */,
 				B16E74E628072E9400C20410 /* OggFileParser.hh in Headers */,
@@ -2070,6 +2100,7 @@
 				B16E74ED28072E9500C20410 /* OggFileServerMediaSubsession.hh in Headers */,
 				B16E74EE28072E9500C20410 /* MatroskaFileServerMediaSubsession.hh in Headers */,
 				B16E74EF28072E9500C20410 /* EBMLNumber.hh in Headers */,
+				B1CB5F4528114A05006D8633 /* base64.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2152,6 +2183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1CB5F4428114A05006D8633 /* base64.cc in Sources */,
 				2E5611F62805B55C00FB7523 /* Makefile in Sources */,
 				2E5612782805B55C00FB7523 /* DeviceSource.cpp in Sources */,
 				2E5612D22805B55C00FB7523 /* FileSink.cpp in Sources */,
@@ -2260,6 +2292,7 @@
 				2E5612E32805B55C00FB7523 /* MPEG4GenericRTPSink.cpp in Sources */,
 				2E5611C22805B55C00FB7523 /* H264VideoFileSink.cpp in Sources */,
 				2E5612CF2805B55C00FB7523 /* SIPClient.cpp in Sources */,
+				B1CB5F3C281117AE006D8633 /* FrameEncoded.cc in Sources */,
 				2E5611F12805B55C00FB7523 /* AMRAudioSource.cpp in Sources */,
 				2E560EFA2805B53500FB7523 /* environment.cpp in Sources */,
 				2E5612902805B55C00FB7523 /* MP3ADURTPSink.cpp in Sources */,
@@ -2350,6 +2383,7 @@
 				2E5611C92805B55C00FB7523 /* RTPInterface.cpp in Sources */,
 				2E5611AF2805B55C00FB7523 /* MPEG2TransportStreamAccumulator.cpp in Sources */,
 				2E5611B92805B55C00FB7523 /* MPEG2TransportStreamFramer.cpp in Sources */,
+				B1CB5F482812A7FC006D8633 /* decoded.cpp in Sources */,
 				2E5611FE2805B55C00FB7523 /* MatroskaFile.cpp in Sources */,
 				2E5612F12805B55C00FB7523 /* Makefile in Sources */,
 				2E5611A62805B55C00FB7523 /* MPEG1or2VideoStreamFramer.cpp in Sources */,

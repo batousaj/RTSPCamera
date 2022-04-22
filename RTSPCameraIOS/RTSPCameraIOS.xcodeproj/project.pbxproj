@@ -26,6 +26,8 @@
 		B16E743A28070E9500C20410 /* VideoView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B16E743928070E9500C20410 /* VideoView.storyboard */; };
 		B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.mm */; };
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
+		B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */; };
+		B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F40281134A3006D8633 /* VideoToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,9 @@
 		B1B8A6F0280802FA008BE93F /* UIButtonView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButtonView+Ext.h"; sourceTree = "<group>"; };
 		B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButtonView+Ext.m"; sourceTree = "<group>"; };
 		B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-iphoneos-liblive555helper.a"; path = "live555helper/output/Debug-iphoneos-liblive555helper.a"; sourceTree = "<group>"; };
+		B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPCapturerDecode.mm; sourceTree = "<group>"; };
+		B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturerDecode.h; sourceTree = "<group>"; };
+		B1CB5F40281134A3006D8633 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCameraIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -92,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */,
 				B1539FDF280D511D00C65AB7 /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,7 +149,7 @@
 				B166B2962806F2A700F1060E /* Storyboard */,
 				B166B2952806F26600F1060E /* Controllers */,
 				B166B2942806F25A00F1060E /* Delegate */,
-				B16E743B2807269600C20410 /* live555 */,
+				B16E743B2807269600C20410 /* RTSPCameraCapture */,
 				2E560E9B2805AE7A00FB7523 /* Assets.xcassets */,
 				2E560EA02805AE7A00FB7523 /* Info.plist */,
 			);
@@ -225,18 +231,21 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		B16E743B2807269600C20410 /* live555 */ = {
+		B16E743B2807269600C20410 /* RTSPCameraCapture */ = {
 			isa = PBXGroup;
 			children = (
 				B16E743C280726E200C20410 /* RTSPCapturer.mm */,
 				B16E743E280726EC00C20410 /* RTSPCapturer.h */,
+				B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */,
+				B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */,
 			);
-			path = live555;
+			path = RTSPCameraCapture;
 			sourceTree = "<group>";
 		};
 		B463EB1B338D968D5D68A1FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1CB5F40281134A3006D8633 /* VideoToolbox.framework */,
 				B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */,
 				2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */,
 				B16E75122807330E00C20410 /* Debug-liblive555helper.a */,
@@ -414,6 +423,7 @@
 				B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */,
 				2E560E972805AE7900FB7523 /* ViewController.mm in Sources */,
 				2E755DD42809574A00997DC7 /* Model.m in Sources */,
+				B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */,
 				B166B2992806F2F400F1060E /* VideoView.mm in Sources */,
 				B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
@@ -624,7 +634,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/live555helper/output",
 				);
-				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ";
+				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/Common";
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -677,7 +687,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/live555helper/output",
 				);
-				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ";
+				LIB_LIVE555 = "${PROJECT_DIR}/live555helper/live555helper/live/BasicUsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/live/groupsock/include ${PROJECT_DIR}/live555helper/live555helper/live/liveMedia/include ${PROJECT_DIR}/live555helper/live555helper/live/UsageEnvironment/include ${PROJECT_DIR}/live555helper/live555helper/Common";
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (

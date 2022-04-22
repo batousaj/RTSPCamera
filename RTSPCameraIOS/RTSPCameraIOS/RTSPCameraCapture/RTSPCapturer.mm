@@ -1,0 +1,78 @@
+//
+//  RTSPCapturer.m
+//  RTSPCameraIOS
+//
+//  Created by Mac Mini 2021_1 on 13/04/2022.
+//
+
+#import "RTSPCapturer.h"
+
+std::map <std::string, std::string> rtsp_option_ = { {"rtptransport","tcp"} , {"timeout","60"} };
+
+static RTSPCapturer* RTSP_capturer = NULL;
+static RTSPFactoryManagePrivate* RTSP_source_factory = NULL;
+
+RTSPFactoryManagePrivate::RTSPFactoryManagePrivate(RTSPCapturer* capturer) {
+    capture = capturer;
+}
+
+void RTSPFactoryManagePrivate::onDecodeParams(uint8_t* sps, uint8_t*pps, size_t sps_size, size_t pps_size) {
+    [capture.decoder createFormatDescription:sps ppsData:pps andsizeSps:sps_size andpps:pps_size];
+}
+
+void RTSPFactoryManagePrivate::onData(FrameEncoded* frame) {
+    NSLog(@"Size:%zu",frame->size());
+    [capture.decoder decode:frame];
+}
+
+void RTSPFactoryManagePrivate::registerRTSPControl(RTSPControl* controller) {
+    this->controller = controller;
+}
+
+void RTSPFactoryManagePrivate::startStreams() {
+    controller->startRTSP();
+}
+
+void RTSPFactoryManagePrivate::stopStreams() {
+    controller->stopRTSP();
+}
+
+RTSPSourceFactory* CreateRTSPSourceFactory(void) {
+    RTSP_source_factory = new RTSPFactoryManagePrivate(RTSP_capturer);
+    return RTSP_source_factory;
+}
+
+@implementation RTSPCapturer
+
+- (instancetype) initWithURL:(NSString *)url {
+    if (self = [super init]) {
+        RTSP_capturer = self;
+        RTSPSourceFactory::SetRTSPSourceFactory(CreateRTSPSourceFactory);
+        self.decoder = [[RTSPCapturerDecode alloc] init];
+        std::string URL = [url UTF8String];
+        manage = RTSPManagement::Create(URL,rtsp_option_);
+    }
+    return self;
+}
+
+- (void) startStreams {
+    if (RTSP_source_factory) {
+        isPlaying = YES;
+        [self.decoder createDecoder];
+        RTSP_source_factory->startStreams();
+    }
+}
+
+- (void) stopStreams {
+    if (RTSP_source_factory) {
+        isPlaying = NO;
+        RTSP_source_factory->stopStreams();
+    }
+}
+
+- (BOOL) isPlayingStreams {
+    return isPlaying;
+}
+
+@end
+

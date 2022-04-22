@@ -29,7 +29,8 @@ RTSPSourceFactory* RTSPSourceFactory::Create() {
 
 RTSPManagement::RTSPManagement(const std::string &uri, const std::map<std::string,std::string> &opts):
     m_envi(m_stop),
-    m_connection(m_envi, this, uri.c_str(), RTSPConnection::decodeTimeoutOption(opts), RTSPConnection::decodeRTPTransport(opts), 1)
+    m_connection(m_envi, this, uri.c_str(), RTSPConnection::decodeTimeoutOption(opts), RTSPConnection::decodeRTPTransport(opts), 1),
+    decode(new Decode())
 {
     this->source_factory = RTSPSourceFactory::Create();
     rtsp_source_factory()->registerRTSPControl(this);
@@ -59,42 +60,34 @@ void RTSPManagement::CapturerThread() {
 bool RTSPManagement::onNewSession(const char* id, const char* media, const char* codec, const char* sdp) {
     bool success = true;
     CheckCodecType(codec);
-    
+    std::vector<std::vector<uint8_t>> frames;
     if (strcmp(media, "video") == 0) {
         if ( (m_codec ==  kCodecH264) ||
              (m_codec ==  kCodecH265) ||
              (m_codec ==  kCodecHEVC) ) {
-            if (m_codec ==  kCodecH264) {
-                const char* pattern = "sprop-parameter-sets=";
-                const char* sprop = strstr(sdp, pattern);
-                if (sprop)
+            const char* pattern = "sprop-parameter-sets=";
+            const char* sprop = strstr(sdp, pattern);
+            if (sprop)
+            {
+                std::string sdpstr(sprop + strlen(pattern));
+                size_t pos = sdpstr.find_first_of(" ;\r\n");
+                if (pos != std::string::npos)
                 {
-//                    std::string sdpstr(sprop + strlen(pattern));
-//                    size_t pos = sdpstr.find_first_of(" ;\r\n");
-//                    if (pos != std::string::npos)
-//                    {
-//                        sdpstr.erase(pos);
-//                    }
-//                    webrtc::H264SpropParameterSets sprops;
-//                    if (sprops.DecodeSprop(sdpstr))
-//                    {
-//                        std::vector<uint8_t> sps;
-//                        sps.insert(sps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
-//                        sps.insert(sps.end(), sprops.sps_nalu().begin(), sprops.sps_nalu().end());
-//                        frames.push_back(sps);
-//
-//                        std::vector<uint8_t> pps;
-//                        pps.insert(pps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
-//                        pps.insert(pps.end(), sprops.pps_nalu().begin(), sprops.pps_nalu().end());
-//                        frames.push_back(pps);
-//                        }
-//                        else
-//                        {
-//                            LOG(WARNING) << "Cannot decode SPS:" << sprop;
-//                        }
+                    sdpstr.erase(pos);
+                }
+                if (decode->DecodeSprop(sdpstr))
+                {
+                        std::vector<uint8_t> sps;
+                        sps.insert(sps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
+                        sps.insert(sps.end(), decode->sps_nalu().begin(), decode->sps_nalu().end());
+
+                        std::vector<uint8_t> pps;
+                        pps.insert(pps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
+                        pps.insert(pps.end(), decode->pps_nalu().begin(), decode->pps_nalu().end());
+                        rtsp_source_factory()->onDecodeParams(sps.data(),pps.data(),decode->sps_nalu_size(),decode->pps_nalu_size());
                 }
             }
-            printf("ThienVu: %s",sdp);
+            
             
         } else if (m_codec ==  kCodecJPEG)
         {
@@ -127,8 +120,13 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
         default:
             break;
         case kCodecH264:
-            int presentation_time = (int)presentationTime.tv_sec;
-            rtsp_source_factory()->onData(buffer,presentation_time);
+            std::cout << "Buffer:" << buffer << std::endl;
+            int a = buffer[4] & 0x0F;
+            std::cout << "Buffer:" << a << std::endl;
+            uint64_t ts = presentationTime.tv_sec;
+            ts = ts * 1000 + presentationTime.tv_usec / 1000;
+            FrameEncoded* frame = new FrameEncoded((uint8_t*) buffer,0,(size_t)size,ts);
+            rtsp_source_factory()->onData(frame);
             break;
     }
     return success;
@@ -138,8 +136,4 @@ void RTSPManagement::onError(RTSPConnection& connection, const char* error) {
     std::cout << "RTSPVideoCapturer:onError url:" <<  " error:" << error << std::endl;
     connection.start(1);
 }
-
-
-
-
 

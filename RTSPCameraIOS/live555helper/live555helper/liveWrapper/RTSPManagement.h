@@ -9,24 +9,14 @@
 #pragma once
 #include <stdio.h>
 #include <string.h>
-#include <vector>
 #include <map>
 #include <queue>
 #include <thread>
-#include <mutex>
-#include <condition_variable>
 
+#include "decoded.h"
+#include "FrameEncoded.h"
 #include "environment.h"
 #include "rtspconnectionclient.h"
-
-typedef enum CodecType {
-    kCodecH264,
-    kCodecH265,
-    kCodecVP9,
-    kCodecHEVC,
-    kCodecJPEG,
-    kNone
-} CodecType ;
 
 class RTSPSourceFactory;
 typedef RTSPSourceFactory* (*CreatePointerFuncFactory)(void);
@@ -40,7 +30,8 @@ public :
 class RTSPSourceFactory {
 public :
     virtual void registerRTSPControl(RTSPControl* controller) = 0;
-    virtual void onData(unsigned char* buffer, int presentationtime) = 0;
+    virtual void onDecodeParams(uint8_t* sps, uint8_t*pps, size_t sps_size, size_t pps_size) = 0;
+    virtual void onData(FrameEncoded* frame) = 0;
     static void SetRTSPSourceFactory(CreatePointerFuncFactory create_func);
     static RTSPSourceFactory* Create();
 };
@@ -93,7 +84,7 @@ public :
     virtual bool onNewSession(const char* id, const char* media, const char* codec, const char* sdp) override;
 
     virtual bool onData(const char* id, unsigned char* buffer, ssize_t size, struct timeval presentationTime) override;
-
+                           
     private :
         //environment process thread manager
         Environment m_envi;
@@ -103,4 +94,5 @@ public :
         RTSPConnection m_connection;
         CodecType m_codec;
         RTSPSourceFactory* source_factory;
+        Decode* decode;
 };
