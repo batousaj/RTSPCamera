@@ -14,7 +14,8 @@
 
 class FrameEncoded {
     public :
-        FrameEncoded(uint8_t* buffer, size_t length, size_t size, uint64_t presentation_time);
+        FrameEncoded(uint8_t* buffer, size_t size, uint64_t presentation_time);
+        FrameEncoded(uint8_t* buffer, size_t size);
         ~FrameEncoded();
     
         static size_t GetBufferPaddingBytes(CodecType codec_type);
@@ -32,7 +33,6 @@ class FrameEncoded {
         uint32_t _encodedHeight = 0;
         uint32_t _timeStamp = 0;
         uint8_t* _buffer;
-        size_t _length;
         size_t _size;
         uint64_t presentation_time_ = 0;
         

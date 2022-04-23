@@ -16,12 +16,11 @@ RTSPFactoryManagePrivate::RTSPFactoryManagePrivate(RTSPCapturer* capturer) {
     capture = capturer;
 }
 
-void RTSPFactoryManagePrivate::onDecodeParams(uint8_t* sps, uint8_t*pps, size_t sps_size, size_t pps_size) {
+void RTSPFactoryManagePrivate::onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) {
     [capture.decoder createFormatDescription:sps ppsData:pps andsizeSps:sps_size andpps:pps_size];
 }
 
 void RTSPFactoryManagePrivate::onData(FrameEncoded* frame) {
-    NSLog(@"Size:%zu",frame->size());
     [capture.decoder decode:frame];
 }
 

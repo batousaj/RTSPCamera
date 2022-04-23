@@ -30,7 +30,7 @@ public :
 class RTSPSourceFactory {
 public :
     virtual void registerRTSPControl(RTSPControl* controller) = 0;
-    virtual void onDecodeParams(uint8_t* sps, uint8_t*pps, size_t sps_size, size_t pps_size) = 0;
+    virtual void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) = 0;
     virtual void onData(FrameEncoded* frame) = 0;
     static void SetRTSPSourceFactory(CreatePointerFuncFactory create_func);
     static RTSPSourceFactory* Create();
@@ -54,22 +54,6 @@ public :
     //Thread in decode RTSPVideo
     void CapturerThread() ;
                            
-    void CheckCodecType(const char* codec) {
-        if (strcmp(codec, "H264") == 0) {
-             m_codec = kCodecH264;
-        } else if (strcmp(codec, "H265") == 0) {
-            m_codec = kCodecH265;
-        } else if (strcmp(codec, "VP9") == 0) {
-            m_codec = kCodecVP9;
-        } else if (strcmp(codec, "HEVC") == 0) {
-            m_codec = kCodecHEVC;
-        } else if (strcmp(codec, "JPEG") == 0) {
-            m_codec = kCodecJPEG;
-        } else {
-            m_codec = kNone;
-        }
-    }
-                           
     //override RTSPConnection:Callback
     virtual void onError(RTSPConnection& connection , const char* error) override;
 
@@ -84,6 +68,25 @@ public :
     virtual bool onNewSession(const char* id, const char* media, const char* codec, const char* sdp) override;
 
     virtual bool onData(const char* id, unsigned char* buffer, ssize_t size, struct timeval presentationTime) override;
+                           
+    private :
+         uint64_t getPresentationTime(struct timeval presentationTime);
+            
+         void CheckCodecType(const char* codec) {
+            if (strcmp(codec, "H264") == 0) {
+                m_codec = kCodecH264;
+            }  else if (strcmp(codec, "H265") == 0) {
+                m_codec = kCodecH265;
+            } else if (strcmp(codec, "VP9") == 0) {
+                m_codec = kCodecVP9;
+            } else if (strcmp(codec, "HEVC") == 0) {
+                m_codec = kCodecHEVC;
+            } else if (strcmp(codec, "JPEG") == 0) {
+                m_codec = kCodecJPEG;
+            } else {
+                m_codec = kNone;
+            }
+         }
                            
     private :
         //environment process thread manager

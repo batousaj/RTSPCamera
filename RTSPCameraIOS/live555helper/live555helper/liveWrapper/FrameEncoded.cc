@@ -7,10 +7,16 @@
 
 #include "FrameEncoded.h"
 
-FrameEncoded::FrameEncoded(uint8_t* buffer, size_t length, size_t size, uint64_t presentation_time):
-        _length(length),
+FrameEncoded::FrameEncoded(uint8_t* buffer, size_t size, uint64_t presentation_time):
         _size(size),
         presentation_time_(presentation_time),
+        _buffer(buffer)
+{
+    std::cout << "Thien Vu: FrameEncoded was init" << std::endl ;
+}
+
+FrameEncoded::FrameEncoded(uint8_t* buffer, size_t size):
+        _size(size),
         _buffer(buffer)
 {
     std::cout << "Thien Vu: FrameEncoded was init" << std::endl ;

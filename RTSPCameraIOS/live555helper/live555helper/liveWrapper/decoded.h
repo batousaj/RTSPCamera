@@ -13,6 +13,7 @@
 #include <condition_variable>
 
 #include "base64.h"
+#include "CommonTypes.h"
 
 class Decode  {
 public :
@@ -22,8 +23,13 @@ public :
     const std::vector<uint8_t>& pps_nalu() { return pps_; }
     size_t sps_nalu_size() { return sps_size_; }
     size_t pps_nalu_size() { return pps_size_; }
+    
     bool DecodeAndConvert(const std::string& base64, std::vector<uint8_t>* binary);
     bool DecodeSprop(const std::string& sprop);
+    
+    NaluType getNaluType(uint8_t nalu_buffer) {
+        return static_cast<NaluType>(nalu_buffer & kNaluTypeMask);
+    };
     
 private :
     std::vector<uint8_t> sps_;

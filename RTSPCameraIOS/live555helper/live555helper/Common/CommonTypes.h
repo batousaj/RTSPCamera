@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 const size_t kBufferPaddingBytesH264 = 8;
+const uint8_t kNaluTypeMask = 0x1F;
 
 typedef enum CodecType {
     kCodecH264,
@@ -17,3 +18,17 @@ typedef enum CodecType {
     kCodecJPEG,
     kNone
 } CodecType ;
+
+enum NaluType : uint8_t {
+  kSlice = 1,
+  kIdr = 5,
+  kSei = 6,
+  kSps = 7,
+  kPps = 8,
+  kAud = 9,
+  kEndOfSequence = 10,
+  kEndOfStream = 11,
+  kFiller = 12,
+  kStapA = 24,
+  kFuA = 28
+};

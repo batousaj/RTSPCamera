@@ -32,7 +32,7 @@ class RTSPFactoryManagePrivate : public RTSPSourceFactory {
         void stopStreams();
         RTSPFactoryManagePrivate(RTSPCapturer* capturer);
         void registerRTSPControl(RTSPControl* controller) override;
-        void onDecodeParams(uint8_t* sps, uint8_t*pps, size_t sps_size, size_t pps_size) override;
+        void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) override;
         void onData(FrameEncoded* frame) override;
     
     private :
