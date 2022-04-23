@@ -10,11 +10,17 @@
 #include "Model.h"
 #include "FrameEncoded.h"
 
+@protocol RTSPCapturerDecodeDelegate <NSObject>
+
+- (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef) samplebuffer;
+
+@end
+
 @interface RTSPCapturerDecode : NSObject
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
-@property (nonatomic, retain) AVSampleBufferDisplayLayer *videoLayer;
+@property (nonatomic, assign) id<RTSPCapturerDecodeDelegate> delegate;
 @property (nonatomic, assign) int spsSize;
 @property (nonatomic, assign) int ppsSize;
 

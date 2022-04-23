@@ -5,6 +5,7 @@
 //  Created by Mac Mini 2021_1 on 21/04/2022.
 //
 
+#pragma once
 #include <stdio.h>
 
 const size_t kBufferPaddingBytesH264 = 8;

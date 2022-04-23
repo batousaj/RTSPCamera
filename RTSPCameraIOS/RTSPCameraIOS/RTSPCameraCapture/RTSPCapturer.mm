@@ -17,7 +17,7 @@ RTSPFactoryManagePrivate::RTSPFactoryManagePrivate(RTSPCapturer* capturer) {
 }
 
 void RTSPFactoryManagePrivate::onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) {
-    [capture.decoder createFormatDescription:sps ppsData:pps andsizeSps:sps_size andpps:pps_size];
+//    [capture.decoder createFormatDescription:sps ppsData:pps andsizeSps:sps_size andpps:pps_size];
 }
 
 void RTSPFactoryManagePrivate::onData(FrameEncoded* frame) {

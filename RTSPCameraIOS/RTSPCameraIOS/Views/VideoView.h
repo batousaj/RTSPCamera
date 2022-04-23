@@ -13,12 +13,13 @@
 #import "RTSPCapturer.h"
 #import "Model.h"
 
-@interface VideoView : UIView {
+@interface VideoView : UIView<RTSPCapturerDecodeDelegate> {
     BOOL isMuted;
 }
 
 @property(nonatomic) UILabel *playingLabel;
 //@property(nonatomic,strong) VLCMediaPlayer *player;
+@property (nonatomic, retain) AVSampleBufferDisplayLayer *displayLayer;
 @property(nonatomic,strong) RTSPCapturer* videoCapturer;
 @property(nonatomic,assign) SourceType type;
 

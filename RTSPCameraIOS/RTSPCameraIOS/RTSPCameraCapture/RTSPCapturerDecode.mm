@@ -114,54 +114,54 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
 
    // type 8 is the PPS parameter NALU
-//   if(nalu_type == 8) {
-//
-//       // find where the NALU after this one starts so we know how long the PPS parameter is
-//       for (int i = _spsSize + 12; i < _spsSize + 50; i++)
-//       {
-//           if (frame[i] == 0x00 && frame[i+1] == 0x00 && frame[i+2] == 0x00 && frame[i+3] == 0x01)
-//           {
-//               thirdStartCodeIndex = i;
-//               _ppsSize = thirdStartCodeIndex - _spsSize;
-//               break;
-//           }
-//       }
-//
-//       // allocate enough data to fit the SPS and PPS parameters into our data objects.
-//       // VTD doesn't want you to include the start code header (4 bytes long) so we add the - 4 here
-//       sps = (uint8_t *)malloc(_spsSize - 4);
-//       pps = (uint8_t *)malloc(_ppsSize - 4);
-//
-//       // copy in the actual sps and pps values, again ignoring the 4 byte header
-//       memcpy (sps, &frame[4], _spsSize-4);
-//       memcpy (pps, &frame[_spsSize+4], _ppsSize-4);
-//
-//       // now we set our H264 parameters
-//       uint8_t*  parameterSetPointers[2] = {sps, pps};
-//       size_t parameterSetSizes[2] = {static_cast<size_t>(_spsSize-4), static_cast<size_t>(_ppsSize-4)};
-//
-//       status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault, 2,
-//                                                                    (const uint8_t *const*)parameterSetPointers,
-//                                                                    parameterSetSizes, 4,
-//                                                                    &_formatDesc);
-//
-//       NSLog(@"\t\t Creation of CMVideoFormatDescription: %@", (status == noErr) ? @"successful!" : @"failed...");
-//       if(status != noErr) NSLog(@"\t\t Format Description ERROR type: %d", (int)status);
-//
-//       // See if decomp session can convert from previous format description
-//       // to the new one, if not we need to remake the decomp session.
-//       // This snippet was not necessary for my applications but it could be for yours
-//       /*BOOL needNewDecompSession = (VTDecompressionSessionCanAcceptFormatDescription(_decompressionSession, _formatDesc) == NO);
-//        if(needNewDecompSession)
-//        {
-//        [self createDecompSession];
-//        }*/
-//
-//       // now lets handle the IDR frame that (should) come after the parameter sets
-//       // I say "should" because that's how I expect my H264 stream to work, YMMV
-//       nalu_type = (frame[thirdStartCodeIndex + 4] & 0x1F);
-//       NSLog(@"~~~~~~~ Received NALU Type \"%@\" ~~~~~~~~", naluTypesStrings[nalu_type]);
-//   }
+   if(nalu_type == 8) {
+
+       // find where the NALU after this one starts so we know how long the PPS parameter is
+       for (int i = _spsSize + 4; i < _spsSize + 50; i++)
+       {
+           if (frame[i] == 0x00 && frame[i+1] == 0x00 && frame[i+2] == 0x00 && frame[i+3] == 0x01)
+           {
+               thirdStartCodeIndex = i;
+               _ppsSize = thirdStartCodeIndex - _spsSize;
+               break;
+           }
+       }
+
+       // allocate enough data to fit the SPS and PPS parameters into our data objects.
+       // VTD doesn't want you to include the start code header (4 bytes long) so we add the - 4 here
+       sps = (uint8_t *)malloc(_spsSize - 4);
+       pps = (uint8_t *)malloc(_ppsSize - 4);
+
+       // copy in the actual sps and pps values, again ignoring the 4 byte header
+       memcpy (sps, &frame[4], _spsSize-4);
+       memcpy (pps, &frame[_spsSize+4], _ppsSize-4);
+
+       // now we set our H264 parameters
+       uint8_t*  parameterSetPointers[2] = {sps, pps};
+       size_t parameterSetSizes[2] = {static_cast<size_t>(_spsSize-4), static_cast<size_t>(_ppsSize-4)};
+
+       status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault, 2,
+                                                                    (const uint8_t *const*)parameterSetPointers,
+                                                                    parameterSetSizes, 4,
+                                                                    &_formatDesc);
+
+       NSLog(@"\t\t Creation of CMVideoFormatDescription: %@", (status == noErr) ? @"successful!" : @"failed...");
+       if(status != noErr) NSLog(@"\t\t Format Description ERROR type: %d", (int)status);
+
+       // See if decomp session can convert from previous format description
+       // to the new one, if not we need to remake the decomp session.
+       // This snippet was not necessary for my applications but it could be for yours
+       /*BOOL needNewDecompSession = (VTDecompressionSessionCanAcceptFormatDescription(_decompressionSession, _formatDesc) == NO);
+        if(needNewDecompSession)
+        {
+        [self createDecompSession];
+        }*/
+
+       // now lets handle the IDR frame that (should) come after the parameter sets
+       // I say "should" because that's how I expect my H264 stream to work, YMMV
+       nalu_type = (frame[thirdStartCodeIndex + 4] & 0x1F);
+       NSLog(@"~~~~~~~ Received NALU Type \"%@\" ~~~~~~~~", naluTypesStrings[nalu_type]);
+   }
 
    // create our VTDecompressionSession.  This isnt neccessary if you choose to use AVSampleBufferDisplayLayer
    if((status == noErr) && (_decompressionSession == NULL))
@@ -262,15 +262,15 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
    // you can set some desired attributes for the destination pixel buffer.  I didn't use this but you may
    // if you need to set some attributes, be sure to uncomment the dictionary in VTDecompressionSessionCreate
-//   NSDictionary *destinationImageBufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-//    [NSNumber numberWithBool:YES],
-//    (id)kCVPixelBufferOpenGLESCompatibilityKey,
-//    nil];
+   NSDictionary *destinationImageBufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSNumber numberWithBool:YES],
+    (id)kCVPixelBufferOpenGLESCompatibilityKey,
+    nil];
 
    OSStatus status =  VTDecompressionSessionCreate(
                                                    nullptr, _formatDesc, nullptr,
-                                                   nullptr,
-//                                                   (__bridge CFDictionaryRef)(destinationImageBufferAttributes),
+//                                                   nullptr,
+                                                   (__bridge CFDictionaryRef)(destinationImageBufferAttributes),
                                                    &callBackRecord, &_decompressionSession);
    NSLog(@"Video Decompression Session Create: \t %@", (status == noErr) ? @"successful!" : @"failed...");
    if(status != noErr) NSLog(@"\t\t VTD ERROR type: %d", (int)status);
@@ -283,26 +283,21 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
     OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(NULL, 2, props, sizes, 4, &_formatDesc);
     NSLog(@"\t\t BlockBufferCreation: \t %@", (status == kCMBlockBufferNoErr) ? @"successful!" : @"failed...");
-//    [self createDecompSession];
 }
 
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
-   /*
+   
     VTDecodeFrameFlags flags = kVTDecodeFrame_EnableAsynchronousDecompression;
     VTDecodeInfoFlags flagOut;
     NSDate* currentTime = [NSDate date];
     VTDecompressionSessionDecodeFrame(_decompressionSession, sampleBuffer, flags,
     (void*)CFBridgingRetain(currentTime), &flagOut);
    
-    CFRelease(sampleBuffer);*/
+    CFRelease(sampleBuffer);
     NSLog(@"Success ****");
    // if you're using AVSampleBufferDisplayLayer, you only need to use this line of code
-   if (_videoLayer) {
-       
-       [_videoLayer enqueueSampleBuffer:sampleBuffer];
-   }
   
 }
-@end
 
+@end

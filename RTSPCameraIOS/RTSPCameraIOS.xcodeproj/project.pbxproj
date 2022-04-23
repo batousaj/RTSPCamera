@@ -17,7 +17,7 @@
 		2E560EB62805AE7A00FB7523 /* RTSPCameraIOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */; };
 		2E560EB82805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */; };
 		2E755DD42809574A00997DC7 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E755DD32809574A00997DC7 /* Model.m */; };
-		B1539FDF280D511D00C65AB7 /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
+		2EA25E472813F71D0085631F /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
 		B166B2992806F2F400F1060E /* VideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2982806F2F400F1060E /* VideoView.mm */; };
 		B166B29E2806F36E00F1060E /* Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B29D2806F36E00F1060E /* Validator.m */; };
 		B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2A12806F5F400F1060E /* VideoStreamController.mm */; };
@@ -97,8 +97,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EA25E472813F71D0085631F /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 				B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */,
-				B1539FDF280D511D00C65AB7 /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

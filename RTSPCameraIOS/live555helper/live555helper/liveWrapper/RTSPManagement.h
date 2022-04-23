@@ -93,6 +93,7 @@ public :
         Environment m_envi;
         char        m_stop;
         std::thread m_thread;
+        std::vector<uint8_t> m_cfg;
         //RTSPConnection
         RTSPConnection m_connection;
         CodecType m_codec;

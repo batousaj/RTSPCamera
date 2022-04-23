@@ -14,6 +14,7 @@
 - (instancetype) initWithFrame:(CGRect)frame andSource:(SourceType)src {
     if (self = [super initWithFrame:frame]) {
         self.type = src;
+        [self setupBeforePlayVideo];
         [self setupLoadingLabel];
     }
     return self;
@@ -26,6 +27,17 @@
 //    self.player.drawable = self;
 //    NSString *ratio = @"16:9";
 //    self.player.videoAspectRatio = (char*)[ratio UTF8String];
+    self.displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
+    self.displayLayer.bounds = self.bounds;
+    self.displayLayer.frame = self.frame;
+    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+    self.displayLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+        
+    // Remove from previous view if exists
+    [self.displayLayer removeFromSuperlayer];
+        
+    [self.layer addSublayer:self.displayLayer];
 }
 
 - (void) setupLoadingLabel {
@@ -51,6 +63,7 @@
     if ([self isLive555]) {
         NSString* urlStr = [url absoluteString];
         self.videoCapturer = [[RTSPCapturer alloc] initWithURL:urlStr];
+        self.videoCapturer.decoder.delegate = self;
     } else {
 //        [self setupBeforePlayVideo];
 //        VLCMedia *media = [VLCMedia mediaWithURL:url];
@@ -91,6 +104,12 @@
         return YES;
     } else {
         return NO;
+    }
+}
+
+- (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef) samplebuffer {
+    if (self.displayLayer) {
+        [self.displayLayer enqueueSampleBuffer:samplebuffer];
     }
 }
 
