@@ -28,6 +28,10 @@ class FrameEncoded {
             return _size;
         }
     
+        uint64_t presentation_time() {
+            return presentation_time_;
+        }
+    
     private :
         uint32_t _encodedWidth = 0;
         uint32_t _encodedHeight = 0;

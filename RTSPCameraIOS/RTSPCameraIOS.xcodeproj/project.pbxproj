@@ -28,6 +28,7 @@
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 		B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */; };
 		B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F40281134A3006D8633 /* VideoToolbox.framework */; };
+		B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPCapturerDecode.mm; sourceTree = "<group>"; };
 		B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturerDecode.h; sourceTree = "<group>"; };
 		B1CB5F40281134A3006D8633 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCameraIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */,
 				2EA25E472813F71D0085631F /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 				B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */,
 			);
@@ -245,6 +248,7 @@
 		B463EB1B338D968D5D68A1FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */,
 				B1CB5F40281134A3006D8633 /* VideoToolbox.framework */,
 				B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */,
 				2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */,

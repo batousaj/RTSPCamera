@@ -16,7 +16,9 @@
 
 @end
 
-@interface RTSPCapturerDecode : NSObject
+@interface RTSPCapturerDecode : NSObject {
+    uint64_t presentation_time_;
+}
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
@@ -26,7 +28,6 @@
 
 - (void)createDecoder;
 - (void)createDecompSession;
-- (void)createFormatDescription:(uint8_t*) sps ppsData:(uint8_t*) pps andsizeSps:(size_t)sps_size andpps:(size_t)pps_size;
 - (void)decode:(FrameEncoded*) encodedImage;
 
 @end

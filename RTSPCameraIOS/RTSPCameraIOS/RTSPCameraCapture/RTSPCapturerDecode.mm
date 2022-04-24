@@ -8,21 +8,14 @@
 #import <Foundation/Foundation.h>
 #import "RTSPCapturerDecode.h"
 
-bool H264AnnexBBufferHasVideoFormatDescription(uint8_t* annexb_buffer,
-                                               size_t annexb_buffer_size) {
-    
-  uint8_t first_nalu_type = annexb_buffer[4] & 0x0F;
-  bool is_first_nalu_type_sps = first_nalu_type == 7;
-  if (is_first_nalu_type_sps)
-    return true;
-  bool is_first_nalu_type_aud = first_nalu_type == 9;
-  // Start code + access unit delimiter + start code = 4 + 2 + 4 = 10.
-  if (!is_first_nalu_type_aud || annexb_buffer_size <= 10u)
-    return false;
-  uint8_t second_nalu_type = annexb_buffer[10] & 0x0F;
-  bool is_second_nalu_type_sps = second_nalu_type == 7;
-  return is_second_nalu_type_sps;
-}
+struct RTSPFrameDecodeParams {
+    RTSPFrameDecodeParams(int64_t ts, CMVideoFormatDescriptionRef format) :timestamp(ts), format(format) {
+        //
+    }
+    int64_t timestamp;
+    CMVideoFormatDescriptionRef format;
+    uint64_t pts;
+};
 
 void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
                                             void *sourceFrameRefCon,
@@ -41,6 +34,11 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
    else
    {
        NSLog(@"Decompressed sucessfully");
+       std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
+           reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
+       CMSampleBufferRef samplebuffer ;
+       CMSampleTimingInfo time = CMSampleTimingInfo();
+       CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBuffer, decoded_params->format, &time, &samplebuffer);
    }
 }
 
@@ -52,13 +50,11 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
 - (void)decode:(FrameEncoded*) encodedImage {
     
-    uint8_t* frame = encodedImage->buffer();
-    bool a = H264AnnexBBufferHasVideoFormatDescription(encodedImage->buffer(), encodedImage->size());
-    for (int i = 0 ; i < (uint32_t)encodedImage->size(); i++)
-    {
-        NSLog(@"Thien buffer %d", (int)frame[i]);
-    }
-    NSLog(@"Thien buffer 111111: %d",a);
+    presentation_time_ = encodedImage->presentation_time();
+//    for (int i = 0 ; i < (uint32_t)encodedImage->size(); i++)
+//    {
+//        NSLog(@"Thien buffer %d", (int)frame[i]);
+//    }
     [self receivedRawVideoFrame:encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
 }
 
@@ -162,6 +158,17 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
        nalu_type = (frame[thirdStartCodeIndex + 4] & 0x1F);
        NSLog(@"~~~~~~~ Received NALU Type \"%@\" ~~~~~~~~", naluTypesStrings[nalu_type]);
    }
+    
+//    CMSampleTimingInfo timingInfo;
+//    timingInfo.presentationTimeStamp = CMTimeMake(presentation_time_, 1000000000);
+//    timingInfo.duration =  kCMTimeInvalid;
+//    timingInfo.decodeTimeStamp = kCMTimeInvalid;
+    
+    int32_t timeSpan = 90000;
+    CMSampleTimingInfo timingInfo;
+    timingInfo.presentationTimeStamp = CMTimeMake(0, timeSpan);
+    timingInfo.duration =  CMTimeMake(3000, timeSpan);
+    timingInfo.decodeTimeStamp = kCMTimeInvalid;
 
    // create our VTDecompressionSession.  This isnt neccessary if you choose to use AVSampleBufferDisplayLayer
    if((status == noErr) && (_decompressionSession == NULL))
@@ -182,8 +189,8 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
        // replace the start code header on this NALU with its size.
        // AVCC format requires that you do this.
        // htonl converts the unsigned int from host to network byte order
-       uint32_t dataLength32 = htonl (blockLength - 4);
-       memcpy (data, &dataLength32, sizeof (uint32_t));
+//       uint32_t dataLength32 = htonl (blockLength - 4);
+//       memcpy (data, &dataLength32, sizeof (uint32_t));
 
        // create a block buffer from the IDR NALU
        status = CMBlockBufferCreateWithMemoryBlock(NULL, data,  // memoryBlock to hold buffered data
@@ -194,6 +201,11 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
                                                    0, &blockBuffer);
 
        NSLog(@"\t\t BlockBufferCreation: \t %@", (status == kCMBlockBufferNoErr) ? @"successful!" : @"failed...");
+       
+//       uint8_t reomveHeaderSize = blockLength - 4;
+//       const uint8_t sourceBytes[] = {(uint8_t)(reomveHeaderSize >> 24), (uint8_t)(reomveHeaderSize >> 16), (uint8_t)(reomveHeaderSize >> 8), (uint8_t)reomveHeaderSize};
+//       status = CMBlockBufferReplaceDataBytes(sourceBytes, blockBuffer, 0, 4);
+//       NSLog(@"BlockBufferReplace: %@", (status == kCMBlockBufferNoErr) ? @"successfully." : @"failed.");
    }
 
    // NALU type 1 is non-IDR (or PFrame) picture
@@ -226,7 +238,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
        const size_t sampleSize = blockLength;
        status = CMSampleBufferCreate(kCFAllocatorDefault,
                                      blockBuffer, true, NULL, NULL,
-                                     _formatDesc, 1, 0, NULL, 1,
+                                     _formatDesc, 1, 0, &timingInfo, 1,
                                      &sampleSize, &sampleBuffer);
 
        NSLog(@"\t\t SampleBufferCreate: \t %@", (status == noErr) ? @"successful!" : @"failed...");
@@ -262,6 +274,10 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
    // you can set some desired attributes for the destination pixel buffer.  I didn't use this but you may
    // if you need to set some attributes, be sure to uncomment the dictionary in VTDecompressionSessionCreate
+//    NSDictionary *destinationImageBufferAttributes =[NSDictionary dictionaryWithObjectsAndKeys:
+//                                                     [NSNumber numberWithBool:NO],(id)kCVPixelBufferOpenGLESCompatibilityKey,
+//                                                     [NSNumber numberWithInt:kCVPixelFormatType_32BGRA],
+//                                                     (id)kCVPixelBufferPixelFormatTypeKey,nil];
    NSDictionary *destinationImageBufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
     [NSNumber numberWithBool:YES],
     (id)kCVPixelBufferOpenGLESCompatibilityKey,
@@ -276,26 +292,19 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
    if(status != noErr) NSLog(@"\t\t VTD ERROR type: %d", (int)status);
 }
 
-- (void)createFormatDescription:(uint8_t*) sps ppsData:(uint8_t*) pps andsizeSps:(size_t)sps_size andpps:(size_t)pps_size {
-    
-    const uint8_t *props[] = {sps + 4, pps + 4};
-    size_t sizes[] = {sps_size - 12, pps_size - 4};
-
-    OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(NULL, 2, props, sizes, 4, &_formatDesc);
-    NSLog(@"\t\t BlockBufferCreation: \t %@", (status == kCMBlockBufferNoErr) ? @"successful!" : @"failed...");
-}
-
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
    
     VTDecodeFrameFlags flags = kVTDecodeFrame_EnableAsynchronousDecompression;
-    VTDecodeInfoFlags flagOut;
-    NSDate* currentTime = [NSDate date];
+    std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
+    frameDecodeParams.reset(new RTSPFrameDecodeParams(presentation_time_, _formatDesc));
     VTDecompressionSessionDecodeFrame(_decompressionSession, sampleBuffer, flags,
-    (void*)CFBridgingRetain(currentTime), &flagOut);
+                                      frameDecodeParams.release(), nullptr);
    
     CFRelease(sampleBuffer);
     NSLog(@"Success ****");
+    
+    [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
    // if you're using AVSampleBufferDisplayLayer, you only need to use this line of code
   
 }

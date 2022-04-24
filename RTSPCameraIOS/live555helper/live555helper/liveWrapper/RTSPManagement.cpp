@@ -117,22 +117,24 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
             if ( type == kSps) {
                 m_cfg.clear();
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
-                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << type << std::endl;
+                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
             } else if ( type == kPps) {
-                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << type << std::endl;
+                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
             }else if (type == kSei) {
                 //just ignore for now
+                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
             } else {
                 std::vector<uint8_t> m_content;
                 if (type == kIdr) {
-                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << type << std::endl;
+                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
                 } else {
-                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << type << std::endl;
+                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 }
                 m_content.insert(m_content.end(), buffer, buffer + size);
                 uint64_t presentTime = getPresentationTime(presentationTime);
@@ -148,6 +150,9 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
 uint64_t RTSPManagement::getPresentationTime(struct timeval presentationTime) {
     uint64_t ts = presentationTime.tv_sec;
     ts = ts * 1000 + presentationTime.tv_usec / 1000;
+    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << presentationTime.tv_sec << std::endl;
+    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << presentationTime.tv_usec << std::endl;
+    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << ts << std::endl;
     return ts;
 }
 
