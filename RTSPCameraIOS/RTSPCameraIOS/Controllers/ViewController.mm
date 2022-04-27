@@ -27,7 +27,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    type = kVLCMedia;
+    type = kLive555;
     [self setupUIView];
 }
 
@@ -39,6 +39,7 @@
     [self createAlertWarning];
     [self setupCheckView];
     [self setupTappedInView];
+    [self pushVideoVideoWithURL:self.url.text];
 }
 
 - (void)setupTappedInView {
@@ -93,7 +94,7 @@
     self.checkLive.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.checkLive setupButtonWithTitle:@"Live555"
                             andDictImage:[[Model shareInstance] getImageCheckBox]
-                                andCheck:NO];
+                                andCheck:YES];
     [self.checkLive setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.checkVLC setTintColor:[UIColor systemBlueColor]];
     [self.checkLive addTarget:self
@@ -107,7 +108,7 @@
     [self.checkVLC setTitle:@"VLCMedia" forState:UIControlStateNormal];
     [self.checkVLC setupButtonWithTitle:@"VLCMedia"
                            andDictImage:[[Model shareInstance] getImageCheckBox]
-                               andCheck:YES];
+                               andCheck:NO];
     [self.checkVLC setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.checkVLC setTintColor:[UIColor systemBlueColor]];
     [self.checkVLC addTarget:self

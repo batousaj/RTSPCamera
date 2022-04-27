@@ -28,13 +28,13 @@ bool Decode::DecodeSprop(const std::string& sprop) {
       std::cout << "Failed to decode sprop/sps *" << sprop << "*" << std::endl;
     return false;
   }
-  sps_size_= sps_.size();
+  sps_size_= sps_str.size();
   std::cout << "Size sps \"" << sps_size_ << std::endl;
   if (!DecodeAndConvert(pps_str, &pps_)) {
       std::cout << "Failed to decode sprop/pps *" << sprop << "*" << std::endl;
     return false;
   }
-  pps_size_= pps_.size();
+  pps_size_= pps_str.size();
   std::cout << "Size pps \"" << pps_size_ << std::endl;
   return true;
 }

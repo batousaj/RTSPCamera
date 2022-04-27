@@ -116,6 +116,7 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
             NaluType type = decode->getNaluType(buffer[sizeof(H26X_marker)]);
             if ( type == kSps) {
                 m_cfg.clear();
+                m_content.clear();
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
@@ -129,10 +130,11 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
 //                m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
             } else {
-                std::vector<uint8_t> m_content;
+//                std::vector<uint8_t> m_content;
                 if (type == kIdr) {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
+                    return true;
                 } else {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 }
@@ -140,6 +142,7 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                 uint64_t presentTime = getPresentationTime(presentationTime);
                 FrameEncoded* frame = new FrameEncoded(m_content.data(), (size_t)size, presentTime);
                 rtsp_source_factory()->onData(frame);
+                m_content.clear();
             }
 
             return true;

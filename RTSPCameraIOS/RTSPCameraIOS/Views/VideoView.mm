@@ -27,17 +27,24 @@
 //    self.player.drawable = self;
 //    NSString *ratio = @"16:9";
 //    self.player.videoAspectRatio = (char*)[ratio UTF8String];
-    self.displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-    self.displayLayer.bounds = self.bounds;
-    self.displayLayer.frame = self.frame;
-    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
-    self.displayLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    self.displayLayer = [[AVSampleBufferDisplayLayer alloc]init];
+       [ self.displayLayer setFrame:CGRectMake(90,551,557,389)];
     self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-        
-    // Remove from previous view if exists
-    [self.displayLayer removeFromSuperlayer];
-        
-    [self.layer addSublayer:self.displayLayer];
+    self.displayLayer.backgroundColor = [UIColor grayColor].CGColor;
+       CMTimebaseRef tmBase = nil;
+    CMTimebaseCreateWithSourceClock(NULL,CMClockGetHostTimeClock(),&tmBase);
+    self.displayLayer.controlTimebase = tmBase;
+       CMTimebaseSetTime( self.displayLayer.controlTimebase, kCMTimeZero);
+       CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
+
+        [self.layer addSublayer: self.displayLayer];
+//    self.displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
+//    self.displayLayer.bounds = self.bounds;
+//    self.displayLayer.frame = self.frame;
+//    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+//    self.displayLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+//    self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+//    [self.layer addSublayer:self.displayLayer];
 }
 
 - (void) setupLoadingLabel {
@@ -108,9 +115,14 @@
 }
 
 - (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef) samplebuffer {
-    if (self.displayLayer) {
-        [self.displayLayer enqueueSampleBuffer:samplebuffer];
-    }
+    if([self.displayLayer isReadyForMoreMediaData])
+        {
+            [self.displayLayer enqueueSampleBuffer:samplebuffer];
+        }
+        [self.displayLayer setNeedsDisplay];
+//    if (self.displayLayer) {
+//        [self.displayLayer enqueueSampleBuffer:samplebuffer];
+//    }
 }
 
 #pragma mark - Control Audio Streaming

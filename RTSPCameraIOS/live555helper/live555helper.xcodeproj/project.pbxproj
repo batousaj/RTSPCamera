@@ -422,6 +422,8 @@
 		B16E750E28072EC800C20410 /* NetAddress.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E5611712805B55C00FB7523 /* NetAddress.hh */; };
 		B16E750F28072EC800C20410 /* Groupsock.hh in Headers */ = {isa = PBXBuildFile; fileRef = 2E5611722805B55C00FB7523 /* Groupsock.hh */; };
 		B16E75112807306E00C20410 /* Live555-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B16E75102807306E00C20410 /* Live555-Prefix.pch */; };
+		B1AD6CFE2816859200D36AFC /* nalu_rewriter.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1AD6CFC2816859200D36AFC /* nalu_rewriter.cc */; };
+		B1AD6CFF2816859200D36AFC /* nalu_rewriter.h in Headers */ = {isa = PBXBuildFile; fileRef = B1AD6CFD2816859200D36AFC /* nalu_rewriter.h */; };
 		B1CB5F3C281117AE006D8633 /* FrameEncoded.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F3A281117AE006D8633 /* FrameEncoded.cc */; };
 		B1CB5F3D281117AE006D8633 /* FrameEncoded.h in Headers */ = {isa = PBXBuildFile; fileRef = B1CB5F3B281117AE006D8633 /* FrameEncoded.h */; };
 		B1CB5F4428114A05006D8633 /* base64.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F4228114A04006D8633 /* base64.cc */; };
@@ -1087,6 +1089,8 @@
 		B1539FE0280D533C00C65AB7 /* RTSPManagement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTSPManagement.cpp; sourceTree = "<group>"; };
 		B1539FE1280D533C00C65AB7 /* RTSPManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPManagement.h; sourceTree = "<group>"; };
 		B16E75102807306E00C20410 /* Live555-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Live555-Prefix.pch"; sourceTree = "<group>"; };
+		B1AD6CFC2816859200D36AFC /* nalu_rewriter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nalu_rewriter.cc; sourceTree = "<group>"; };
+		B1AD6CFD2816859200D36AFC /* nalu_rewriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nalu_rewriter.h; sourceTree = "<group>"; };
 		B1CB5F3A281117AE006D8633 /* FrameEncoded.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FrameEncoded.cc; sourceTree = "<group>"; };
 		B1CB5F3B281117AE006D8633 /* FrameEncoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameEncoded.h; sourceTree = "<group>"; };
 		B1CB5F3F28111A41006D8633 /* CommonTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTypes.h; sourceTree = "<group>"; };
@@ -1877,6 +1881,8 @@
 		B1CB5F3E28111A2B006D8633 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B1AD6CFC2816859200D36AFC /* nalu_rewriter.cc */,
+				B1AD6CFD2816859200D36AFC /* nalu_rewriter.h */,
 				B1CB5F4228114A04006D8633 /* base64.cc */,
 				B1CB5F4328114A04006D8633 /* base64.h */,
 				B1CB5F3F28111A41006D8633 /* CommonTypes.h */,
@@ -1949,6 +1955,7 @@
 				B16E745A28072E9400C20410 /* MP3ADU.hh in Headers */,
 				B16E745B28072E9400C20410 /* MPEG4VideoStreamDiscreteFramer.hh in Headers */,
 				B16E745C28072E9400C20410 /* H263plusVideoFileServerMediaSubsession.hh in Headers */,
+				B1AD6CFF2816859200D36AFC /* nalu_rewriter.h in Headers */,
 				B16E745D28072E9400C20410 /* MPEG1or2AudioRTPSink.hh in Headers */,
 				B16E745E28072E9400C20410 /* JPEGVideoSource.hh in Headers */,
 				B16E745F28072E9400C20410 /* uLawAudioFilter.hh in Headers */,
@@ -2298,6 +2305,7 @@
 				2E5612902805B55C00FB7523 /* MP3ADURTPSink.cpp in Sources */,
 				2E5611F82805B55C00FB7523 /* TheoraVideoRTPSource.cpp in Sources */,
 				2E560EFB2805B53500FB7523 /* mkvclient.cpp in Sources */,
+				B1AD6CFE2816859200D36AFC /* nalu_rewriter.cc in Sources */,
 				2E5612662805B55C00FB7523 /* JPEGVideoRTPSink.cpp in Sources */,
 				2E5612B92805B55C00FB7523 /* AC3AudioStreamFramer.cpp in Sources */,
 				2E5612F92805B55C00FB7523 /* Makefile in Sources */,

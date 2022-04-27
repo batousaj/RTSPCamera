@@ -9,6 +9,15 @@
 #import <VideoToolbox/VideoToolbox.h>
 #include "Model.h"
 #include "FrameEncoded.h"
+#include "nalu_rewriter.h"
+
+inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
+                                              CFTypeRef* values,
+                                              size_t size) {
+  return CFDictionaryCreate(kCFAllocatorDefault, keys, values, size,
+                            &kCFTypeDictionaryKeyCallBacks,
+                            &kCFTypeDictionaryValueCallBacks);
+}
 
 @protocol RTSPCapturerDecodeDelegate <NSObject>
 
@@ -18,6 +27,7 @@
 
 @interface RTSPCapturerDecode : NSObject {
     uint64_t presentation_time_;
+    uint64_t pts_counter_;
 }
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
@@ -26,8 +36,9 @@
 @property (nonatomic, assign) int spsSize;
 @property (nonatomic, assign) int ppsSize;
 
-- (void)createDecoder;
+- (instancetype)init;
 - (void)createDecompSession;
+- (void)createVideoDecription:(NSData*) sps andPPS:(NSData*)pps;
 - (void)decode:(FrameEncoded*) encodedImage;
 
 @end

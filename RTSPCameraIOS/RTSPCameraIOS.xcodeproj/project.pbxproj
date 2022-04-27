@@ -192,9 +192,9 @@
 			isa = PBXGroup;
 			children = (
 				2E560E952805AE7900FB7523 /* ViewController.h */,
+				B166B2A32806F5FF00F1060E /* VideoStreamController.h */,
 				2E560E962805AE7900FB7523 /* ViewController.mm */,
 				B166B2A12806F5F400F1060E /* VideoStreamController.mm */,
-				B166B2A32806F5FF00F1060E /* VideoStreamController.h */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

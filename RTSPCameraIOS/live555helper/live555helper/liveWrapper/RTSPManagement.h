@@ -99,4 +99,5 @@ public :
         CodecType m_codec;
         RTSPSourceFactory* source_factory;
         Decode* decode;
+        std::vector<uint8_t> m_content;
 };
