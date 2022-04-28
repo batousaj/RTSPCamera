@@ -30,21 +30,14 @@
     self.displayLayer = [[AVSampleBufferDisplayLayer alloc]init];
     [self.displayLayer setFrame:self.frame];
     self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-//    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
-//       CMTimebaseRef tmBase = nil;
-//    CMTimebaseCreateWithSourceClock(NULL,CMClockGetHostTimeClock(),&tmBase);
-//    self.displayLayer.controlTimebase = tmBase;
-//    CMTimebaseSetTime( self.displayLayer.controlTimebase, kCMTimeZero);
-//    CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
+    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+       CMTimebaseRef tmBase = nil;
+    CMTimebaseCreateWithSourceClock(NULL,CMClockGetHostTimeClock(),&tmBase);
+    self.displayLayer.controlTimebase = tmBase;
+    CMTimebaseSetTime( self.displayLayer.controlTimebase, kCMTimeZero);
+    CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
 
     [self.layer addSublayer: self.displayLayer];
-//    self.displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-//    self.displayLayer.bounds = self.bounds;
-//    self.displayLayer.frame = self.frame;
-//    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
-//    self.displayLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-//    self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-//    [self.layer addSublayer:self.displayLayer];
 }
 
 - (void) setupLoadingLabel {

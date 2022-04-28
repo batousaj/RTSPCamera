@@ -9,9 +9,11 @@
 #import "RTSPCapturerDecode.h"
 
 struct RTSPFrameDecodeParams {
-    RTSPFrameDecodeParams(int64_t ts, CMVideoFormatDescriptionRef format) :timestamp(ts), format(format) {
+    RTSPFrameDecodeParams(id<RTSPCapturerDecodeDelegate> callback, int64_t ts, CMVideoFormatDescriptionRef format) : callback(callback), timestamp(ts), format(format) {
         //
     }
+    
+    id<RTSPCapturerDecodeDelegate> callback;
     int64_t timestamp;
     CMVideoFormatDescriptionRef format;
     uint64_t pts;
@@ -33,14 +35,20 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
    }
    else
    {
-       NSLog(@"seconds = %f", CMTimeGetSeconds(presentationTimeStamp));
        NSLog(@"Decompressed sucessfully");
        std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
            reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
        CMSampleBufferRef samplebuffer ;
-       CMSampleTimingInfo time = CMSampleTimingInfo();
-       CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBuffer, decoded_params->format, &time, &samplebuffer);
-       
+//       CMSampleTimingInfo time = CMSampleTimingInfo();
+       CMSampleTimingInfo timing = {kCMTimeInvalid, kCMTimeInvalid, kCMTimeInvalid};
+       timing.presentationTimeStamp = CMTimeMake(decoded_params->timestamp, 1000000000);
+       OSStatus status = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, imageBuffer, YES, NULL, NULL, decoded_params->format, &timing, &samplebuffer);
+       if (status != noErr)
+       {
+           NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
+           NSLog(@"samplebuffer error: %@", error);
+       }
+       [decoded_params->callback RTSPCapturerDecodeDelegateSampleBuffer:samplebuffer];
    }
 }
 
@@ -100,13 +108,12 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
     CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
     CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-//    CFDictionarySetValue(dict, kCMSampleAttachmentKey_DoNotDisplay, kCFBooleanFalse);
     
     [self render:sampleBuffer];
     
     VTDecodeFrameFlags decodeFlags = kVTDecodeFrame_EnableAsynchronousDecompression;
     std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
-    frameDecodeParams.reset(new RTSPFrameDecodeParams(presentation_time_, _formatDesc));
+    frameDecodeParams.reset(new RTSPFrameDecodeParams(self.delegate, presentation_time_, _formatDesc));
     OSStatus status = VTDecompressionSessionDecodeFrame(
         _decompressionSession, sampleBuffer, decodeFlags, frameDecodeParams.release(), nullptr);
     CFRelease(sampleBuffer);
@@ -183,7 +190,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
     NSLog(@"presentation_time_: %llu",presentation_time_);
-    [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
+//    [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
   
 }
 

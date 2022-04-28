@@ -75,8 +75,6 @@ bool RTSPManagement::onNewSession(const char* id, const char* media, const char*
             success = false;
         }
     }
-    
-    return success;
 }
 
 bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size, struct timeval presentationTime) {
@@ -105,7 +103,7 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                 
             } else {
                 std::vector<uint8_t> m_content;
-                if (type == common::kIdr) {
+                if (type == kIdr) {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
                 } else {
