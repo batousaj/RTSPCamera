@@ -28,16 +28,16 @@
 //    NSString *ratio = @"16:9";
 //    self.player.videoAspectRatio = (char*)[ratio UTF8String];
     self.displayLayer = [[AVSampleBufferDisplayLayer alloc]init];
-       [ self.displayLayer setFrame:CGRectMake(90,551,557,389)];
+    [self.displayLayer setFrame:self.frame];
     self.displayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    self.displayLayer.backgroundColor = [UIColor grayColor].CGColor;
-       CMTimebaseRef tmBase = nil;
-    CMTimebaseCreateWithSourceClock(NULL,CMClockGetHostTimeClock(),&tmBase);
-    self.displayLayer.controlTimebase = tmBase;
-       CMTimebaseSetTime( self.displayLayer.controlTimebase, kCMTimeZero);
-       CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
+//    self.displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+//       CMTimebaseRef tmBase = nil;
+//    CMTimebaseCreateWithSourceClock(NULL,CMClockGetHostTimeClock(),&tmBase);
+//    self.displayLayer.controlTimebase = tmBase;
+//    CMTimebaseSetTime( self.displayLayer.controlTimebase, kCMTimeZero);
+//    CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
 
-        [self.layer addSublayer: self.displayLayer];
+    [self.layer addSublayer: self.displayLayer];
 //    self.displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
 //    self.displayLayer.bounds = self.bounds;
 //    self.displayLayer.frame = self.frame;

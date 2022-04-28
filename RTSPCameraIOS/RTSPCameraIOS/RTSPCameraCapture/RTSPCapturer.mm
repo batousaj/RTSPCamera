@@ -17,9 +17,7 @@ RTSPFactoryManagePrivate::RTSPFactoryManagePrivate(RTSPCapturer* capturer) {
 }
 
 void RTSPFactoryManagePrivate::onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) {
-    NSData* sps1 = [NSData dataWithBytes:sps->buffer() length:sps->size()];
-    NSData* pps1 = [NSData dataWithBytes:pps->buffer() length:pps->size()];
-    [capture.decoder createVideoDecription:sps1 andPPS:pps1];
+    //
 }
 
 void RTSPFactoryManagePrivate::onData(FrameEncoded* frame) {

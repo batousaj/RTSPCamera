@@ -33,12 +33,9 @@ inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 @property (nonatomic, assign) id<RTSPCapturerDecodeDelegate> delegate;
-@property (nonatomic, assign) int spsSize;
-@property (nonatomic, assign) int ppsSize;
 
 - (instancetype)init;
 - (void)createDecompSession;
-- (void)createVideoDecription:(NSData*) sps andPPS:(NSData*)pps;
 - (void)decode:(FrameEncoded*) encodedImage;
 
 @end

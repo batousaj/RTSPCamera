@@ -28,19 +28,19 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
   
    if (status != noErr)
    {
-       std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
-           reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
        NSLog(@"Decompressed error: %@", error);
    }
    else
    {
+       NSLog(@"seconds = %f", CMTimeGetSeconds(presentationTimeStamp));
        NSLog(@"Decompressed sucessfully");
        std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
            reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
        CMSampleBufferRef samplebuffer ;
        CMSampleTimingInfo time = CMSampleTimingInfo();
        CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBuffer, decoded_params->format, &time, &samplebuffer);
+       
    }
 }
 
@@ -55,12 +55,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 }
 
 - (void)decode:(FrameEncoded*) encodedImage {
-    
     presentation_time_ = encodedImage->presentation_time();
-//    for (int i = 0 ; i < (uint32_t)encodedImage->size(); i++)
-//    {
-//        NSLog(@"Thien buffer %d", (int)encodedImage->buffer()[i]);
-//    }
     [self receivedRawVideoFrame:encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
 }
 
@@ -105,7 +100,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
     CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
     CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-    CFDictionarySetValue(dict, kCMSampleAttachmentKey_DoNotDisplay, kCFBooleanFalse);
+//    CFDictionarySetValue(dict, kCMSampleAttachmentKey_DoNotDisplay, kCFBooleanFalse);
     
     [self render:sampleBuffer];
     
@@ -120,22 +115,6 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         return ;
     }
     NSLog(@"Decode successful");
-}
-- (void)createVideoDecription:(NSData*) sps andPPS:(NSData*)pps {
-    uint8_t* sps_Data = (uint8_t*)[sps bytes];
-    for (int i = 0 ; i < (uint32_t)sps.length; i++)
-    {
-        NSLog(@"Thien buffer %d", (int)sps_Data[i]);
-    }
-    uint8_t* pps_Data = (uint8_t*)[pps bytes];
-    for (int i = 0 ; i < (uint32_t)pps.length; i++)
-    {
-        NSLog(@"Thien buffer pps %d", (int)pps_Data[i]);
-    }
-    const uint8_t* const parameterSetPointers[2] = { (const uint8_t*)[sps bytes], (const uint8_t*)[pps bytes] };
-    const size_t parameterSetSizes[2] = { [sps length], [pps length] };
-    OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault, 2, parameterSetPointers, parameterSetSizes, 4, &_formatDesc);
-    NSLog(@"Found all data for CMVideoFormatDescription. Creation: %@.", (status == noErr) ? @"successfully." : @"failed.");
 }
 
 -(void) createDecompSession {
@@ -203,18 +182,8 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
-   
-//    VTDecodeFrameFlags flags = kVTDecodeFrame_EnableAsynchronousDecompression;
-//    std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
-//    frameDecodeParams.reset(new RTSPFrameDecodeParams(presentation_time_, _formatDesc));
-//    VTDecompressionSessionDecodeFrame(_decompressionSession, sampleBuffer, flags,
-//                                      frameDecodeParams.release(), nullptr);
-//
-//    CFRelease(sampleBuffer);
-//    NSLog(@"Success ****");
-    
+    NSLog(@"presentation_time_: %llu",presentation_time_);
     [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
-   // if you're using AVSampleBufferDisplayLayer, you only need to use this line of code
   
 }
 

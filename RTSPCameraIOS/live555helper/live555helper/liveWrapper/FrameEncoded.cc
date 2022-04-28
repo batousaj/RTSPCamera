@@ -26,14 +26,14 @@ FrameEncoded::~FrameEncoded() {
     //
 }
 
-size_t FrameEncoded::GetBufferPaddingBytes(CodecType codec_type) {
+size_t FrameEncoded::GetBufferPaddingBytes(common::CodecType codec_type) {
     switch (codec_type) {
-        case kCodecH265:
-        case kCodecHEVC:
-        case kCodecJPEG:
-        case kCodecVP9:
-        case kCodecH264:
-            return kBufferPaddingBytesH264;
+        case common::kCodecH265:
+        case common::kCodecHEVC:
+        case common::kCodecJPEG:
+        case common::kCodecVP9:
+        case common::kCodecH264:
+            return common::kBufferPaddingBytesH264;
         default:
             break;
     }

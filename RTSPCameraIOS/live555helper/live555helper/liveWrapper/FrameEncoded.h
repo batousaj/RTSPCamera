@@ -18,7 +18,7 @@ class FrameEncoded {
         FrameEncoded(uint8_t* buffer, size_t size);
         ~FrameEncoded();
     
-        static size_t GetBufferPaddingBytes(CodecType codec_type);
+        static size_t GetBufferPaddingBytes(common::CodecType codec_type);
         
         uint8_t* buffer() {
             return _buffer;

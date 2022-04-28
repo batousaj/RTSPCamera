@@ -13,7 +13,6 @@
 #include <queue>
 #include <thread>
 
-#include "decoded.h"
 #include "FrameEncoded.h"
 #include "environment.h"
 #include "rtspconnectionclient.h"
@@ -74,17 +73,17 @@ public :
             
          void CheckCodecType(const char* codec) {
             if (strcmp(codec, "H264") == 0) {
-                m_codec = kCodecH264;
+                m_codec = common::kCodecH264;
             }  else if (strcmp(codec, "H265") == 0) {
-                m_codec = kCodecH265;
+                m_codec = common::kCodecH265;
             } else if (strcmp(codec, "VP9") == 0) {
-                m_codec = kCodecVP9;
+                m_codec = common::kCodecVP9;
             } else if (strcmp(codec, "HEVC") == 0) {
-                m_codec = kCodecHEVC;
+                m_codec = common::kCodecHEVC;
             } else if (strcmp(codec, "JPEG") == 0) {
-                m_codec = kCodecJPEG;
+                m_codec = common::kCodecJPEG;
             } else {
-                m_codec = kNone;
+                m_codec = common::kNone;
             }
          }
                            
@@ -96,8 +95,6 @@ public :
         std::vector<uint8_t> m_cfg;
         //RTSPConnection
         RTSPConnection m_connection;
-        CodecType m_codec;
+        common::CodecType m_codec;
         RTSPSourceFactory* source_factory;
-        Decode* decode;
-        std::vector<uint8_t> m_content;
 };

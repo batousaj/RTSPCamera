@@ -29,12 +29,10 @@ RTSPSourceFactory* RTSPSourceFactory::Create() {
 
 RTSPManagement::RTSPManagement(const std::string &uri, const std::map<std::string,std::string> &opts):
     m_envi(m_stop),
-    m_connection(m_envi, this, uri.c_str(), RTSPConnection::decodeTimeoutOption(opts), RTSPConnection::decodeRTPTransport(opts), 1),
-    decode(new Decode())
+    m_connection(m_envi, this, uri.c_str(), RTSPConnection::decodeTimeoutOption(opts), RTSPConnection::decodeRTPTransport(opts), 1)
 {
     this->source_factory = RTSPSourceFactory::Create();
     rtsp_source_factory()->registerRTSPControl(this);
-    std::cout << "ThienVU: " << uri << std::endl;
 }
 
 RTSPManagement::~RTSPManagement()
@@ -62,41 +60,19 @@ bool RTSPManagement::onNewSession(const char* id, const char* media, const char*
     CheckCodecType(codec);
     std::vector<std::vector<uint8_t>> frames;
     if (strcmp(media, "video") == 0) {
-        if ( (m_codec ==  kCodecH264) ||
-             (m_codec ==  kCodecH265) ||
-             (m_codec ==  kCodecHEVC) ) {
-            const char* pattern = "sprop-parameter-sets=";
-            const char* sprop = strstr(sdp, pattern);
-            if (sprop)
-            {
-                std::string sdpstr(sprop + strlen(pattern));
-                size_t pos = sdpstr.find_first_of(" ;\r\n");
-                if (pos != std::string::npos)
-                {
-                    sdpstr.erase(pos);
-                }
-                if (decode->DecodeSprop(sdpstr))
-                {
-                    std::vector<uint8_t> sps;
-                    sps.insert(sps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
-                    sps.insert(sps.end(), decode->sps_nalu().begin(), decode->sps_nalu().end());
-                    FrameEncoded* sps_data = new FrameEncoded(sps.data(),decode->sps_nalu_size());
-
-                    std::vector<uint8_t> pps;
-                    pps.insert(pps.end(), H26X_marker, H26X_marker + sizeof(H26X_marker));
-                    pps.insert(pps.end(), decode->pps_nalu().begin(), decode->pps_nalu().end());
-                    FrameEncoded* pps_data = new FrameEncoded(pps.data(),decode->pps_nalu_size());
-                    rtsp_source_factory()->onDecodeParams(sps_data,pps_data);
-                    success = true;
-                }
-            }
-        } else if (m_codec ==  kCodecJPEG)
-        {
+        if ( (m_codec ==  common::kCodecH264) ||
+             (m_codec ==  common::kCodecH265) ||
+             (m_codec ==  common::kCodecHEVC) ) {
             success = true;
+        } else if (m_codec ==  common::kCodecJPEG)
+        {
+            std::cout << "Do not support JPEG Codec" << std::endl;
+            success = false;
         }
-        else if (m_codec ==  kCodecVP9)
+        else if (m_codec ==  common::kCodecVP9)
         {
-            success = true;
+            std::cout << "Do not support VP9 Codec" << std::endl;
+            success = false;
         }
     }
     
@@ -106,43 +82,39 @@ bool RTSPManagement::onNewSession(const char* id, const char* media, const char*
 bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size, struct timeval presentationTime) {
     bool success = false;
     switch (m_codec) {
-        case kCodecH265:
-        case kCodecHEVC:
-        case kCodecJPEG:
-        case kCodecVP9:
+        case common::kCodecH265:
+        case common::kCodecHEVC:
+        case common::kCodecJPEG:
+        case common::kCodecVP9:
         default:
             break;
-        case kCodecH264:
-            NaluType type = decode->getNaluType(buffer[sizeof(H26X_marker)]);
-            if ( type == kSps) {
+        case common::kCodecH264:
+            common::NaluType type = common::getNaluType(buffer[sizeof(H26X_marker)]);
+            if ( type == common::kSps) {
                 m_cfg.clear();
-                m_content.clear();
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
-            } else if ( type == kPps) {
+            } else if ( type == common::kPps) {
                 std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
-            }else if (type == kSei) {
+            }else if (type == common::kSei) {
                 //just ignore for now
                 std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
-//                m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
             } else {
-//                std::vector<uint8_t> m_content;
-                if (type == kIdr) {
+                std::vector<uint8_t> m_content;
+                if (type == common::kIdr) {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
-                    return true;
                 } else {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 }
                 m_content.insert(m_content.end(), buffer, buffer + size);
                 uint64_t presentTime = getPresentationTime(presentationTime);
-                FrameEncoded* frame = new FrameEncoded(m_content.data(), (size_t)size, presentTime);
+                FrameEncoded* frame = new FrameEncoded(m_content.data(), m_content.size(), presentTime);
                 rtsp_source_factory()->onData(frame);
-                m_content.clear();
             }
 
             return true;
@@ -153,9 +125,6 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
 uint64_t RTSPManagement::getPresentationTime(struct timeval presentationTime) {
     uint64_t ts = presentationTime.tv_sec;
     ts = ts * 1000 + presentationTime.tv_usec / 1000;
-    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << presentationTime.tv_sec << std::endl;
-    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << presentationTime.tv_usec << std::endl;
-    std::cout << "RTSPVideoCapturer:onData SLICE NALU time:" << ts << std::endl;
     return ts;
 }
 

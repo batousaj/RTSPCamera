@@ -16,7 +16,6 @@
 #include <memory>
 #include <vector>
 
-const char kAnnexBHeaderBytes[4] = {0, 0, 0, 1};
 const size_t kAvccHeaderByteSize = sizeof(uint32_t);
 
 bool H264AnnexBBufferToCMSampleBuffer(const uint8_t* annexb_buffer,

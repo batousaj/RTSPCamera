@@ -15,6 +15,8 @@
 
 #include "CommonTypes.h"
 
+using namespace common;
+
 static NaluType ParseNaluType(uint8_t nalu_buffer) {
     return static_cast<NaluType>(nalu_buffer & kNaluTypeMask);
 };
