@@ -10,6 +10,7 @@
 #include "Model.h"
 #include "FrameEncoded.h"
 #include "nalu_rewriter.h"
+#include "StoredFrame.h"
 
 inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
                                               CFTypeRef* values,
@@ -32,7 +33,8 @@ inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
-@property (nonatomic, assign) id<RTSPCapturerDecodeDelegate> delegate;
+@property (nonatomic, weak) id<RTSPCapturerDecodeDelegate> delegate;
+@property (nonatomic) StoredData* dataStored;
 
 - (instancetype)init;
 - (void)createDecompSession;

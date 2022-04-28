@@ -75,6 +75,7 @@ bool RTSPManagement::onNewSession(const char* id, const char* media, const char*
             success = false;
         }
     }
+    return success;
 }
 
 bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size, struct timeval presentationTime) {

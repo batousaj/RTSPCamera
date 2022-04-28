@@ -58,22 +58,19 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
   if (self = [super init]) {
       pts_counter_ = 0;
       _formatDesc = NULL;
+      self.dataStored = [[StoredData alloc] init];
   }
   return self;
 }
 
 - (void)decode:(FrameEncoded*) encodedImage {
     presentation_time_ = encodedImage->presentation_time();
+    [self.dataStored storedData:encodedImage->buffer() withPts:(uint32_t)encodedImage->size()];
     [self receivedRawVideoFrame:encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
 }
 
 -(void) receivedRawVideoFrame:(uint8_t *)frame withSize:(uint32_t)frameSize
 {
-    uint64_t presentation_time_ = self->presentation_time_;
-    if(presentation_time_ == 0){
-      presentation_time_ = pts_counter_;
-    }
-    pts_counter_ = presentation_time_ + 1;
     CMVideoFormatDescriptionRef inputFormat = nullptr;
     if (H264AnnexBBufferHasVideoFormatDescription((uint8_t *)frame,
                                                             frameSize)) {
@@ -118,7 +115,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         _decompressionSession, sampleBuffer, decodeFlags, frameDecodeParams.release(), nullptr);
     CFRelease(sampleBuffer);
     if (status != noErr) {
-         NSLog(@"Failed to decode frame with code: %d",status);
+        NSLog(@"Failed to decode frame with code: %d",status);
         return ;
     }
     NSLog(@"Decode successful");
@@ -190,8 +187,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
     NSLog(@"presentation_time_: %llu",presentation_time_);
-//    [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
-  
+    [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
 }
 
 @end

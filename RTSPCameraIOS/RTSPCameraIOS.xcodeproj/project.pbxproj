@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E257AA6281AB43600FDB7C2 /* StoredFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2E257AA5281AB43600FDB7C2 /* StoredFrame.mm */; };
 		2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E902805AE7900FB7523 /* AppDelegate.m */; };
 		2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E932805AE7900FB7523 /* SceneDelegate.m */; };
 		2E560E972805AE7900FB7523 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2E560E962805AE7900FB7523 /* ViewController.mm */; };
@@ -50,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		01CE3D23C58533AB16126EF5 /* Pods-RTSPCameraIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraIOS.release.xcconfig"; path = "Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS.release.xcconfig"; sourceTree = "<group>"; };
+		2E257AA5281AB43600FDB7C2 /* StoredFrame.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StoredFrame.mm; sourceTree = "<group>"; };
+		2E257AA7281AB44100FDB7C2 /* StoredFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoredFrame.h; sourceTree = "<group>"; };
 		2E560E8C2805AE7900FB7523 /* RTSPCameraIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RTSPCameraIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E560E8F2805AE7900FB7523 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2E560E902805AE7900FB7523 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				B16E743E280726EC00C20410 /* RTSPCapturer.h */,
 				B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */,
 				B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */,
+				2E257AA5281AB43600FDB7C2 /* StoredFrame.mm */,
+				2E257AA7281AB44100FDB7C2 /* StoredFrame.h */,
 			);
 			path = RTSPCameraCapture;
 			sourceTree = "<group>";
@@ -433,6 +438,7 @@
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
 				B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */,
 				2E560EA22805AE7A00FB7523 /* main.m in Sources */,
+				2E257AA6281AB43600FDB7C2 /* StoredFrame.mm in Sources */,
 				B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */,
 				2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */,
 				B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */,
