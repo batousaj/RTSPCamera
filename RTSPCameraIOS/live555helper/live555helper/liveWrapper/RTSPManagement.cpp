@@ -104,7 +104,7 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                 
             } else {
                 std::vector<uint8_t> m_content;
-                if (type == kIdr) {
+                if (type == common::kIdr) {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
                 } else {

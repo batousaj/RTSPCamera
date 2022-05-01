@@ -10,7 +10,6 @@
 #include "Model.h"
 #include "FrameEncoded.h"
 #include "nalu_rewriter.h"
-#include "StoredFrame.h"
 
 inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
                                               CFTypeRef* values,
@@ -29,12 +28,13 @@ inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
 @interface RTSPCapturerDecode : NSObject {
     uint64_t presentation_time_;
     uint64_t pts_counter_;
+    StoredBuffer stored_data;
 }
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 @property (nonatomic, weak) id<RTSPCapturerDecodeDelegate> delegate;
-@property (nonatomic) StoredData* dataStored;
+@property (nonatomic, assign) NSMutableArray ;
 
 - (instancetype)init;
 - (void)createDecompSession;

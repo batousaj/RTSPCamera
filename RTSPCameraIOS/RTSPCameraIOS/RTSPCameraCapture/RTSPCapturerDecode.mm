@@ -9,7 +9,7 @@
 #import "RTSPCapturerDecode.h"
 
 struct RTSPFrameDecodeParams {
-    RTSPFrameDecodeParams(id<RTSPCapturerDecodeDelegate> callback, int64_t ts, CMVideoFormatDescriptionRef format) : callback(callback), timestamp(ts), format(format) {
+    RTSPFrameDecodeParams(id<RTSPCapturerDecodeDelegate> callback, int64_t ts, CMVideoFormatDescriptionRef format, StoredBuffer* bufferStored) : callback(callback), timestamp(ts), format(format), bufferStored(bufferStored) {
         //
     }
     
@@ -17,7 +17,13 @@ struct RTSPFrameDecodeParams {
     int64_t timestamp;
     CMVideoFormatDescriptionRef format;
     uint64_t pts;
+    StoredBuffer *bufferStored;
 };
+
+void storedDataFrame(uint8_t* frame,
+                     uint32_t presentation_time) {
+    
+}
 
 void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
                                             void *sourceFrameRefCon,
@@ -58,14 +64,14 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
   if (self = [super init]) {
       pts_counter_ = 0;
       _formatDesc = NULL;
-      self.dataStored = [[StoredData alloc] init];
+      stored_data.clear();
   }
   return self;
 }
 
 - (void)decode:(FrameEncoded*) encodedImage {
     presentation_time_ = encodedImage->presentation_time();
-    [self.dataStored storedData:encodedImage->buffer() withPts:(uint32_t)encodedImage->size()];
+    storedDataFrame(encodedImage->buffer(), (uint32_t)presentation_time_);
     [self receivedRawVideoFrame:encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
 }
 
@@ -110,7 +116,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     
     VTDecodeFrameFlags decodeFlags = kVTDecodeFrame_EnableAsynchronousDecompression;
     std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
-    frameDecodeParams.reset(new RTSPFrameDecodeParams(self.delegate, presentation_time_, _formatDesc));
+    frameDecodeParams.reset(new RTSPFrameDecodeParams(self.delegate, presentation_time_, _formatDesc, &stored_data));
     OSStatus status = VTDecompressionSessionDecodeFrame(
         _decompressionSession, sampleBuffer, decodeFlags, frameDecodeParams.release(), nullptr);
     CFRelease(sampleBuffer);

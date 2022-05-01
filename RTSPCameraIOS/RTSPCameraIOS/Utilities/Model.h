@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef std::vector<uint8_t> StoredBuffer;
+
 typedef NS_ENUM(NSInteger, SourceType) {
     kLive555        = 0,
     kVLCMedia       = 1,
