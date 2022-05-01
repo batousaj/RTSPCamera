@@ -9,7 +9,8 @@
 #import "RTSPCapturerDecode.h"
 
 struct RTSPFrameDecodeParams {
-    RTSPFrameDecodeParams(id<RTSPCapturerDecodeDelegate> callback, int64_t ts, CMVideoFormatDescriptionRef format, StoredBuffer* bufferStored) : callback(callback), timestamp(ts), format(format), bufferStored(bufferStored) {
+    RTSPFrameDecodeParams(id<RTSPCapturerDecodeDelegate> callback, int64_t ts, CMVideoFormatDescriptionRef format) : callback(callback), timestamp(ts), format(format) {
+//    } bufferStored(bufferStored) {
         //
     }
     
@@ -17,7 +18,7 @@ struct RTSPFrameDecodeParams {
     int64_t timestamp;
     CMVideoFormatDescriptionRef format;
     uint64_t pts;
-    StoredBuffer *bufferStored;
+//    StoredBuffer *bufferStored;
 };
 
 void storedDataFrame(uint8_t* frame,
@@ -64,15 +65,27 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
   if (self = [super init]) {
       pts_counter_ = 0;
       _formatDesc = NULL;
-      stored_data.clear();
+//      stored_data.clear();
+      self.pts_time_ = [[NSMutableArray alloc] initWithCapacity:0];
+      self.buffer = [[NSMutableArray alloc] initWithCapacity:0];
   }
   return self;
 }
 
-- (void)decode:(FrameEncoded*) encodedImage {
+- (void)decode:(FrameEncoded*) encodedImage andReset:(BOOL)isReset {
     presentation_time_ = encodedImage->presentation_time();
-    storedDataFrame(encodedImage->buffer(), (uint32_t)presentation_time_);
-    [self receivedRawVideoFrame:encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
+    NSData *buffer = [NSData dataWithBytes:encodedImage->buffer() length:encodedImage->size()];
+//    if (isReset) {
+        [self receivedRawVideoFrame:(uint8_t*)encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
+//    } else {
+//        [self sortingByte:buffer andTime:(int)presentation_time_];
+//        if ([self isPlayBuffer]) {
+//            NSData* data = [self getBufferPlay];
+//            [self.buffer removeObjectAtIndex:0];
+//            [self.pts_time_ removeObjectAtIndex:0];
+//            [self receivedRawVideoFrame:(uint8_t*)data.bytes withSize:(uint32_t)data.length];
+//        }
+//    }
 }
 
 -(void) receivedRawVideoFrame:(uint8_t *)frame withSize:(uint32_t)frameSize
@@ -111,12 +124,12 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
     CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
     CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-    
+
     [self render:sampleBuffer];
     
     VTDecodeFrameFlags decodeFlags = kVTDecodeFrame_EnableAsynchronousDecompression;
     std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
-    frameDecodeParams.reset(new RTSPFrameDecodeParams(self.delegate, presentation_time_, _formatDesc, &stored_data));
+    frameDecodeParams.reset(new RTSPFrameDecodeParams(self.delegate, presentation_time_, _formatDesc));
     OSStatus status = VTDecompressionSessionDecodeFrame(
         _decompressionSession, sampleBuffer, decodeFlags, frameDecodeParams.release(), nullptr);
     CFRelease(sampleBuffer);
@@ -194,6 +207,52 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 {
     NSLog(@"presentation_time_: %llu",presentation_time_);
     [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
+}
+
+- (void) sortingByte:(NSData*)buffer andTime:(int)present_time_ {
+    NSNumber *presentation_time = [NSNumber numberWithInt:(int)present_time_];
+    if ([self.pts_time_ count] > 0) {
+        NSNumber* largest_time_ = 0;
+//        for (int i = 0; i < [self.pts_time_ count]; i++) {
+//            if ( [largest_time_ intValue] <= [self.pts_time_[i] intValue]) {
+//                NSLog(@"thien %d",i);
+//                largest_time_ = self.pts_time_[i];
+//            }
+//        }
+        largest_time_ = self.pts_time_[[self.pts_time_ count] - 1];
+        
+        if ([largest_time_ intValue] > [presentation_time intValue] && [presentation_time intValue] >= [self.pts_time_[0] intValue]) {
+            for (int i = 0; i < [self.pts_time_ count]; i++) {
+                if ( [[self.pts_time_ objectAtIndex:i] intValue] <= [presentation_time intValue] && [presentation_time intValue] <= [[self.pts_time_ objectAtIndex:i+1] intValue]) {
+                    [self.pts_time_ insertObject:presentation_time atIndex: i+1];
+                    [self.buffer insertObject:buffer atIndex:i+1];
+                    break;
+                }
+            }
+        } else if ([presentation_time intValue] < [self.pts_time_[0] intValue]) {
+            [self.pts_time_ insertObject:presentation_time atIndex: 0];
+            [self.buffer insertObject:buffer atIndex:0];
+        } else {
+            [self.pts_time_ addObject:presentation_time];
+            [self.buffer addObject:buffer];
+        }
+    } else {
+        [self.pts_time_ addObject:presentation_time];
+        [self.buffer addObject:buffer];
+    }
+    
+}
+
+- (NSData*)getBufferPlay {
+    NSData* data = [self.buffer objectAtIndex:0];
+    return data;
+}
+
+- (BOOL)isPlayBuffer {
+    if ([self.pts_time_ count] > 5) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

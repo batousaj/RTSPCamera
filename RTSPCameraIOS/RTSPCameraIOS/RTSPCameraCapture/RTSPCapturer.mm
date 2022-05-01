@@ -20,8 +20,8 @@ void RTSPFactoryManagePrivate::onDecodeParams(FrameEncoded* sps, FrameEncoded* p
     //
 }
 
-void RTSPFactoryManagePrivate::onData(FrameEncoded* frame) {
-    [capture.decoder decode:frame];
+void RTSPFactoryManagePrivate::onData(FrameEncoded* frame, bool isReset) {
+    [capture.decoder decode:frame andReset:(BOOL)isReset];
 }
 
 void RTSPFactoryManagePrivate::registerRTSPControl(RTSPControl* controller) {

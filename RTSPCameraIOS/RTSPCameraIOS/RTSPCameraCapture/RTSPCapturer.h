@@ -33,7 +33,7 @@ class RTSPFactoryManagePrivate : public RTSPSourceFactory {
         RTSPFactoryManagePrivate(RTSPCapturer* capturer);
         void registerRTSPControl(RTSPControl* controller) override;
         void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) override;
-        void onData(FrameEncoded* frame) override;
+        void onData(FrameEncoded* frame, bool isReset) override;
     
     private :
         RTSPCapturer* capture;

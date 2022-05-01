@@ -30,7 +30,7 @@ class RTSPSourceFactory {
 public :
     virtual void registerRTSPControl(RTSPControl* controller) = 0;
     virtual void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) = 0;
-    virtual void onData(FrameEncoded* frame) = 0;
+    virtual void onData(FrameEncoded* frame, bool isReset) = 0;
     static void SetRTSPSourceFactory(CreatePointerFuncFactory create_func);
     static RTSPSourceFactory* Create();
 };
@@ -97,4 +97,5 @@ public :
         RTSPConnection m_connection;
         common::CodecType m_codec;
         RTSPSourceFactory* source_factory;
+        bool         isResetDescription;
 };

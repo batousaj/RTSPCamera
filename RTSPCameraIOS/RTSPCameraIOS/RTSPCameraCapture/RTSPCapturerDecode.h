@@ -28,16 +28,17 @@ inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
 @interface RTSPCapturerDecode : NSObject {
     uint64_t presentation_time_;
     uint64_t pts_counter_;
-    StoredBuffer stored_data;
+//    StoredBuffer stored_data;
 }
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 @property (nonatomic, weak) id<RTSPCapturerDecodeDelegate> delegate;
-@property (nonatomic, assign) NSMutableArray ;
+@property (nonatomic) NSMutableArray *buffer;
+@property (nonatomic) NSMutableArray *pts_time_;
 
 - (instancetype)init;
 - (void)createDecompSession;
-- (void)decode:(FrameEncoded*) encodedImage;
+- (void)decode:(FrameEncoded*) encodedImage andReset:(BOOL)isReset;
 
 @end

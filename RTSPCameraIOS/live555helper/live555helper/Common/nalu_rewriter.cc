@@ -22,6 +22,7 @@ bool H264AnnexBBufferToCMSampleBuffer(const uint8_t* annexb_buffer,
                                       size_t annexb_buffer_size,
                                       CMVideoFormatDescriptionRef video_format,
                                       CMSampleBufferRef* out_sample_buffer) {
+    static int num = 0;
   *out_sample_buffer = nullptr;
 
   AnnexBBufferReader reader(annexb_buffer, annexb_buffer_size);
@@ -91,8 +92,14 @@ bool H264AnnexBBufferToCMSampleBuffer(const uint8_t* annexb_buffer,
   }
 
   // Create sample buffer.
+//    if (num > 100) {
+//        num = 0;
+//    }
+    num++;
+  CMSampleTimingInfo timing = {kCMTimeInvalid, kCMTimeInvalid, kCMTimeInvalid};
+  timing.presentationTimeStamp = CMTimeMake(1651393369711 + num, 1000000000);
   status = CMSampleBufferCreate(nullptr, contiguous_buffer, true, nullptr,
-                                nullptr, video_format, 1, 0, nullptr, 0,
+                                nullptr, video_format, 1, 0, &timing, 0,
                                 nullptr, out_sample_buffer);
   if (status != noErr) {
       std::cout << "Failed to create sample buffer.";

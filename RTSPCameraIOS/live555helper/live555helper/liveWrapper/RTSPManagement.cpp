@@ -33,6 +33,7 @@ RTSPManagement::RTSPManagement(const std::string &uri, const std::map<std::strin
 {
     this->source_factory = RTSPSourceFactory::Create();
     rtsp_source_factory()->registerRTSPControl(this);
+    isResetDescription = false;
 }
 
 RTSPManagement::~RTSPManagement()
@@ -92,6 +93,7 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
             if ( type == common::kSps) {
                 m_cfg.clear();
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
+                isResetDescription = true;
                 std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
             } else if ( type == common::kPps) {
@@ -110,10 +112,13 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                 } else {
                     std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 }
+                if (m_content.size() <= 0) {
+                    isResetDescription = false;
+                }
                 m_content.insert(m_content.end(), buffer, buffer + size);
                 uint64_t presentTime = getPresentationTime(presentationTime);
                 FrameEncoded* frame = new FrameEncoded(m_content.data(), m_content.size(), presentTime);
-                rtsp_source_factory()->onData(frame);
+                rtsp_source_factory()->onData(frame,isResetDescription);
             }
 
             return true;
