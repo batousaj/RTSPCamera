@@ -67,8 +67,8 @@
 
 - (void) onTapped {
     isToggle = !isToggle;
-    [self playVideo];
     [self setNavigatorHiddenOrUnHidden:isToggle];
+    [self playVideo];
 }
 
 - (void) onClickBack {
@@ -80,14 +80,12 @@
 #pragma mark - Private function
 
 - (void) loadVideo {
-    NSURL *url1 = [NSURL URLWithString:@"rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"];
+    NSURL *url1 = [NSURL URLWithString:@"rtsp://807e9439d5ca.entrypoint.cloud.wowza.com:1935/app-rC94792j/068b9c9a_stream2"];
     [self.video loadVideo:url1];
 }
 
 - (void) playVideo {
-    if (![self.video isPlayingVideo]) {
-        [self.video playVideo];
-    }
+    [self.video playVideo];
 }
 
 - (void) stopVideo {

@@ -16,6 +16,7 @@
         self.type = src;
         [self setupBeforePlayVideo];
         [self setupLoadingLabel];
+        _loopQueue = dispatch_queue_create("com.example.loopQueue", DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
 }
@@ -38,6 +39,7 @@
     CMTimebaseSetRate( self.displayLayer.controlTimebase, 1.0);
 
     [self.layer addSublayer: self.displayLayer];
+    [self.displayLayer setNeedsDisplay];
 }
 
 - (void) setupLoadingLabel {
@@ -64,6 +66,8 @@
         NSString* urlStr = [url absoluteString];
         self.videoCapturer = [[RTSPCapturer alloc] initWithURL:urlStr];
         self.videoCapturer.decoder.delegate = self;
+//        self.connection = [[RTSPClientConnnection alloc] initWithUrl:urlStr];
+//        self.connection.delegate2 = self;
     } else {
 //        [self setupBeforePlayVideo];
 //        VLCMedia *media = [VLCMedia mediaWithURL:url];
@@ -71,9 +75,17 @@
     }
 }
 
+- (void)startLoop {
+//    dispatch_async(self.loopQueue, ^{
+        [self.connection startVideoWithUsername:@"root" password:@"pass"];
+//        [self.connection startVideo];
+//    });
+}
+
 - (void) playVideo {
     if ( [self isLive555] == YES) {
         [self.videoCapturer startStreams];
+//        [self startLoop];
     } else {
 //        [self.player play];
     }
@@ -86,12 +98,13 @@
     } else {
 //        [self.player stop];
     }
-    [self addSubview:self.playingLabel];
+//    [self addSubview:self.playingLabel];
 }
 
 - (BOOL) isPlayingVideo {
     if ([self isLive555]) {
-        return [self.videoCapturer isPlayingStreams];
+        return YES;
+//        return [self.videoCapturer isPlayingStreams];
     } else {
         return NO;
 //        return self.player.isPlaying;
@@ -100,34 +113,31 @@
 
 #pragma mark - Private Function
 - (BOOL) isLive555 {
-    if (self.type == kLive555) {
+//    if (self.type == kLive555) {
         return YES;
-    } else {
-        return NO;
-    }
+//    } else {
+//        return NO;
+//    }
 }
 
 - (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef) samplebuffer {
-    if([self.displayLayer isReadyForMoreMediaData])
-        {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.displayLayer isReadyForMoreMediaData]) {
             [self.displayLayer enqueueSampleBuffer:samplebuffer];
         }
-        [self.displayLayer setNeedsDisplay];
-//    if (self.displayLayer) {
-//        [self.displayLayer enqueueSampleBuffer:samplebuffer];
-//    }
+    });
 }
 
 #pragma mark - Control Audio Streaming
 
 - (void) setVolume:(CGFloat) volume {
-    isMuted = NO;
+//    isMuted = NO;
 //    self.player.audio.volume = volume;
 
 }
 
 - (void) setMutedVideo:(BOOL)muted {
-    isMuted = YES;
+//    isMuted = YES;
 //    self.player.audio.volume = 0;
 }
 

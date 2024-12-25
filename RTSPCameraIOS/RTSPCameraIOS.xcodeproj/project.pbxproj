@@ -17,18 +17,22 @@
 		2E560EB62805AE7A00FB7523 /* RTSPCameraIOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */; };
 		2E560EB82805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */; };
 		2E755DD42809574A00997DC7 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E755DD32809574A00997DC7 /* Model.m */; };
-		2EA25E472813F71D0085631F /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
+		854390F772E74DD728CD0ACE /* Pods_RTSPCameraTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F2348D11305D2CCDE3F116 /* Pods_RTSPCameraTests.framework */; };
 		B166B2992806F2F400F1060E /* VideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2982806F2F400F1060E /* VideoView.mm */; };
 		B166B29E2806F36E00F1060E /* Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = B166B29D2806F36E00F1060E /* Validator.m */; };
 		B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B166B2A12806F5F400F1060E /* VideoStreamController.mm */; };
 		B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E7434280702DE00C20410 /* UINavigationController+Config.m */; };
 		B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B16E74362807047E00C20410 /* UITextView+Ext.m */; };
 		B16E743A28070E9500C20410 /* VideoView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B16E743928070E9500C20410 /* VideoView.storyboard */; };
-		B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16E743C280726E200C20410 /* RTSPCapturer.mm */; };
+		B190F9E12C3BA0D400EDFD6A /* RTSPClientConnnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = B190F9DF2C3BA0D400EDFD6A /* RTSPClientConnnection.mm */; };
+		B190F9E42C3BA2D800EDFD6A /* nalu_rewriter.cc in Sources */ = {isa = PBXBuildFile; fileRef = B190F9E22C3BA2D800EDFD6A /* nalu_rewriter.cc */; };
+		B190F9E72C3BA3EE00EDFD6A /* FrameEncoded.cc in Sources */ = {isa = PBXBuildFile; fileRef = B190F9E52C3BA3EE00EDFD6A /* FrameEncoded.cc */; };
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 		B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */; };
 		B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F40281134A3006D8633 /* VideoToolbox.framework */; };
 		B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */; };
+		D81202629470894B31A2C6E8 /* Pods_RTSPCamera_RTSPCameraUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8C9A8EA9D7C21B5569164A /* Pods_RTSPCamera_RTSPCameraUITests.framework */; };
+		DDDCC324A635776EC4F94553 /* Pods_RTSPCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FE254EC5C4F6CA5D78B10C9 /* Pods_RTSPCamera.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,8 +53,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0160B03D6AF54325F03B96C5 /* Pods-RTSPCamera-RTSPCameraUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCamera-RTSPCameraUITests.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCamera-RTSPCameraUITests/Pods-RTSPCamera-RTSPCameraUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		01CE3D23C58533AB16126EF5 /* Pods-RTSPCameraIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraIOS.release.xcconfig"; path = "Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS.release.xcconfig"; sourceTree = "<group>"; };
-		2E560E8C2805AE7900FB7523 /* RTSPCameraIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RTSPCameraIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		16DC0BDA5A34A53DAF26D821 /* Pods-RTSPCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCamera.release.xcconfig"; path = "Target Support Files/Pods-RTSPCamera/Pods-RTSPCamera.release.xcconfig"; sourceTree = "<group>"; };
+		1DEE4AFD9C0A10E9DEA8BB66 /* Pods-RTSPCamera-RTSPCameraUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCamera-RTSPCameraUITests.release.xcconfig"; path = "Target Support Files/Pods-RTSPCamera-RTSPCameraUITests/Pods-RTSPCamera-RTSPCameraUITests.release.xcconfig"; sourceTree = "<group>"; };
+		2E560E8C2805AE7900FB7523 /* RTSPCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RTSPCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E560E8F2805AE7900FB7523 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2E560E902805AE7900FB7523 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2E560E922805AE7900FB7523 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
@@ -61,14 +68,20 @@
 		2E560E9B2805AE7A00FB7523 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E560EA02805AE7A00FB7523 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E560EA12805AE7A00FB7523 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2E560EA72805AE7A00FB7523 /* RTSPCameraIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSPCameraIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E560EA72805AE7A00FB7523 /* RTSPCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSPCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E560EAB2805AE7A00FB7523 /* RTSPCameraIOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCameraIOSTests.m; sourceTree = "<group>"; };
-		2E560EB12805AE7A00FB7523 /* RTSPCameraIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSPCameraIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E560EB12805AE7A00FB7523 /* RTSPCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSPCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E560EB52805AE7A00FB7523 /* RTSPCameraIOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCameraIOSUITests.m; sourceTree = "<group>"; };
 		2E560EB72805AE7A00FB7523 /* RTSPCameraIOSUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSPCameraIOSUITestsLaunchTests.m; sourceTree = "<group>"; };
 		2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-iphonesimulator-liblive555helper.a"; path = "live555helper/output/Debug-iphonesimulator-liblive555helper.a"; sourceTree = "<group>"; };
 		2E755DD32809574A00997DC7 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		4793CA2C25258AB58E023F2C /* Pods-RTSPCameraIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraIOS.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCameraIOS/Pods-RTSPCameraIOS.debug.xcconfig"; sourceTree = "<group>"; };
+		4E8C9A8EA9D7C21B5569164A /* Pods_RTSPCamera_RTSPCameraUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCamera_RTSPCameraUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		549085DC3FB9F9CF006A8FFF /* Pods-RTSPCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCamera.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCamera/Pods-RTSPCamera.debug.xcconfig"; sourceTree = "<group>"; };
+		5FE254EC5C4F6CA5D78B10C9 /* Pods_RTSPCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D7EFE021460D36CF7221802 /* Pods-RTSPCameraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraTests.debug.xcconfig"; path = "Target Support Files/Pods-RTSPCameraTests/Pods-RTSPCameraTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9D07C42FAB2F58D1B3030E44 /* Pods-RTSPCameraTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSPCameraTests.release.xcconfig"; path = "Target Support Files/Pods-RTSPCameraTests/Pods-RTSPCameraTests.release.xcconfig"; sourceTree = "<group>"; };
+		A6F2348D11305D2CCDE3F116 /* Pods_RTSPCameraTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCameraTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B166B2982806F2F400F1060E /* VideoView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoView.mm; sourceTree = "<group>"; };
 		B166B29A2806F30300F1060E /* VideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
 		B166B29C2806F35F00F1060E /* Validator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Validator.h; sourceTree = "<group>"; };
@@ -80,10 +93,14 @@
 		B16E74362807047E00C20410 /* UITextView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Ext.m"; sourceTree = "<group>"; };
 		B16E74382807048900C20410 /* UITextView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+Ext.h"; sourceTree = "<group>"; };
 		B16E743928070E9500C20410 /* VideoView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VideoView.storyboard; sourceTree = "<group>"; };
-		B16E743C280726E200C20410 /* RTSPCapturer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPCapturer.mm; sourceTree = "<group>"; };
-		B16E743E280726EC00C20410 /* RTSPCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturer.h; sourceTree = "<group>"; };
 		B16E743F2807295000C20410 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		B16E75122807330E00C20410 /* Debug-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-liblive555helper.a"; path = "live555helper/output/Debug-liblive555helper.a"; sourceTree = "<group>"; };
+		B190F9DF2C3BA0D400EDFD6A /* RTSPClientConnnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPClientConnnection.mm; sourceTree = "<group>"; };
+		B190F9E02C3BA0D400EDFD6A /* RTSPClientConnnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPClientConnnection.h; sourceTree = "<group>"; };
+		B190F9E22C3BA2D800EDFD6A /* nalu_rewriter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nalu_rewriter.cc; sourceTree = "<group>"; };
+		B190F9E32C3BA2D800EDFD6A /* nalu_rewriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nalu_rewriter.h; sourceTree = "<group>"; };
+		B190F9E52C3BA3EE00EDFD6A /* FrameEncoded.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameEncoded.cc; sourceTree = "<group>"; };
+		B190F9E62C3BA3EE00EDFD6A /* FrameEncoded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameEncoded.h; sourceTree = "<group>"; };
 		B1B8A6F0280802FA008BE93F /* UIButtonView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButtonView+Ext.h"; sourceTree = "<group>"; };
 		B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButtonView+Ext.m"; sourceTree = "<group>"; };
 		B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "Debug-iphoneos-liblive555helper.a"; path = "live555helper/output/Debug-iphoneos-liblive555helper.a"; sourceTree = "<group>"; };
@@ -91,7 +108,6 @@
 		B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturerDecode.h; sourceTree = "<group>"; };
 		B1CB5F40281134A3006D8633 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTSPCameraIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +116,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */,
-				2EA25E472813F71D0085631F /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 				B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */,
+				DDDCC324A635776EC4F94553 /* Pods_RTSPCamera.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				854390F772E74DD728CD0ACE /* Pods_RTSPCameraTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D81202629470894B31A2C6E8 /* Pods_RTSPCamera_RTSPCameraUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,9 +155,9 @@
 		2E560E8D2805AE7900FB7523 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2E560E8C2805AE7900FB7523 /* RTSPCameraIOS.app */,
-				2E560EA72805AE7A00FB7523 /* RTSPCameraIOSTests.xctest */,
-				2E560EB12805AE7A00FB7523 /* RTSPCameraIOSUITests.xctest */,
+				2E560E8C2805AE7900FB7523 /* RTSPCamera.app */,
+				2E560EA72805AE7A00FB7523 /* RTSPCameraTests.xctest */,
+				2E560EB12805AE7A00FB7523 /* RTSPCameraUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -226,6 +244,10 @@
 		B166B29B2806F35000F1060E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B190F9E52C3BA3EE00EDFD6A /* FrameEncoded.cc */,
+				B190F9E62C3BA3EE00EDFD6A /* FrameEncoded.h */,
+				B190F9E22C3BA2D800EDFD6A /* nalu_rewriter.cc */,
+				B190F9E32C3BA2D800EDFD6A /* nalu_rewriter.h */,
 				B166B29C2806F35F00F1060E /* Validator.h */,
 				B166B29D2806F36E00F1060E /* Validator.m */,
 				B16E743F2807295000C20410 /* Model.h */,
@@ -237,8 +259,8 @@
 		B16E743B2807269600C20410 /* RTSPCameraCapture */ = {
 			isa = PBXGroup;
 			children = (
-				B16E743C280726E200C20410 /* RTSPCapturer.mm */,
-				B16E743E280726EC00C20410 /* RTSPCapturer.h */,
+				B190F9E02C3BA0D400EDFD6A /* RTSPClientConnnection.h */,
+				B190F9DF2C3BA0D400EDFD6A /* RTSPClientConnnection.mm */,
 				B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */,
 				B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */,
 			);
@@ -253,7 +275,9 @@
 				B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */,
 				2E755DCF28094E1300997DC7 /* Debug-iphonesimulator-liblive555helper.a */,
 				B16E75122807330E00C20410 /* Debug-liblive555helper.a */,
-				F68F66C9A4C85383AC6969DE /* Pods_RTSPCameraIOS.framework */,
+				5FE254EC5C4F6CA5D78B10C9 /* Pods_RTSPCamera.framework */,
+				4E8C9A8EA9D7C21B5569164A /* Pods_RTSPCamera_RTSPCameraUITests.framework */,
+				A6F2348D11305D2CCDE3F116 /* Pods_RTSPCameraTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -263,6 +287,12 @@
 			children = (
 				4793CA2C25258AB58E023F2C /* Pods-RTSPCameraIOS.debug.xcconfig */,
 				01CE3D23C58533AB16126EF5 /* Pods-RTSPCameraIOS.release.xcconfig */,
+				549085DC3FB9F9CF006A8FFF /* Pods-RTSPCamera.debug.xcconfig */,
+				16DC0BDA5A34A53DAF26D821 /* Pods-RTSPCamera.release.xcconfig */,
+				0160B03D6AF54325F03B96C5 /* Pods-RTSPCamera-RTSPCameraUITests.debug.xcconfig */,
+				1DEE4AFD9C0A10E9DEA8BB66 /* Pods-RTSPCamera-RTSPCameraUITests.release.xcconfig */,
+				6D7EFE021460D36CF7221802 /* Pods-RTSPCameraTests.debug.xcconfig */,
+				9D07C42FAB2F58D1B3030E44 /* Pods-RTSPCameraTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -270,28 +300,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2E560E8B2805AE7900FB7523 /* RTSPCameraIOS */ = {
+		2E560E8B2805AE7900FB7523 /* RTSPCamera */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E560EBB2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOS" */;
+			buildConfigurationList = 2E560EBB2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCamera" */;
 			buildPhases = (
 				59EF25725A6B749D86134938 /* [CP] Check Pods Manifest.lock */,
 				2E560E882805AE7900FB7523 /* Sources */,
 				2E560E892805AE7900FB7523 /* Frameworks */,
 				2E560E8A2805AE7900FB7523 /* Resources */,
+				3B3E9CA242975AD63EE9CC9C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RTSPCameraIOS;
+			name = RTSPCamera;
 			productName = RTSPCameraIOS;
-			productReference = 2E560E8C2805AE7900FB7523 /* RTSPCameraIOS.app */;
+			productReference = 2E560E8C2805AE7900FB7523 /* RTSPCamera.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2E560EA62805AE7A00FB7523 /* RTSPCameraIOSTests */ = {
+		2E560EA62805AE7A00FB7523 /* RTSPCameraTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E560EBE2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOSTests" */;
+			buildConfigurationList = 2E560EBE2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraTests" */;
 			buildPhases = (
+				BBFABE52AFAEC25B0E84B244 /* [CP] Check Pods Manifest.lock */,
 				2E560EA32805AE7A00FB7523 /* Sources */,
 				2E560EA42805AE7A00FB7523 /* Frameworks */,
 				2E560EA52805AE7A00FB7523 /* Resources */,
@@ -301,27 +333,29 @@
 			dependencies = (
 				2E560EA92805AE7A00FB7523 /* PBXTargetDependency */,
 			);
-			name = RTSPCameraIOSTests;
+			name = RTSPCameraTests;
 			productName = RTSPCameraIOSTests;
-			productReference = 2E560EA72805AE7A00FB7523 /* RTSPCameraIOSTests.xctest */;
+			productReference = 2E560EA72805AE7A00FB7523 /* RTSPCameraTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		2E560EB02805AE7A00FB7523 /* RTSPCameraIOSUITests */ = {
+		2E560EB02805AE7A00FB7523 /* RTSPCameraUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E560EC12805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOSUITests" */;
+			buildConfigurationList = 2E560EC12805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraUITests" */;
 			buildPhases = (
+				FAE5CD4CC5C372574A1FFE2D /* [CP] Check Pods Manifest.lock */,
 				2E560EAD2805AE7A00FB7523 /* Sources */,
 				2E560EAE2805AE7A00FB7523 /* Frameworks */,
 				2E560EAF2805AE7A00FB7523 /* Resources */,
+				36E729BF84BE2392794975E4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				2E560EB32805AE7A00FB7523 /* PBXTargetDependency */,
 			);
-			name = RTSPCameraIOSUITests;
+			name = RTSPCameraUITests;
 			productName = RTSPCameraIOSUITests;
-			productReference = 2E560EB12805AE7A00FB7523 /* RTSPCameraIOSUITests.xctest */;
+			productReference = 2E560EB12805AE7A00FB7523 /* RTSPCameraUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -359,9 +393,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2E560E8B2805AE7900FB7523 /* RTSPCameraIOS */,
-				2E560EA62805AE7A00FB7523 /* RTSPCameraIOSTests */,
-				2E560EB02805AE7A00FB7523 /* RTSPCameraIOSUITests */,
+				2E560E8B2805AE7900FB7523 /* RTSPCamera */,
+				2E560EA62805AE7A00FB7523 /* RTSPCameraTests */,
+				2E560EB02805AE7A00FB7523 /* RTSPCameraUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -394,6 +428,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		36E729BF84BE2392794975E4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera-RTSPCameraUITests/Pods-RTSPCamera-RTSPCameraUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera-RTSPCameraUITests/Pods-RTSPCamera-RTSPCameraUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera-RTSPCameraUITests/Pods-RTSPCamera-RTSPCameraUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3B3E9CA242975AD63EE9CC9C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera/Pods-RTSPCamera-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera/Pods-RTSPCamera-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RTSPCamera/Pods-RTSPCamera-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		59EF25725A6B749D86134938 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -409,7 +477,51 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RTSPCameraIOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RTSPCamera-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBFABE52AFAEC25B0E84B244 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RTSPCameraTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAE5CD4CC5C372574A1FFE2D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RTSPCamera-RTSPCameraUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -426,14 +538,16 @@
 				B166B29E2806F36E00F1060E /* Validator.m in Sources */,
 				B16E7435280702DE00C20410 /* UINavigationController+Config.m in Sources */,
 				2E560E972805AE7900FB7523 /* ViewController.mm in Sources */,
+				B190F9E42C3BA2D800EDFD6A /* nalu_rewriter.cc in Sources */,
 				2E755DD42809574A00997DC7 /* Model.m in Sources */,
 				B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */,
 				B166B2992806F2F400F1060E /* VideoView.mm in Sources */,
-				B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
 				B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */,
 				2E560EA22805AE7A00FB7523 /* main.m in Sources */,
+				B190F9E12C3BA0D400EDFD6A /* RTSPClientConnnection.mm in Sources */,
 				B166B2A22806F5F400F1060E /* VideoStreamController.mm in Sources */,
+				B190F9E72C3BA3EE00EDFD6A /* FrameEncoded.cc in Sources */,
 				2E560E942805AE7900FB7523 /* SceneDelegate.m in Sources */,
 				B16E74372807047E00C20410 /* UITextView+Ext.m in Sources */,
 			);
@@ -461,12 +575,12 @@
 /* Begin PBXTargetDependency section */
 		2E560EA92805AE7A00FB7523 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2E560E8B2805AE7900FB7523 /* RTSPCameraIOS */;
+			target = 2E560E8B2805AE7900FB7523 /* RTSPCamera */;
 			targetProxy = 2E560EA82805AE7A00FB7523 /* PBXContainerItemProxy */;
 		};
 		2E560EB32805AE7A00FB7523 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2E560E8B2805AE7900FB7523 /* RTSPCameraIOS */;
+			target = 2E560E8B2805AE7900FB7523 /* RTSPCamera */;
 			targetProxy = 2E560EB22805AE7A00FB7523 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -596,14 +710,14 @@
 		};
 		2E560EBC2805AE7A00FB7523 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4793CA2C25258AB58E023F2C /* Pods-RTSPCameraIOS.debug.xcconfig */;
+			baseConfigurationReference = 549085DC3FB9F9CF006A8FFF /* Pods-RTSPCamera.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MHCM5E2KX5;
+				DEVELOPMENT_TEAM = 8L589BGVFH;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -621,7 +735,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/live555helper/live555helper/liveWrapper",
 					"$(PROJECT_DIR)/live555helper/live555helper/inc",
-					$LIB_LIVE555,
+					"$LIB_LIVE555",
 				);
 				INFOPLIST_FILE = RTSPCameraIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -654,14 +768,14 @@
 		};
 		2E560EBD2805AE7A00FB7523 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01CE3D23C58533AB16126EF5 /* Pods-RTSPCameraIOS.release.xcconfig */;
+			baseConfigurationReference = 16DC0BDA5A34A53DAF26D821 /* Pods-RTSPCamera.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MHCM5E2KX5;
+				DEVELOPMENT_TEAM = 8L589BGVFH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -674,7 +788,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/live555helper/live555helper/liveWrapper",
 					"$(PROJECT_DIR)/live555helper/live555helper/inc",
-					$LIB_LIVE555,
+					"$LIB_LIVE555",
 				);
 				INFOPLIST_FILE = RTSPCameraIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -707,6 +821,7 @@
 		};
 		2E560EBF2805AE7A00FB7523 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D7EFE021460D36CF7221802 /* Pods-RTSPCameraTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -719,12 +834,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSPCameraIOS.app/RTSPCameraIOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSPCamera.app/RTSPCamera";
 			};
 			name = Debug;
 		};
 		2E560EC02805AE7A00FB7523 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9D07C42FAB2F58D1B3030E44 /* Pods-RTSPCameraTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -737,12 +853,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSPCameraIOS.app/RTSPCameraIOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSPCamera.app/RTSPCamera";
 			};
 			name = Release;
 		};
 		2E560EC22805AE7A00FB7523 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0160B03D6AF54325F03B96C5 /* Pods-RTSPCamera-RTSPCameraUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -759,6 +876,7 @@
 		};
 		2E560EC32805AE7A00FB7523 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DEE4AFD9C0A10E9DEA8BB66 /* Pods-RTSPCamera-RTSPCameraUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -785,7 +903,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E560EBB2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOS" */ = {
+		2E560EBB2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCamera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E560EBC2805AE7A00FB7523 /* Debug */,
@@ -794,7 +912,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E560EBE2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOSTests" */ = {
+		2E560EBE2805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E560EBF2805AE7A00FB7523 /* Debug */,
@@ -803,7 +921,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E560EC12805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraIOSUITests" */ = {
+		2E560EC12805AE7A00FB7523 /* Build configuration list for PBXNativeTarget "RTSPCameraUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E560EC22805AE7A00FB7523 /* Debug */,

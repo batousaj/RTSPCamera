@@ -125,7 +125,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
     CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
 
-    [self render:sampleBuffer];
+//    [self render:sampleBuffer];
     
     VTDecodeFrameFlags decodeFlags = kVTDecodeFrame_EnableAsynchronousDecompression;
     std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
