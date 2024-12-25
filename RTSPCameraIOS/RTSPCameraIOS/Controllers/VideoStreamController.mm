@@ -80,7 +80,7 @@
 #pragma mark - Private function
 
 - (void) loadVideo {
-    NSURL *url1 = [NSURL URLWithString:@"rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"];
+    NSURL *url1 = [NSURL URLWithString:@"rtsp://admin:admin@sh.sfvmeet.com:554/live/av0"];
     [self.video loadVideo:url1];
 }
 
