@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "RTSPCapturerDecode.h"
 
 struct RTSPFrameDecodeParams {
@@ -137,7 +138,57 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         NSLog(@"Failed to decode frame with code: %d",status);
         return ;
     }
-    NSLog(@"Decode successful");
+//    NSLog(@"Decode successful");
+}
+
+- (UIImage *) sampleBufferToUIImage:(CMSampleBufferRef) sampleBuffer {
+    // Extract the pixel buffer from the sample buffer
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+    if (pixelBuffer == NULL) {
+        NSLog(@"Failed to extract pixel buffer from sample buffer");
+        return nil;
+    }
+    
+    // Lock the base address of the pixel buffer
+    CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+    
+    // Get the pixel buffer's width and height
+    size_t width = CVPixelBufferGetWidth(pixelBuffer);
+    size_t height = CVPixelBufferGetHeight(pixelBuffer);
+    
+    // Create a CGContext to draw the pixel buffer data into
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(CVPixelBufferGetBaseAddress(pixelBuffer),
+                                                width,
+                                                height,
+                                                8, // bits per component
+                                                CVPixelBufferGetBytesPerRow(pixelBuffer),
+                                                colorSpace,
+                                                kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    
+    // Create the image from the CGContext
+    CGImageRef cgImage = CGBitmapContextCreateImage(context);
+    
+    // Release the color space and context as they are no longer needed
+    CGColorSpaceRelease(colorSpace);
+    CGContextRelease(context);
+    
+    // Unlock the pixel buffer base address
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+    
+    if (cgImage == NULL) {
+        NSLog(@"Failed to create CGImage");
+        return nil;
+    }
+    
+    // Create and return the UIImage from the CGImage
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    
+    // Release CGImage as it is no longer needed
+    CGImageRelease(cgImage);
+    
+    return image;
 }
 
 -(void) createDecompSession {

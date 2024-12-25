@@ -40,5 +40,6 @@ inline CFDictionaryRef CreateCFTypeDictionary(CFTypeRef* keys,
 - (instancetype)init;
 - (void)createDecompSession;
 - (void)decode:(FrameEncoded*) encodedImage andReset:(BOOL)isReset;
+-(void) receivedRawVideoFrame:(uint8_t *)frame withSize:(uint32_t)frameSize;
 
 @end

@@ -7,7 +7,7 @@
 
 #import "RTSPCapturer.h"
 
-std::map <std::string, std::string> rtsp_option_ = { {"rtptransport","tcp"} , {"timeout","60"} };
+std::map <std::string, std::string> rtsp_option_ = { {"rtptransport","tcp"} , {"timeout","30"} };
 
 static RTSPCapturer* RTSP_capturer = NULL;
 static RTSPFactoryManagePrivate* RTSP_source_factory = NULL;
@@ -22,6 +22,10 @@ void RTSPFactoryManagePrivate::onDecodeParams(FrameEncoded* sps, FrameEncoded* p
 
 void RTSPFactoryManagePrivate::onData(FrameEncoded* frame, bool isReset) {
     [capture.decoder decode:frame andReset:(BOOL)isReset];
+}
+
+void RTSPFactoryManagePrivate::receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize) {
+    [capture.decoder receivedRawVideoFrame:frame withSize:frameSize];
 }
 
 void RTSPFactoryManagePrivate::registerRTSPControl(RTSPControl* controller) {

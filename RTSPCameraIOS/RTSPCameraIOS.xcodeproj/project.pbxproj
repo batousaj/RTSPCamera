@@ -29,6 +29,7 @@
 		B1BDD3622D1C078E0017195D /* RTSPManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD35E2D1C078E0017195D /* RTSPManagement.cpp */; };
 		B1BDD3632D1C078E0017195D /* FrameEncoded.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD3612D1C078E0017195D /* FrameEncoded.cc */; };
 		B1BDD3642D1C07ED0017195D /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
+		B1BDD3672D1C09D40017195D /* RTSPClientConnnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD3662D1C09D40017195D /* RTSPClientConnnection.mm */; };
 		B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */; };
 		B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F40281134A3006D8633 /* VideoToolbox.framework */; };
 		B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */; };
@@ -94,6 +95,8 @@
 		B1BDD35F2D1C078E0017195D /* RTSPManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPManagement.h; sourceTree = "<group>"; };
 		B1BDD3602D1C078E0017195D /* FrameEncoded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameEncoded.h; sourceTree = "<group>"; };
 		B1BDD3612D1C078E0017195D /* FrameEncoded.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameEncoded.cc; sourceTree = "<group>"; };
+		B1BDD3652D1C09D30017195D /* RTSPClientConnnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPClientConnnection.h; sourceTree = "<group>"; };
+		B1BDD3662D1C09D40017195D /* RTSPClientConnnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPClientConnnection.mm; sourceTree = "<group>"; };
 		B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RTSPCapturerDecode.mm; sourceTree = "<group>"; };
 		B1CB5F3928111201006D8633 /* RTSPCapturerDecode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSPCapturerDecode.h; sourceTree = "<group>"; };
 		B1CB5F40281134A3006D8633 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
@@ -246,6 +249,8 @@
 		B16E743B2807269600C20410 /* RTSPCameraCapture */ = {
 			isa = PBXGroup;
 			children = (
+				B1BDD3652D1C09D30017195D /* RTSPClientConnnection.h */,
+				B1BDD3662D1C09D40017195D /* RTSPClientConnnection.mm */,
 				B16E743C280726E200C20410 /* RTSPCapturer.mm */,
 				B16E743E280726EC00C20410 /* RTSPCapturer.h */,
 				B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */,
@@ -449,6 +454,7 @@
 				2E755DD42809574A00997DC7 /* Model.m in Sources */,
 				B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */,
 				B166B2992806F2F400F1060E /* VideoView.mm in Sources */,
+				B1BDD3672D1C09D40017195D /* RTSPClientConnnection.mm in Sources */,
 				B16E743D280726E200C20410 /* RTSPCapturer.mm in Sources */,
 				2E560E912805AE7900FB7523 /* AppDelegate.m in Sources */,
 				B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */,

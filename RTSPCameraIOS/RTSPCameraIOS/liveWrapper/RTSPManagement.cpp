@@ -6,6 +6,11 @@
 //
 
 #include <iostream>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
+#include <vector>
 #include "RTSPManagement.h"
 
 //global variable
@@ -116,9 +121,24 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                     isResetDescription = false;
                 }
                 m_content.insert(m_content.end(), buffer, buffer + size);
-                uint64_t presentTime = getPresentationTime(presentationTime);
-                FrameEncoded* frame = new FrameEncoded(m_content.data(), m_content.size(), presentTime);
-                rtsp_source_factory()->onData(frame,isResetDescription);
+                rtsp_source_factory()->receivedRawVideoFrame(m_content.data(), m_content.size());
+                
+//                auto now = std::chrono::system_clock::now();
+//                
+//                // Convert to time_t for easy formatting
+//                std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+//                
+//                // Convert time_t to tm struct
+//                struct tm local_time;
+//                localtime_r(&now_time, &local_time); // localtime_r for thread safety
+//                
+//                // Format the time into a string
+//                char time_str[100];
+//                strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", &local_time);
+//                
+//                // Print the formatted time
+//                std::cout << "Current time: " << time_str << " Frameeee" << std::endl;
+
             }
 
             return true;

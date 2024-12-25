@@ -10,17 +10,19 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 //#import <MobileVLCKit/MobileVLCKit.h>
-#import "RTSPCapturer.h"
+//#import "RTSPCapturer.h"
+#import "RTSPClientConnnection.h"
 #import "Model.h"
 
-@interface VideoView : UIView<RTSPCapturerDecodeDelegate> {
+@interface VideoView : UIView</*RTSPCapturerDecodeDelegate*/ RTSPClientConnnectionDelegate2> {
     BOOL isMuted;
 }
 
 @property(nonatomic) UILabel *playingLabel;
 //@property(nonatomic,strong) VLCMediaPlayer *player;
 @property (nonatomic, retain) AVSampleBufferDisplayLayer *displayLayer;
-@property(nonatomic,strong) RTSPCapturer* videoCapturer;
+//@property(nonatomic,strong) RTSPCapturer* videoCapturer;
+@property(nonatomic,strong) RTSPClientConnnection* videoConnection;
 @property(nonatomic,assign) SourceType type;
 
 - (instancetype) initWithFrame:(CGRect)frame andSource:(SourceType)src;

@@ -85,9 +85,9 @@
 }
 
 - (void) playVideo {
-    if (![self.video isPlayingVideo]) {
+//    if (![self.video isPlayingVideo]) {
         [self.video playVideo];
-    }
+//    }
 }
 
 - (void) stopVideo {

@@ -62,8 +62,11 @@
 - (void) loadVideo:(NSURL*)url {
     if ([self isLive555]) {
         NSString* urlStr = [url absoluteString];
-        self.videoCapturer = [[RTSPCapturer alloc] initWithURL:urlStr];
-        self.videoCapturer.decoder.delegate = self;
+//        self.videoCapturer = [[RTSPCapturer alloc] initWithURL:urlStr];
+//        self.videoCapturer.decoder.delegate = self;
+        
+        self.videoConnection = [[RTSPClientConnnection alloc] initWithUrl:urlStr];
+        self.videoConnection.delegate2 = self;
     } else {
 //        [self setupBeforePlayVideo];
 //        VLCMedia *media = [VLCMedia mediaWithURL:url];
@@ -73,7 +76,8 @@
 
 - (void) playVideo {
     if ( [self isLive555] == YES) {
-        [self.videoCapturer startStreams];
+        [self.videoConnection startVideo];
+//        [self.videoCapturer startStreams];
     } else {
 //        [self.player play];
     }
@@ -82,7 +86,7 @@
 
 - (void) stopVideo {
     if ([self isLive555]) {
-        [self.videoCapturer stopStreams];
+//        [self.videoCapturer stopStreams];
     } else {
 //        [self.player stop];
     }
@@ -91,7 +95,8 @@
 
 - (BOOL) isPlayingVideo {
     if ([self isLive555]) {
-        return [self.videoCapturer isPlayingStreams];
+        return YES;
+//        return [self.videoCapturer isPlayingStreams];
     } else {
         return NO;
 //        return self.player.isPlaying;
@@ -107,15 +112,12 @@
     }
 }
 
-- (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef) samplebuffer {
-    if([self.displayLayer isReadyForMoreMediaData])
-        {
-            [self.displayLayer enqueueSampleBuffer:samplebuffer];
-        }
-        [self.displayLayer setNeedsDisplay];
-//    if (self.displayLayer) {
-//        [self.displayLayer enqueueSampleBuffer:samplebuffer];
+- (void)RTSPCapturerDecodeDelegateSampleBuffer:(CMSampleBufferRef _Nullable) samplebuffer {
+//    if([self.displayLayer isReadyForMoreMediaData])
+//    {
+        [self.displayLayer enqueueSampleBuffer:samplebuffer];
 //    }
+//    [self.displayLayer setNeedsDisplay];
 }
 
 #pragma mark - Control Audio Streaming

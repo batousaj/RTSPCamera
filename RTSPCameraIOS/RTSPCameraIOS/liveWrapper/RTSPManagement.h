@@ -32,6 +32,7 @@ public :
     virtual void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) = 0;
     virtual void onData(FrameEncoded* frame, bool isReset) = 0;
     static void SetRTSPSourceFactory(CreatePointerFuncFactory create_func);
+    virtual void receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize) = 0;
     static RTSPSourceFactory* Create();
 };
 
@@ -82,8 +83,6 @@ public :
                 m_codec = common::kCodecHEVC;
             } else if (strcmp(codec, "JPEG") == 0) {
                 m_codec = common::kCodecJPEG;
-            } else {
-                m_codec = common::kNone;
             }
          }
                            
