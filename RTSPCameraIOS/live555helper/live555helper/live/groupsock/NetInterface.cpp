@@ -58,8 +58,10 @@ Socket::~Socket() {
 
 Boolean Socket::changePort(Port newPort) {
   int oldSocketNum = fSocketNum;
-  unsigned oldReceiveBufferSize = getReceiveBufferSize(fEnv, fSocketNum);
-  unsigned oldSendBufferSize = getSendBufferSize(fEnv, fSocketNum);
+//  unsigned oldReceiveBufferSize = getReceiveBufferSize(fEnv, fSocketNum);
+//  unsigned oldSendBufferSize = getSendBufferSize(fEnv, fSocketNum);
+  unsigned oldReceiveBufferSize = 512 * 1024;
+  unsigned oldSendBufferSize = 512 * 1024;
   closeSocket(fSocketNum);
 
   fSocketNum = setupDatagramSocket(fEnv, newPort, fFamily);

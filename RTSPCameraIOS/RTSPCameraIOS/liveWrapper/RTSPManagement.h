@@ -32,7 +32,7 @@ public :
     virtual void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) = 0;
     virtual void onData(FrameEncoded* frame, bool isReset) = 0;
     static void SetRTSPSourceFactory(CreatePointerFuncFactory create_func);
-    virtual void receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize) = 0;
+    virtual void receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize, struct timeval presentationTime) = 0;
     static RTSPSourceFactory* Create();
 };
 
@@ -71,6 +71,8 @@ public :
                            
     private :
          uint64_t getPresentationTime(struct timeval presentationTime);
+                           
+         void consumeFramesAndDecode();
             
          void CheckCodecType(const char* codec) {
             if (strcmp(codec, "H264") == 0) {
@@ -86,15 +88,29 @@ public :
             }
          }
                            
+                           struct FramQueue {
+                               FramQueue(std::vector<uint8_t> data, timeval presentationTime1) {
+                                   frame = data;
+                                   presentationTime = presentationTime1;
+                               }
+                               
+                               std::vector<uint8_t> frame;
+                               timeval presentationTime;
+                           };
+                           
     private :
         //environment process thread manager
         Environment m_envi;
         char        m_stop;
         std::thread m_thread;
+        std::thread consumerThread;
         std::vector<uint8_t> m_cfg;
         //RTSPConnection
         RTSPConnection m_connection;
         common::CodecType m_codec;
         RTSPSourceFactory* source_factory;
         bool         isResetDescription;
+                           std::queue<FramQueue> frameQueue;
+                           std::mutex queueMutex;
+                           std::condition_variable queueCondition;
 };

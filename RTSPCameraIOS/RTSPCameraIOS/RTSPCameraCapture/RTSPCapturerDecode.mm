@@ -44,19 +44,10 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
    else
    {
        NSLog(@"Decompressed sucessfully");
-       std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
-           reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
-       CMSampleBufferRef samplebuffer ;
-//       CMSampleTimingInfo time = CMSampleTimingInfo();
-       CMSampleTimingInfo timing = {kCMTimeInvalid, kCMTimeInvalid, kCMTimeInvalid};
-       timing.presentationTimeStamp = CMTimeMake(decoded_params->timestamp, 1000000000);
-       OSStatus status = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, imageBuffer, YES, NULL, NULL, decoded_params->format, &timing, &samplebuffer);
-       if (status != noErr)
-       {
-           NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
-           NSLog(@"samplebuffer error: %@", error);
-       }
-       [decoded_params->callback RTSPCapturerDecodeDelegateSampleBuffer:samplebuffer];
+//       std::unique_ptr<RTSPFrameDecodeParams> decoded_params(
+//           reinterpret_cast<RTSPFrameDecodeParams *>(sourceFrameRefCon));
+//       UIImage* image = [RTSPCapturerDecode sampleBufferToUIImage:imageBuffer];
+//       [decoded_params->callback RTSPCapturerDecodeDelegateImage:image];
    }
 }
 
@@ -77,7 +68,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     presentation_time_ = encodedImage->presentation_time();
     NSData *buffer = [NSData dataWithBytes:encodedImage->buffer() length:encodedImage->size()];
 //    if (isReset) {
-        [self receivedRawVideoFrame:(uint8_t*)encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
+//        [self receivedRawVideoFrame:(uint8_t*)encodedImage->buffer() withSize:(uint32_t)encodedImage->size()];
 //    } else {
 //        [self sortingByte:buffer andTime:(int)presentation_time_];
 //        if ([self isPlayBuffer]) {
@@ -89,13 +80,14 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 //    }
 }
 
--(void) receivedRawVideoFrame:(uint8_t *)frame withSize:(uint32_t)frameSize
+-(void) receivedRawVideoFrame:(uint8_t *)frame withSize:(uint32_t)frameSize presentationTime:(timeval) presentationTime
 {
     CMVideoFormatDescriptionRef inputFormat = nullptr;
     if (H264AnnexBBufferHasVideoFormatDescription((uint8_t *)frame,
                                                             frameSize)) {
       inputFormat = CreateVideoFormatDescription((uint8_t *)frame,
                                                             frameSize);
+        NSLog(@"Have input format");
       if (inputFormat) {
         // Check if the video format has changed, and reinitialize decoder if
         // needed.
@@ -125,8 +117,9 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
     CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
     CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-
-    [self render:sampleBuffer];
+    
+//    NSLog(@"dataaaaa.     %u - %ld - %s", frameSize, presentationTime.tv_sec, _formatDesc);
+    [self render: sampleBuffer];
     
     VTDecodeFrameFlags decodeFlags = kVTDecodeFrame_EnableAsynchronousDecompression;
     std::unique_ptr<RTSPFrameDecodeParams> frameDecodeParams;
@@ -138,18 +131,9 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         NSLog(@"Failed to decode frame with code: %d",status);
         return ;
     }
-//    NSLog(@"Decode successful");
 }
 
-- (UIImage *) sampleBufferToUIImage:(CMSampleBufferRef) sampleBuffer {
-    // Extract the pixel buffer from the sample buffer
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    
-    if (pixelBuffer == NULL) {
-        NSLog(@"Failed to extract pixel buffer from sample buffer");
-        return nil;
-    }
-    
++ (UIImage *)sampleBufferToUIImage:(CVPixelBufferRef) pixelBuffer {
     // Lock the base address of the pixel buffer
     CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
     
@@ -244,10 +228,10 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
   if (_formatDesc == videoFormat) {
     return;
   }
-  if (_formatDesc) {
-    CFRelease(_formatDesc);
-  }
-    _formatDesc = videoFormat;
+//  if (_formatDesc) {
+//    CFRelease(_formatDesc);
+//  }
+  _formatDesc = videoFormat;
   if (_formatDesc) {
     CFRetain(_formatDesc);
   }
@@ -256,7 +240,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
 - (void) render:(CMSampleBufferRef)sampleBuffer
 {
-    NSLog(@"presentation_time_: %llu",presentation_time_);
+//    NSLog(@"presentation_time_: %llu",presentation_time_);
     [self.delegate RTSPCapturerDecodeDelegateSampleBuffer:sampleBuffer];
 }
 

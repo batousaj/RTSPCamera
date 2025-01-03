@@ -137,12 +137,11 @@ static int RTP_HEADER_SIZE = 12;
 @end
 
 @interface VideoRtpParser : NSObject
-@property (nonatomic, assign, nullable) uint8_t * buffer;
-@property (nonatomic, assign) std::vector<uint8_t> nalUnit;
-@property (nonatomic, assign) BOOL nalEndFlag;
-@property (nonatomic, assign) int bufferLength;
-@property (nonatomic, assign) int packetNum;
-- (nullable NSData *)processRtpPacketAndGetNalUnit:(nonnull uint8_t *)data length:(int)length;
+@property (nonatomic) NSMutableData* _Nullable fragmentedBuffer;
+@property (nonatomic, assign) int fragmentedBufferLength;
+@property (nonatomic, assign) int fragmentedPackets;
+
+- (nullable NSData *)processRtpPacketAndGetNalUnit:(nonnull uint8_t *)data length:(int)length marker:(BOOL)marker;
 @end
 
 #import <Foundation/Foundation.h>

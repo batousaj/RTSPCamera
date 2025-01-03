@@ -34,7 +34,7 @@ class RTSPFactoryManagePrivate : public RTSPSourceFactory {
         void registerRTSPControl(RTSPControl* controller) override;
         void onDecodeParams(FrameEncoded* sps, FrameEncoded* pps) override;
         void onData(FrameEncoded* frame, bool isReset) override;
-        void receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize) override;
+        void receivedRawVideoFrame(uint8_t * frame, uint32_t frameSize, struct timeval presentationTime) override;
     
     private :
         RTSPCapturer* capture;

@@ -9,7 +9,14 @@
 #import <CommonCrypto/CommonDigest.h>
 #include <stdio.h>
 #include <string.h>
+#include <chrono>
 #include <vector>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -24,6 +31,60 @@ static NSString * DEFAULT_USER_AGENT = @"efcs.f58.29.100";
 
 static uint8_t H26X_marker[] = { 0, 0, 0, 1};
 
+@class RTSPClientConnnection;
+// Thread-safe queue to store frames
+
+struct FramQueue {
+    FramQueue(RTSPClientConnnection* clientConnection, std::vector<uint8_t> data) {
+        connection = clientConnection;
+        frame = data;
+    }
+    
+    RTSPClientConnnection* connection;
+    std::vector<uint8_t> frame;
+};
+
+std::queue<FramQueue> frameQueue;
+std::mutex queueMutex;
+std::condition_variable queueCondition;
+
+// Function to simulate the decoder processing the frame
+void processFrame(uint8_t* data, size_t size, RTSPClientConnnection* connection) {
+    struct timeval time;
+    time.tv_sec = 5;       // 5 seconds
+    time.tv_usec = 500000; // 500,000 microseconds (0.5 seconds)
+    [connection.decoder receivedRawVideoFrame:data withSize:size presentationTime:time];
+}
+
+// Consumer thread to process frames from the queue
+void consumeFramesAndDecode() {
+    using namespace std::chrono;
+    
+    auto frameInterval = milliseconds(1000 / 25);  // 1000ms / FPS
+    
+    while (true) {
+        if (frameQueue.empty()) {
+            std::this_thread::sleep_for(frameInterval);
+            continue;
+        }
+
+        std::unique_lock<std::mutex> lock(queueMutex);
+        // Wait for a frame to be available in the queue
+//        queueCondition.wait(lock, []{ return !frameQueue.empty(); });
+
+        // Get the front frame from the queue
+        FramQueue frameData = frameQueue.front();
+        frameQueue.pop();
+
+        lock.unlock(); // Release the lock while processing the frame
+
+        // Process the frame
+        processFrame(frameData.frame.data(), frameData.frame.size(), frameData.connection);
+        
+        std::this_thread::sleep_for(frameInterval);
+    }
+}
+
 // Function to create an SdpInfo instance
 static SdpInfo createSdpInfo(NSString * _Nullable sessionName, NSString * _Nullable sessionDescription, VideoTrack * _Nullable videoTrack, AudioTrack * _Nullable audioTrack) {
     SdpInfo info;
@@ -37,24 +98,31 @@ static SdpInfo createSdpInfo(NSString * _Nullable sessionName, NSString * _Nulla
 static const uint8_t NAL_PREFIX1[] = { 0x00, 0x00, 0x00, 0x01 };
 static const uint8_t NAL_PREFIX2[] = { 0x00, 0x00, 0x01 };
 
-uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger length) {
-    if (data == NULL || length <= sizeof(NAL_PREFIX1)) {
-        return (uint8_t)-1;
+uint8_t getH264NalUnitType(const uint8_t *data, int offset, NSUInteger length, BOOL isH265) {
+    const int NAL_PREFIX1_SIZE = 4;
+    const int NAL_PREFIX2_SIZE = 3;
+    
+    if (data == NULL || length <= NAL_PREFIX1_SIZE) {
+        return -1;
     }
-
-    NSInteger nalUnitTypeOctetOffset = -1;
-    if (data[offset + sizeof(NAL_PREFIX2) - 1] == 1) {
-        nalUnitTypeOctetOffset = offset + sizeof(NAL_PREFIX2) - 1;
-    } else if (data[offset + sizeof(NAL_PREFIX1) - 1] == 1) {
-        nalUnitTypeOctetOffset = offset + sizeof(NAL_PREFIX1) - 1;
+    
+    int nalUnitTypeOctetOffset = -1;
+    if (data[offset + NAL_PREFIX2_SIZE - 1] == 1) {
+        nalUnitTypeOctetOffset = offset + NAL_PREFIX2_SIZE - 1;
+    } else if (data[offset + NAL_PREFIX1_SIZE - 1] == 1) {
+        nalUnitTypeOctetOffset = offset + NAL_PREFIX1_SIZE - 1;
     }
-
+    
     if (nalUnitTypeOctetOffset != -1) {
         uint8_t nalUnitTypeOctet = data[nalUnitTypeOctetOffset + 1];
-        return (uint8_t)(nalUnitTypeOctet & 0x1f);
-    } else {
-        return (uint8_t)-1;
+        if (isH265) {
+            return (nalUnitTypeOctet >> 1) & 0x3F;
+        } else {
+            return nalUnitTypeOctet & 0x1F;
+        }
     }
+    
+    return -1;
 }
 
 @implementation Track
@@ -112,7 +180,6 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     NSString* _userAgent;
     
     int _socketHandle;
-    std::vector<uint8_t> m_cfg;
     
     VideoRtpParser *videoParser;
     SdpInfo sdpInfo;
@@ -122,6 +189,8 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     NSDictionary<NSString *, NSString *>* digestRealmNonce;
     __block int cSeq;
     NSString *session;
+    
+    dispatch_queue_t backgroundQueue;
 }
 
 - (instancetype) initWithUrl:(NSString*) url {
@@ -138,6 +207,7 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
         session = nil;
         sdpInfo = createSdpInfo(nil, nil, nil, nil);
         cSeq = 0;
+        backgroundQueue = dispatch_queue_create("com.example.backgroundQueue", DISPATCH_QUEUE_CONCURRENT);
         
         [self setupDecodedThread];
     }
@@ -228,6 +298,16 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     if (_socketHandle < 0) {
          NSLog(@"Error: Could not create socket");
         return NO;
+    }
+    
+    // Set the receive buffer size
+    int bufferSize = 10 * 1024 * 1024; // 1024 KB
+    if (setsockopt(_socketHandle, SOL_SOCKET, SO_RCVBUF, &bufferSize, sizeof(bufferSize)) < 0) {
+        NSLog(@"Failed to set receive buffer size");
+    }
+    
+    if (setsockopt(_socketHandle, SOL_SOCKET, SO_SNDBUF, &bufferSize, sizeof(bufferSize)) < 0) {
+        NSLog(@"Failed to set send buffer size");
     }
 
     struct sockaddr_in serverAddr;
@@ -481,11 +561,15 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
                  keepAliveListener:(void (^)())keepAliveListener {
     
 //    uint8_t *data = 0;  Usually not bigger than MTU = 15KB
-    
-    NSData *nalUnitSps = sdpInfo.videoTrack ? sdpInfo.videoTrack.sps : nil;
-    NSData *nalUnitPps = sdpInfo.videoTrack ? sdpInfo.videoTrack.pps : nil;
+    NSData *nalUnitSps = self->sdpInfo.videoTrack ? self->sdpInfo.videoTrack.sps : nil;
+    NSData *nalUnitPps = self->sdpInfo.videoTrack ? self->sdpInfo.videoTrack.pps : nil;
+    NSData *nalUnitSei = [[NSData alloc] init];
+    NSData *nalUnitAud = [[NSData alloc] init];
+    int videoSeqNum = 0;
     
     long keepAliveSent = [[NSDate date] timeIntervalSince1970] * 1000;
+    
+    std::thread comsumeThread(consumeFramesAndDecode);
     
     BOOL isLoop = true;
     while (isLoop) {
@@ -493,16 +577,15 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
         RtpHeader* header = [self readHeader:inputStream];
         
         if (header == nil) {
-            continue;
+            return;
         }
         
         uint8_t * data = (uint8_t*)malloc(header.payloadSize);
         
-        NSInteger bytes = [self.inputStream read:data maxLength:header.payloadSize];
+        NSInteger bytes = [self readData:self.inputStream toBuffer:data offset:0 maxLength:header.payloadSize];
         
-        NSLog(@"Decode here");
         if (bytes <= 0) {
-            continue;
+            return;
         }
         
         long currentTime = [[NSDate date] timeIntervalSince1970] * 1000;
@@ -512,57 +595,119 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
         }
         
         if (sdpInfo.videoTrack && header.payloadType == sdpInfo.videoTrack.payloadType) {
-            NSData *nalUnit = [videoParser processRtpPacketAndGetNalUnit:data length:header.payloadSize];
+            if (videoSeqNum > header.sequenceNumber) {
+                NSLog(@"%@: Invalid video seq num %d / %d", TAG, videoSeqNum, header.sequenceNumber);
+            }
+            videoSeqNum = header.sequenceNumber;
+            
+            NSData *nalUnit;
+            if (header.extension == 1) {
+                uint8_t skipBytes = ((data[2] & 0xFF) << 8 | (data[3] & 0xFF)) * 4 + 4;
+                uint8_t *processedData = data + skipBytes;
+                int processedLength = header.payloadSize - skipBytes;
+                
+                nalUnit = [videoParser processRtpPacketAndGetNalUnit:processedData length:processedLength marker: header.marker == 1];
+            } else {
+                nalUnit = [videoParser processRtpPacketAndGetNalUnit:data length:header.payloadSize marker: header.marker == 1];
+            }
+            
             if (nalUnit) {
-                uint8_t type = getH264NalUnitType((uint8_t*)nalUnit.bytes, 0, nalUnit.length);
-                printf("values %d \n", type);
-                if ( type == kSps) {
-                    m_cfg.clear();
-                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnitSps.bytes, (uint8_t*)nalUnitSps.bytes + nalUnitSps.length);
-                    
-                } else if ( type == kPps) {
-//                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnitPps.bytes, (uint8_t*)nalUnitPps.bytes + nalUnitPps.length);
-                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnit.bytes, (uint8_t*)nalUnit.bytes + nalUnit.length);
-                    
-                }else if (type == kSei) {
-                    //just ignore for now
-                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnit.bytes, (uint8_t*)nalUnit.bytes + nalUnit.length);
-                }else {
-                    std::vector<uint8_t> m_content;
-                    
-//                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnitSps.bytes, (uint8_t*)nalUnitSps.bytes + nalUnitSps.length);
-//                    m_cfg.insert(m_cfg.end(), (uint8_t*)nalUnitPps.bytes, (uint8_t*)nalUnitPps.bytes + nalUnitPps.length);
-                    if (m_cfg.size() > 0) {
-                        m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
-                        m_content.insert(m_content.end(), (uint8_t*)nalUnit.bytes, (uint8_t*)nalUnit.bytes + nalUnit.length);
-                        
-                        [_decoder receivedRawVideoFrame:m_content.data() withSize:m_content.size()];
-                        
-                        m_cfg.clear();
-                    } else {
-                        m_content.insert(m_content.end(), (uint8_t*)nalUnit.bytes, (uint8_t*)nalUnit.bytes + nalUnit.length);
-                        [_decoder receivedRawVideoFrame:m_content.data() withSize:m_content.size()];
-                    }
-                    
-                    
-                    
-                    
-                    
-//                    if (nalUnitSps.bytes != nil && nalUnitPps.bytes != nil && type == kIdr) {
-//                        size_t size = nalUnitPps.length + nalUnitSps.length + nalUnit.length;
-//                        uint8_t * finalData = (uint8_t*)malloc(size);
-//                        memcpy(finalData, nalUnitSps.bytes, nalUnitSps.length);
-//                        memcpy(finalData + nalUnitSps.length, nalUnitPps.bytes, nalUnitPps.length);
-//                        memcpy(finalData + nalUnitSps.length + nalUnitPps.length, nalUnit.bytes, nalUnit.length);
-//                        [_decoder receivedRawVideoFrame:(uint8_t *)finalData withSize:size];
-//                    } else {
-//                        [_decoder receivedRawVideoFrame:(uint8_t *)nalUnit.bytes withSize: nalUnit.length];
-//                    }
+                uint8_t type = getH264NalUnitType((uint8_t*)nalUnit.bytes, 0, nalUnit.length, false);
+                
+                switch (type) {
+                    case kSps:
+                        nalUnitSps = nalUnit;
+                        NSLog(@"%@: Frame_type - SPS - size %lu ", TAG, (unsigned long)[nalUnit length]);
+                        break;
+                    case kPps:
+                        nalUnitPps = nalUnit;
+                        NSLog(@"%@: Frame_type - PPS - size %lu ", TAG, (unsigned long)[nalUnit length]);
+                        break;
+                    case kAud:
+                        nalUnitAud = nalUnit;
+                        NSLog(@"%@: Frame_type - Aud - size %lu ", TAG, (unsigned long)[nalUnit length]);
+                        break;
+                    case kSei:
+                        nalUnitSei = nalUnit;
+                        NSLog(@"%@: Frame_type - Sei - size %lu ", TAG, (unsigned long)[nalUnit length]);
+                        break;
+                    case kIdr:
+                        if (nalUnitSps && nalUnitPps) {
+                            NSUInteger totalLength = [nalUnitAud length] + [nalUnitSps length] + [nalUnitPps length] + [nalUnitSei length] + [nalUnit length];
+                            NSMutableData *nalUnitSpsPpsIdr = [NSMutableData dataWithCapacity:totalLength];
+                            
+                            [nalUnitSpsPpsIdr appendData:nalUnitSps];
+                            [nalUnitSpsPpsIdr appendData:nalUnitPps];
+                            [nalUnitSpsPpsIdr appendData:nalUnitAud];
+                            [nalUnitSpsPpsIdr appendData:nalUnitSei];
+                            [nalUnitSpsPpsIdr appendData:nalUnit];
+                            
+                            __block std::vector<uint8_t> m_content;
+                            m_content.insert(m_content.end(),
+                                             static_cast<const uint8_t*>(nalUnitSpsPpsIdr.bytes),
+                                             static_cast<const uint8_t*>(nalUnitSpsPpsIdr.bytes) + nalUnitSpsPpsIdr.length);
+                            
+                            // Push the frame to the queue
+                            {
+                                std::lock_guard<std::mutex> lock(queueMutex);
+                                frameQueue.push(FramQueue(self, m_content));  // Push to the queue
+                            }
+//                            queueCondition.notify_one();
+                            
+//                            dispatch_async(self->backgroundQueue, ^{
+//                            [self->_decoder receivedRawVideoFrame:m_content.data() withSize:m_content.size() presentationTime];
+//                            });
+                            
+                            
+                            NSLog(@"%@: Frame_type - Idr - size %lu ", TAG, (unsigned long)[nalUnitSpsPpsIdr length]);
+                            
+                            nalUnitSps = nil;
+                            nalUnitPps = nil;
+                            nalUnitSei = [[NSData alloc] init];
+                            nalUnitAud = [[NSData alloc] init];
+                        }
+                        break;
+                    default:
+                        if ([nalUnitSei length] == 0 && [nalUnitAud length] == 0) {
+                            NSLog(@"%@: Frame_type - NalUint - size %lu ", TAG, (unsigned long)[nalUnit length]);
+                            
+                            __block std::vector<uint8_t> m_content;
+                            m_content.insert(m_content.end(),
+                                             static_cast<const uint8_t*>(nalUnit.bytes),
+                                             static_cast<const uint8_t*>(nalUnit.bytes) + nalUnit.length);
+                            
+//                            dispatch_async(backgroundQueue, ^{
+//                            [self->_decoder receivedRawVideoFrame:m_content.data() withSize:m_content.size()];
+//                            });
+                            {
+                                std::lock_guard<std::mutex> lock(queueMutex);
+                                frameQueue.push(FramQueue(self, m_content));  // Push to the queue
+                            }
+//                            queueCondition.notify_one();
+                        } else {
+                            NSUInteger totalLength = [nalUnitAud length] + [nalUnitSei length] + [nalUnit length];
+                            NSMutableData *nalUnitAudSeiSlice = [NSMutableData dataWithCapacity:totalLength];
+                            
+                            [nalUnitAudSeiSlice appendData:nalUnitAud];
+                            [nalUnitAudSeiSlice appendData:nalUnitSei];
+                            [nalUnitAudSeiSlice appendData:nalUnit];
+                            
+                            NSLog(@"%@: Frame_type - NalUintAudSeiSlice - size %lu ", TAG, (unsigned long)[nalUnitAudSeiSlice length]);
+                            
+                            nalUnitSei = [[NSData alloc] init];
+                            nalUnitAud = [[NSData alloc] init];
+                        }
                 }
             }
+        } else {
+            // https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml
+            if (DEBUG && header.payloadType >= 96 && header.payloadType <= 127)
+                NSLog(@"%@: Invalid RTP payload type %d", TAG, header.payloadType);
         }
         free(data);
     }
+    
+    comsumeThread.join();
 }
 
 - (RtpHeader*) readHeader:(NSInputStream *) inputStream {
@@ -574,7 +719,7 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     NSInteger startBytes = [self readData:inputStream toBuffer:header offset:0 maxLength:4];
 
     if (header[0] == 0x24) {
-        // NSLog(@"%@", header[1] == 0 ? @"RTP packet" : @"RTCP packet");
+         NSLog(@"%@", header[1] == 0 ? @"RTP packet" : @"RTCP packet");
     }
 
     int packetSize = [RtpHeader getPacketSize:header];
@@ -1359,7 +1504,7 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     for (NSDictionary<NSString *, NSString *> *head in headers) {
         NSString *key = head.allKeys.firstObject;
         NSString *value = head.allValues.firstObject;
-        // NSLog(@"%@: %@", key, value);
+        NSLog(@"%@: %@", key, value);
     }
 }
 
@@ -1404,30 +1549,27 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _buffer = (uint8_t *)calloc(1024, sizeof(uint8_t *));
-        _nalEndFlag = NO;
-        _bufferLength = 0;
-        _packetNum = 0;
+        _fragmentedBuffer = [[NSMutableData alloc] initWithCapacity:1024];
+        _fragmentedPackets = 0;
+        _fragmentedBufferLength = 0;
     }
     return self;
 }
 
-- (void)dealloc {
-    free(_buffer);
-}
-
-- (nullable NSData *)processRtpPacketAndGetNalUnit:(nonnull uint8_t *)data length:(int)length {
+- (nullable NSData *)processRtpPacketAndGetNalUnit:(nonnull uint8_t *)data length:(int)length marker:(BOOL)marker {
+    uint8_t nalType = data[0] & 0x1F;
+    uint8_t packFlag = data[1] & 0xC0;
+    NSData *nalUnit = nil;
+    
     if (DEBUG) {
-        // NSLog(@"%@: processRtpPacketAndGetNalUnit(length=%d)", TAG, length);
-    }
-    int tmpLen;
-    int nalType = data[0] & 0x1F;
-    int packFlag = data[1] & 0xC0;
-    if (DEBUG) {
-        // NSLog(@"%@: NAL type: %d, pack flag: %d", TAG, nalType, packFlag);
+         NSLog(@"%@: NAL type: %d, pack flag: %d", TAG, nalType, packFlag);
     }
     
-    bool nalEndFlag = false;
+    if (length < 2) {
+        NSLog(@"%@: Invalid data length: %d", TAG, length);
+        return nil;
+    }
+    
     switch (nalType) {
         case NAL_UNIT_TYPE_STAP_A:
         case NAL_UNIT_TYPE_STAP_B:
@@ -1435,54 +1577,107 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
         case NAL_UNIT_TYPE_MTAP24:
         case NAL_UNIT_TYPE_FU_B:
             break;
-        case NAL_UNIT_TYPE_FU_A:
+        case NAL_UNIT_TYPE_FU_A: {
+            
             switch (packFlag) {
-                    //NAL Unit start packet
-                case 0x80: {
-                    nalEndFlag = false;
-                    _packetNum = 1;
+                case 0x80:
+                    [self addStartFragmentedPacketWithData:data length:length];
+                    break;
                     
-                    uint8_t nalHeader = (data[0] & 0xE0) | (data[1] & 0x1F);
-                    _nalUnit.push_back(nalHeader);
-                    self.bufferLength = length - 1;
-                    _nalUnit.insert(_nalUnit.end(), data + 2, data + length - 2);
+                case 0x00:
+                    if (marker) {
+                        nalUnit = [self addEndFragmentedPacketAndCombineWithData:data length:length];
+                    } else {
+                        [self addMiddleFragmentedPacketWithData:data length:length];
+                    }
                     break;
-                }
-                    //NAL Unit middle packet
-                case 0x00: {
-                    nalEndFlag = false;
-                    _packetNum++;
-                    _bufferLength += length - 2;
-                    _nalUnit.insert(_nalUnit.end(), data + 2, data + length - 2);
+                    
+                case 0x40:
+                    nalUnit = [self addEndFragmentedPacketAndCombineWithData:data length:length];
                     break;
-                }
-                    //NAL Unit end packet
-                case 0x40: {
-                    nalEndFlag = true;
-                    uint8_t prefix[] = {0x00, 0x00, 0x00, 0x01};
-                    _bufferLength += length + 2;
-                    _nalUnit.insert(_nalUnit.begin(), std::begin(prefix), std::end(prefix));
-                    _nalUnit.insert(_nalUnit.end(), data + 2, data + length - 2);
-                    break;
-                }
             }
             break;
+        }
         default:
-            NSLog(@"%@: Single NAL", TAG);
-            nalEndFlag = YES;
-            _nalUnit.clear();
-            uint8_t prefix[] = {0x00, 0x00, 0x00, 0x01};
-            _nalUnit.insert(_nalUnit.begin(), std::begin(prefix), std::end(prefix));
-            _nalUnit.insert(_nalUnit.end(), data, data + length);
-            _bufferLength += length + 4;
+            uint8_t nalPrefix[] = { 0x00, 0x00, 0x00, 0x01 };
+            NSMutableData *nalUnitPrefix = [NSMutableData dataWithLength:4];
+            [nalUnitPrefix replaceBytesInRange:NSMakeRange(0, 4) withBytes:nalPrefix];
+            
+            NSMutableData *packet = [NSMutableData dataWithLength:length];
+            memcpy(packet.mutableBytes, data, length);
+            [nalUnitPrefix appendData:packet];
+            
+            nalUnit = nalUnitPrefix;
+            [self clearFragmentedBuffer];
+            if (DEBUG) NSLog(@"Single NAL (%lu)", (unsigned long)nalUnit.length);
             break;
     }
-    if (nalEndFlag) {
-        // NSLog(@"%@: NalSize: %lu", TAG, self.nalUnit.size());
-        return [NSData dataWithBytes:_nalUnit.data() length:_bufferLength];
+
+    return nalUnit;
+}
+
+- (void)addStartFragmentedPacketWithData:(nonnull uint8_t *)data length:(NSInteger)length {
+    if (DEBUG) NSLog(@"addStartFragmentedPacket(data.size=%lu, length=%ld)", (unsigned long)sizeof(data), (long)length);
+
+    self.fragmentedPackets = 0;
+    self.fragmentedBufferLength = length - 1;
+
+    NSMutableData *startPacket = [NSMutableData dataWithLength:length - 1];
+    uint8_t *startPacketBytes = (uint8_t *)startPacket.mutableBytes;
+
+    startPacketBytes[0] = (data[0] & 0xE0) | (data[1] & 0x1F);
+    memcpy(&startPacketBytes[1], data + 2, length - 2);
+
+    [self.fragmentedBuffer appendData:startPacket];
+}
+
+- (void)addMiddleFragmentedPacketWithData:(nonnull uint8_t *)data length:(NSInteger)length {
+    if (DEBUG) NSLog(@"addMiddleFragmentedPacket(data.size=%lu, length=%ld)", (unsigned long)sizeof(data), (long)length);
+
+    self.fragmentedPackets++;
+    if (self.fragmentedPackets >= [self.fragmentedBuffer length]) {
+        NSLog(@"Too many middle packets. No NAL FU_A end packet received. Skipped RTP packet.");
+        [self.fragmentedBuffer setData:[NSData dataWithBytes:NULL length:0]];
     } else {
+        self.fragmentedBufferLength += length - 2;
+
+        NSMutableData *middlePacket = [NSMutableData dataWithLength:length - 2];
+        memcpy(middlePacket.mutableBytes, data + 2, length - 2);
+
+        [self.fragmentedBuffer appendData:middlePacket];
+    }
+}
+
+- (NSData * _Nullable)addEndFragmentedPacketAndCombineWithData:(nonnull uint8_t *)data length:(NSInteger)length {
+    if (DEBUG) NSLog(@"addEndFragmentedPacketAndCombine(data.size=%lu, length=%ld)", (unsigned long)sizeof(data), (long)length);
+
+    if (self.fragmentedBufferLength <= 0) {
+        NSLog(@"No NAL FU_A start packet received. Skipped RTP packet.");
         return nil;
     }
+
+    NSMutableData *endpacket = [NSMutableData dataWithLength:length - 2];
+    memcpy(endpacket.mutableBytes, data + 2, length - 2);
+    
+    uint8_t nalPrefix[] = { 0x00, 0x00, 0x00, 0x01 };
+//    NSInteger nalUnitSize = self.fragmentedBufferLength + length + 2;
+    
+    NSMutableData *nalUnit = [NSMutableData dataWithLength:4];
+    [nalUnit replaceBytesInRange:NSMakeRange(0, 4) withBytes:nalPrefix];
+    [nalUnit appendData:self.fragmentedBuffer];
+    [nalUnit appendData:endpacket];
+    
+    [self clearFragmentedBuffer];
+
+    if (DEBUG) NSLog(@"Fragmented NAL (%lu)", (unsigned long)nalUnit.length);
+    return nalUnit;
+}
+
+- (void)clearFragmentedBuffer {
+    if (DEBUG) NSLog(@"clearFragmentedBuffer()");
+    [self.fragmentedBuffer setData:[NSData dataWithBytes:NULL length:0]];
+    self.fragmentedPackets = 0;
+    self.fragmentedBufferLength = 0;
 }
 
 @end
@@ -1490,8 +1685,8 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
 @implementation RtpHeader
 
 + (BOOL)searchForNextRtpHeader:(NSInputStream *)inputStream header:(uint8_t *)header {
-    if (sizeof(header) < 4) {
-        // NSLog(@"Invalid allocated buffer size");
+    if (!header || sizeof(header) < 4) {
+        NSLog(@"Invalid allocated buffer size");
         return NO;
     }
 
@@ -1534,7 +1729,7 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     rtpHeader.version = (header[0] & 0xFF) >> 6;
     if (rtpHeader.version != 2) {
         if (DEBUG) {
-            // NSLog(@"Not a RTP packet (%d)", rtpHeader.version);
+            NSLog(@"Not a RTP packet (%d)", rtpHeader.version);
         }
         return nil;
     }
@@ -1548,8 +1743,8 @@ uint8_t getH264NalUnitType(const uint8_t *data, NSUInteger offset, NSUInteger le
     rtpHeader.ssrc = (header[7] & 0xFF) + ((header[6] & 0xFF) << 8) + ((header[5] & 0xFF) << 16) + ((header[4] & 0xFF) << 24) & 0xffffffffL;
     rtpHeader.payloadSize = packetSize - RTP_HEADER_SIZE;
     
-    // NSLog(@"RTP header version: %d, padding: %d, ext: %d, cc: %d, marker: %d, payload type: %d, seq num: %d, ts: %ld, ssrc: %ld, payload size: %d",
-//          rtpHeader.version, rtpHeader.padding, rtpHeader.extension, rtpHeader.cc, rtpHeader.marker, rtpHeader.payloadType, rtpHeader.sequenceNumber, rtpHeader.timeStamp, rtpHeader.ssrc, rtpHeader.payloadSize);
+     NSLog(@"RTP header version: %d, padding: %d, ext: %d, cc: %d, marker: %d, payload type: %d, seq num: %d, ts: %ld, ssrc: %ld, payload size: %d",
+          rtpHeader.version, rtpHeader.padding, rtpHeader.extension, rtpHeader.cc, rtpHeader.marker, rtpHeader.payloadType, rtpHeader.sequenceNumber, rtpHeader.timeStamp, rtpHeader.ssrc, rtpHeader.payloadSize);
 
     return rtpHeader;
 }

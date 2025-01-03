@@ -120,6 +120,10 @@
 //    [self.displayLayer setNeedsDisplay];
 }
 
+- (void)RTSPCapturerDecodeDelegateImage:(UIImage*) image {
+    //
+}
+
 #pragma mark - Control Audio Streaming
 
 - (void) setVolume:(CGFloat) volume {

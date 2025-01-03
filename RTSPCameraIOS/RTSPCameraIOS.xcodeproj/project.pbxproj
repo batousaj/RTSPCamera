@@ -28,8 +28,8 @@
 		B1B8A6F228080305008BE93F /* UIButtonView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8A6F128080305008BE93F /* UIButtonView+Ext.m */; };
 		B1BDD3622D1C078E0017195D /* RTSPManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD35E2D1C078E0017195D /* RTSPManagement.cpp */; };
 		B1BDD3632D1C078E0017195D /* FrameEncoded.cc in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD3612D1C078E0017195D /* FrameEncoded.cc */; };
-		B1BDD3642D1C07ED0017195D /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
 		B1BDD3672D1C09D40017195D /* RTSPClientConnnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1BDD3662D1C09D40017195D /* RTSPClientConnnection.mm */; };
+		B1BDD3732D26A8830017195D /* Debug-iphoneos-liblive555helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B8A6F52809932C008BE93F /* Debug-iphoneos-liblive555helper.a */; };
 		B1CB5F38281111F9006D8633 /* RTSPCapturerDecode.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1CB5F37281111F9006D8633 /* RTSPCapturerDecode.mm */; };
 		B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F40281134A3006D8633 /* VideoToolbox.framework */; };
 		B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CB5F4C28141AFD006D8633 /* CoreMedia.framework */; };
@@ -109,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1BDD3642D1C07ED0017195D /* Debug-iphoneos-liblive555helper.a in Frameworks */,
+				B1BDD3732D26A8830017195D /* Debug-iphoneos-liblive555helper.a in Frameworks */,
 				B1CB5F4D28141AFD006D8633 /* CoreMedia.framework in Frameworks */,
 				B1CB5F41281134A3006D8633 /* VideoToolbox.framework in Frameworks */,
 				0CA05ACFC8E6DB381D25A68D /* Pods_RTSPCameraIOS.framework in Frameworks */,

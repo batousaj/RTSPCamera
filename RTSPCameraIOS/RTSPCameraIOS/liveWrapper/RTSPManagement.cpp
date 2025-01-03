@@ -49,11 +49,13 @@ RTSPManagement::~RTSPManagement()
 //function set info RTSPConnection
 void RTSPManagement::startRTSP() {
     m_thread = std::thread(&RTSPManagement::CapturerThread,this);
+//    consumerThread = std::thread(&RTSPManagement::consumeFramesAndDecode,this);
 }
 
 void RTSPManagement::stopRTSP() {
     m_envi.stop();
     m_thread.join();
+//    consumerThread.join();
 }
 
 void RTSPManagement::CapturerThread() {
@@ -99,29 +101,35 @@ bool RTSPManagement::onData(const char* id, unsigned char* buffer, ssize_t size,
                 m_cfg.clear();
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 isResetDescription = true;
-                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
             } else if ( type == common::kPps) {
-                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 m_cfg.insert(m_cfg.end(), buffer, buffer + size);
                 
             }else if (type == common::kSei) {
                 //just ignore for now
-                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 
             } else {
                 std::vector<uint8_t> m_content;
                 if (type == common::kIdr) {
-                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                     m_content.insert(m_content.end(), m_cfg.begin(), m_cfg.end());
                 } else {
-                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
+//                    std::cout << "RTSPVideoCapturer:onData SLICE NALU:" << (int)type << std::endl;
                 }
                 if (m_content.size() <= 0) {
                     isResetDescription = false;
                 }
                 m_content.insert(m_content.end(), buffer, buffer + size);
-                rtsp_source_factory()->receivedRawVideoFrame(m_content.data(), m_content.size());
+                rtsp_source_factory()->receivedRawVideoFrame(m_content.data(), m_content.size(), presentationTime);
+                
+//                {
+//                    std::lock_guard<std::mutex> lock(queueMutex);
+//                    frameQueue.push(FramQueue(m_content, presentationTime)); // Push to the queue
+//                }
+//                queueCondition.notify_one();
                 
 //                auto now = std::chrono::system_clock::now();
 //                
@@ -157,3 +165,31 @@ void RTSPManagement::onError(RTSPConnection& connection, const char* error) {
     connection.start(1);
 }
 
+// Consumer thread to process frames from the queue
+void RTSPManagement::consumeFramesAndDecode() {
+    using namespace std::chrono;
+    
+    auto frameInterval = milliseconds(1000 / 25);  // 1000ms / FPS
+    
+    while (true) {
+        if (frameQueue.empty()) {
+            std::this_thread::sleep_for(frameInterval);
+            continue;
+        }
+            
+        std::unique_lock<std::mutex> lock(queueMutex);
+        // Wait for a frame to be available in the queue
+//        queueCondition.wait(lock, [this]{ return !frameQueue.empty(); });
+
+        // Get the front frame from the queue
+        FramQueue frameData = frameQueue.front();
+        frameQueue.pop();
+
+        lock.unlock(); // Release the lock while processing the frame
+
+        // Process the frame
+        rtsp_source_factory()->receivedRawVideoFrame(frameData.frame.data(), frameData.frame.size(), frameData.presentationTime);
+        
+        std::this_thread::sleep_for(frameInterval);
+    }
+}
